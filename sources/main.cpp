@@ -22,7 +22,10 @@ int main(int argc, char** argv )
     imshow("Display Image", image);
     waitKey(0);
     Mat grey_image;
-    cvtColor(image, grey_image, COLOR_BGR2GRAY);
+    cvtColor(image, grey_image, COLOR_BGR2Luv);
+    Rect r(10,10,100,100);
+    Mat small_image = grey_image(r);
+    small_image = Scalar(0);
     imwrite("Henni_NB.png", grey_image);
     return 0;
 }
