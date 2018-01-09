@@ -12,7 +12,7 @@ int main(int argc, char** argv )
         return -1;
     }
     Mat image;
-    image = imread(argv[1], 0);
+    image = imread(argv[1], 1);
     if (!image.data)
     {
         printf("No image data \n");
@@ -21,5 +21,8 @@ int main(int argc, char** argv )
     namedWindow("Display Image", WINDOW_AUTOSIZE );
     imshow("Display Image", image);
     waitKey(0);
+    Mat grey_image;
+    cvtColor(image, grey_image, COLOR_BGR2GRAY);
+    imwrite("Henni_NB.png", grey_image);
     return 0;
 }
