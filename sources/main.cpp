@@ -3,6 +3,14 @@
 
 using namespace cv;
 
+int draw_uniform_rectangle (uint x, uint y, uint sx, uint sy, uint color, Mat image){
+
+  Rect r(x,y,sx,sy);
+  Mat crop_image;
+  crop_image = image(r);
+  crop_image = Scalar(color);
+  return 0;
+}
 
 Mat symetry_y(Mat &image) {
     /* returns the symetry along the y axis */
