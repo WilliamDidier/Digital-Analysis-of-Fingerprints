@@ -3,6 +3,14 @@
 
 using namespace cv;
 
+int draw_uniform_rectangle (uint x, uint y, uint sx, uint sy, uint color, Mat image){
+
+  Rect r(x,y,sx,sy);
+  Mat crop_image;
+  crop_image = image(r);
+  crop_image = Scalar(color);
+  return 0;
+}
 
 int main(int argc, char** argv )
 {
@@ -22,10 +30,11 @@ int main(int argc, char** argv )
     imshow("Display Image", image);
     waitKey(0);
     Mat grey_image;
-    cvtColor(image, grey_image, COLOR_BGR2Luv);
-    Rect r(10,10,100,100);
-    Mat small_image = grey_image(r);
-    small_image = Scalar(0);
-    imwrite("Henni_NB.png", grey_image);
+    cvtColor(image, grey_image, COLOR_BGR2GRAY);
+    draw_uniform_rectangle(10,10,100,100,255, grey_image);
+    draw_uniform_rectangle(150,150,50,10,0, grey_image);
+    namedWindow("Display Image", WINDOW_AUTOSIZE );
+    imshow("Display Image", grey_image);
+    waitKey(0);
     return 0;
 }
