@@ -1,1 +1,0 @@
-/usr/bin/c++      CMakeFiles/exec.dir/sources/main.cpp.o  -o exec -rdynamic 
