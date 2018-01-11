@@ -65,5 +65,8 @@ int main(int argc, char** argv )
     namedWindow("Display Image", WINDOW_AUTOSIZE );
     imshow("Display Image", grey_image);
     waitKey(0);
+    Mat image_sym = symetry_diag(image);
+    //std::cout << image_sym << std::endl;
+    imwrite("sym.png", image_sym);
     return 0;
 }
