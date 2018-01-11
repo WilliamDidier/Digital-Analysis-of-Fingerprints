@@ -1,17 +1,9 @@
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
 #include <iostream>
-
+#include "starter_1.h"
 using namespace cv;
 
-int draw_uniform_rectangle (uint x, uint y, uint sx, uint sy, uint color, Mat image){
-
-  Rect r(x,y,sx,sy);
-  Mat crop_image;
-  crop_image = image(r);
-  crop_image = Scalar(color);
-  return 0;
-}
 
 Mat symetry_y(Mat &image) {
     /* returns the symetry along the y axis */
@@ -64,6 +56,13 @@ int main(int argc, char** argv )
     }
     namedWindow("Display Image", WINDOW_AUTOSIZE );
     imshow("Display Image", image);
+    waitKey(0);
+    Mat grey_image;
+    cvtColor(image, grey_image, COLOR_BGR2GRAY);
+    convert_to_float(grey_image);
+    draw_uniform_rectangle(570,570,7,100,0.0, grey_image);
+    namedWindow("Display Image", WINDOW_AUTOSIZE );
+    imshow("Display Image", grey_image);
     waitKey(0);
     Mat image_sym = symetry_diag(image);
     //std::cout << image_sym << std::endl;
