@@ -1,16 +1,9 @@
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
+#include "starter_1.h"
 
 using namespace cv;
 
-int draw_uniform_rectangle (uint x, uint y, uint sx, uint sy, uint color, Mat image){
-
-  Rect r(x,y,sx,sy);
-  Mat crop_image;
-  crop_image = image(r);
-  crop_image = Scalar(color);
-  return 0;
-}
 
 int main(int argc, char** argv )
 {
@@ -31,8 +24,8 @@ int main(int argc, char** argv )
     waitKey(0);
     Mat grey_image;
     cvtColor(image, grey_image, COLOR_BGR2GRAY);
-    draw_uniform_rectangle(10,10,100,100,255, grey_image);
-    draw_uniform_rectangle(150,150,50,10,0, grey_image);
+    convert_to_float(grey_image);
+    draw_uniform_rectangle(570,570,7,100,0.0, grey_image);
     namedWindow("Display Image", WINDOW_AUTOSIZE );
     imshow("Display Image", grey_image);
     waitKey(0);
