@@ -58,15 +58,17 @@ int main(int argc, char** argv )
     namedWindow("Display Image", WINDOW_AUTOSIZE );
     imshow("Display Image", image);
     waitKey(0);
-    Mat grey_image;
-    cvtColor(image, grey_image, COLOR_BGR2GRAY);
-    convert_to_float(grey_image);
+    //cvtColor(image, grey_image, COLOR_BGR2GRAY);
+    Mat grey_image = convert_to_float(image);
+    std::cout << grey_image << std::endl;
+    /*
     draw_uniform_rectangle(570,570,7,100,0.0, grey_image);
     namedWindow("Display Image", WINDOW_AUTOSIZE );
     imshow("Display Image", grey_image);
     waitKey(0);
     Mat image_sym = symetry_diag(image);
-    //std::cout << image_sym << std::endl;
+    std::cout << image_sym << std::endl;
     imwrite("sym.png", image_sym);
+    */
     return 0;
 }
