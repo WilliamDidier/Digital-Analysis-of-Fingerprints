@@ -100,32 +100,10 @@ Mat transfo_fourier( Mat image){
     // Mat q2(magI, Rect(0, cy, cx, cy));  // Bottom-Left
     // Mat q3(magI, Rect(cx, cy, cx, cy));
     std::cout << res << std::endl;
-    
+
     normalize(res, res, 0, 1, NORM_MINMAX);
     std::cout << res << std::endl;
     return res;
 
 
-}
-int main(int argc, char** argv){
-
-  if ( argc != 2 )
-  {
-      printf("usage: DisplayImage.out <Image_Path>\n");
-      return -1;
-  }
-  Mat image;
-  image = imread(argv[1], 0);
-  if (!image.data)
-  {
-      printf("No image data \n");
-      return -1;
-  }
-  imshow("Display Image", image);
-  waitKey(0);
-  Mat image2 = transfo_fourier(image);
-  imshow("Image TF", image2);
-  waitKey(0);
-
-  return 0;
 }

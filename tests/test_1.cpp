@@ -26,7 +26,7 @@ int main(int argc, char** argv )
     /* TESTING THE FLOAT AND COLOR CONVERSION */
     cout << "Converting to gray...";
     cvtColor(image, image, COLOR_BGR2GRAY);
-    imwrite("Grey_Image.png", image);
+    imwrite("../Grey_Image.png", image);
     image = convert_to_float(image);
     cout << " Done." << endl;
 
@@ -35,13 +35,12 @@ int main(int argc, char** argv )
     Mat image_sym;
     cout << "testing diagonal symetry...";
     image_sym = symetry_diag(image);
-    imwrite("Diagonal_symetry.png", image_sym);
+    imwrite("../Diagonal_symetry.png", convert_to_int(image_sym));
     cout << " Done." << endl;
 
     cout << "testing y-axis symetry...";
     image_sym = symetry_y(image);
-    waitKey(0);
-    imwrite("Y-axis_symetry.png", image_sym);
+    imwrite("../Y-axis_symetry.png", convert_to_int(image_sym));
     cout << " Done." << endl;
 
 
@@ -53,7 +52,7 @@ int main(int argc, char** argv )
     //waitKey(0);
     draw_uniform_rectangle(image, r1, 0.0);
     draw_uniform_rectangle(image, r2, 255.0);
-    imwrite("Rectangles.png", image);
+    imwrite("../Rectangles.png", convert_to_int(image));
     cout << " Done." << endl;
 
     return 0;
