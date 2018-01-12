@@ -69,39 +69,63 @@ Pour H : matrice carrée impaire obligatoirement
   return Res;
 }
 
-// int main(int argc, char** argv){
-//   Mat D = Mat::ones(3,3,CV_8UC1);
-//   Mat E = (Mat_<int>(3,3) << 0, -1, 0, -1, 4, -1, 0, -1, 0);
-//   Mat F = Mat::ones(9,9,CV_8UC1);
-//   // srand(time(NULL));
-//   // for (int i1 = 0; i1 < 9; i1++){
-//   //   for (int j1 = 0; j1 < 9; j1++){
-//   //     int nombre_aleatoire = rand();
-//   //     F.at<uchar>(j1, i1) = nombre_aleatoire;
-//   //   }
-//   // }
-//   // Mat A = Convol_TopRight(F,D);
-//   // Mat B = Convol_Centered(F,D);
-//   // std::cout << A << std::endl;
-//   // std:: cout << B << std::endl;
-//   // std:: cout << (A-B) + (B-A) << std::endl;
-//   if ( argc != 2 )
-//   {
-//       printf("usage: DisplayImage.out <Image_Path>\n");
-//       return -1;
-//   }
-//   Mat image;
-//   image = imread(argv[1], 0);
-//   if (!image.data)
-//   {
-//       printf("No image data \n");
-//       return -1;
-//   }
-//   imshow("Display Image", image);
-//   waitKey(0);
-//   Mat image2 = Convol_TopRight(image,image);
-//   imshow("Image Top Right", image2);
-//   waitKey(0);
-//
-//   return 0;
-// }
+
+
+Mat transfo_fourier( Mat image){
+
+  Mat optimal;
+  //extendre la matrice à la taille optimale
+  int  nbRows =   getOptimalDFTSize( image.rows );
+  int  nbCols =   getOptimalDFTSize( image.cols );
+  //ajouter des zeros sur les bords
+  copyMakeBorder(image, optimal, 0, nbRows - image.rows, 0, nbCols - image.cols, BORDER_CONSTANT, Scalar::all(0));
+
+  Mat tab[] = {Mat_<float>(optimal), Mat::zeros(optimal.size(), CV_32F)};
+  Mat img_complexe;
+  // convertis la matrice réelle en matrice complexe
+  merge(tab, 2, img_complexe);
+  dft(img_complexe, img_complexe);
+  //on sépare partie imaginaire et partie réelle
+  split(img_complexe, tab);
+  // on prend la norme du résultat, c'est à dire la magnitude
+   magnitude(tab[0], tab[1], tab[0]);
+   Mat res = tab[0];
+   // on remet l'image à la taille initiale
+   res = res(Rect(0, 0, res.cols & -2, res.rows & -2));
+   //on replace l'image afin qu'elle soit centrée
+    // int cx = magI.cols/2;
+    // int cy = magI.rows/2;
+    // Mat q0(magI, Rect(0, 0, cx, cy));   // Top-Left - Create a ROI per quadrant
+    // Mat q1(magI, Rect(cx, 0, cx, cy));  // Top-Right
+    // Mat q2(magI, Rect(0, cy, cx, cy));  // Bottom-Left
+    // Mat q3(magI, Rect(cx, cy, cx, cy));
+    std::cout << res << std::endl;
+    
+    normalize(res, res, 0, 1, NORM_MINMAX);
+    std::cout << res << std::endl;
+    return res;
+
+
+}
+int main(int argc, char** argv){
+
+  if ( argc != 2 )
+  {
+      printf("usage: DisplayImage.out <Image_Path>\n");
+      return -1;
+  }
+  Mat image;
+  image = imread(argv[1], 0);
+  if (!image.data)
+  {
+      printf("No image data \n");
+      return -1;
+  }
+  imshow("Display Image", image);
+  waitKey(0);
+  Mat image2 = transfo_fourier(image);
+  imshow("Image TF", image2);
+  waitKey(0);
+
+  return 0;
+}
