@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
+#include <iostream>
 #include "starter_1.h"
+#include "blur.h"
 
 using namespace cv;
 using std::cout;
@@ -21,18 +23,25 @@ int main(int argc, char** argv )
         printf("No image data \n");
         return -1;
     }
+    /*
     namedWindow("Display Image", WINDOW_AUTOSIZE );
     imshow("Display Image", image);
     waitKey(0);
-    image = convert_to_float(image);
-    //cvtColor(image, image, COLOR_BGR2GRAY);
-    imshow("Display Image", image);
+    */
+    //cvtColor(image, grey_image, COLOR_BGR2GRAY);
+    Mat grey_image = convert_to_float(image);
+    Mat image_blurred;
+    grey_image.copyTo(image_blurred);
+    //std::cout << image_blurred << std::endl;
+    test_blur(image_blurred);
+    //std::cout << image_blurred << std::endl;
+    namedWindow("Display Image", WINDOW_AUTOSIZE );
+    imshow("Display Image", image_blurred);
     waitKey(0);
-
-
-
-    Rect r (10,570,7,100);
-    draw_uniform_rectangle(image, r, 1.0);
+    grey_image = convert_to_int(image_blurred);
+    imwrite("blur.png", grey_image);
+    /*
+    draw_uniform_rectangle(570,570,7,100,0.0, grey_image);
     namedWindow("Display Image", WINDOW_AUTOSIZE );
     imshow("Display Image", image);
     waitKey(0);
