@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
+#include <iostream>
 #include "starter_1.h"
-
 using namespace cv;
 
 
@@ -35,7 +35,6 @@ Mat symetry_diag(Mat &image) {
         //gets the intensity value of image
         Scalar intensity = image.at<uchar>(j, i);
         //fills 'image_sym' according to the symetry
-        image_sym.at<uchar>(i, j) = intensity[0];
       }
     }
     return(image_sym);
