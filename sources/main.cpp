@@ -68,5 +68,6 @@ int main(int argc, char** argv )
     Mat image_sym = symetry_diag(grey_image);
     //std::cout << image_sym << std::endl;
     imwrite("sym.png", image_sym);
+
     return 0;
 }
