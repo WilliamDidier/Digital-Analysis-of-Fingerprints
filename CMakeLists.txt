@@ -24,6 +24,15 @@ file(
 
 )
 
+file(
+
+        GLOB_RECURSE
+
+        source_files_tests
+
+        tests/*
+
+)
 
 
 #Déclaration de l'exécutable
@@ -36,5 +45,14 @@ add_executable(
 
 )
 
-target_link_libraries( Digital_analysis ${OpenCV_LIBS} )
+add_executable(
 
+        Test_1
+
+        ${source_files_tests}
+
+)
+
+
+target_link_libraries( Digital_analysis ${OpenCV_LIBS} )
+target_link_libraries( Test_1 ${OpenCV_LIBS} )
