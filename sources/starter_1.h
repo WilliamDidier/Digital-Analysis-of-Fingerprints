@@ -1,22 +1,31 @@
+/*
+header file associated to 'starter_1.cpp'
+contains the functions related to the starter 1
+*/
+
 #ifndef STARTER_1
 #define STARTER_1
 
+
 #include <opencv2/opencv.hpp>
+#include <stdio.h>
 
 using namespace cv;
 
-Mat convert_to_float(Mat image){
-  Mat dst;
-  image.convertTo(dst, CV_32F, 1.0/255.0);
-  return(dst);
-}
+//convert the intensity range 0-255 (int) in a range 0-1 (float)
+Mat convert_to_float(Mat image);
 
-int draw_uniform_rectangle (uint x, uint y, uint sx, uint sy, float color, Mat image){
-  assert ((x+sx <= image.cols) && (y+sy <= image.rows));
-  Rect r(x,y,sx,sy);
-  image = image(r);
-  image = Scalar(color);
-  return 0;
-}
+//do the inverse operation of convert_to_float (no really useful)
+Mat convert_to_int(Mat image);
 
-#endif
+//à commenter didier
+int draw_uniform_rectangle (Mat image, Rect r, float color);
+
+//apply a symetry along the y axis to the image
+Mat symetry_y(Mat &image);
+
+//apply symetry along the x/y diagonal to the image
+Mat symetry_diag(Mat &image);
+
+
+#endif //STARTER_1

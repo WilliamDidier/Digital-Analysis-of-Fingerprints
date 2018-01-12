@@ -1,45 +1,10 @@
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
 #include "starter_1.h"
+#include "blur.h"
 
 using namespace cv;
 
-
-Mat symetry_y(Mat &image) {
-    /* returns the symetry along the y axis */
-    int nRows = image.rows;
-    int nCols = image.cols;
-    Mat image_sym;
-    //creation of a Mat with the same size as 'image'
-    image_sym.create(nRows, nCols, CV_8UC1);
-    for (uint i = 0; i < nCols; ++i) {
-      for (uint j = 0; j < nRows; ++j) {
-        //gets the intensity value of image
-        Scalar intensity = image.at<uchar>(j, i);
-        //fills 'image_sym' according to the symetry
-        image_sym.at<uchar>(j, nCols - i) = intensity[0];
-      }
-    }
-    return(image_sym);
-}
-
-Mat symetry_diag(Mat &image) {
-    /* returns the symetry along the x/y diagonal */
-    int nRows = image.rows;
-    int nCols = image.cols;
-    Mat image_sym;
-    //creation of a Mat with the same size as 'image'
-    image_sym.create(nCols, nRows, CV_8UC1);
-    for (uint i = 0; i < nCols; ++i) {
-      for (uint j = 0; j < nRows; ++j) {
-        //gets the intensity value of image
-        Scalar intensity = image.at<uchar>(j, i);
-        //fills 'image_sym' according to the symetry
-        image_sym.at<uchar>(i, j) = intensity[0];
-      }
-    }
-    return(image_sym);
-}
 
 int main(int argc, char** argv )
 {
@@ -55,12 +20,23 @@ int main(int argc, char** argv )
         printf("No image data \n");
         return -1;
     }
+    /*
     namedWindow("Display Image", WINDOW_AUTOSIZE );
     imshow("Display Image", image);
     waitKey(0);
+    */
     //cvtColor(image, grey_image, COLOR_BGR2GRAY);
     Mat grey_image = convert_to_float(image);
-    std::cout << grey_image << std::endl;
+    Mat image_blurred;
+    grey_image.copyTo(image_blurred);
+    //std::cout << image_blurred << std::endl;
+    test_blur(image_blurred);
+    //std::cout << image_blurred << std::endl;
+    namedWindow("Display Image", WINDOW_AUTOSIZE );
+    imshow("Display Image", image_blurred);
+    waitKey(0);
+    grey_image = convert_to_int(image_blurred);
+    imwrite("blur.png", grey_image);
     /*
     draw_uniform_rectangle(570,570,7,100,0.0, grey_image);
     namedWindow("Display Image", WINDOW_AUTOSIZE );
