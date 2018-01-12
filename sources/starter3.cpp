@@ -110,14 +110,14 @@ Mat img_magnitude(Mat img_complexe){
   return res;
 }
 
-Mat inv_transfo_fourier( Mat image){
+Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
   Mat res;
   idft(image, res, DFT_REAL_OUTPUT|DFT_SCALE);
   cv::Mat finalImage;
 
   normalize(res, finalImage, 0, 1, NORM_MINMAX);
 
-  return finalImage;
+  return finalImage(Rect(0, 0, nbCols, nbRows));
 }
 
 
@@ -141,33 +141,11 @@ int main(int argc, char** argv){
   waitKey(0);
   Mat img_complex = transfo_fourier(image);
   Mat image2 = img_magnitude(img_complex);
-  imshow("Image TF", image2);
+  imshow("ImageTF2", image2);
   waitKey(0);
-  Mat inv_image = inv_transfo_fourier(img_complex);
-  imshow("ImageTF.png", inv_image);
+  Mat inv_image = inv_transfo_fourier(img_complex, image.cols, image.rows);
+  imshow("ImageTF", inv_image);
   waitKey(0);
   return 0;
 
 }
-// int main(int argc, char** argv){
-//
-//   if ( argc != 2 )
-//   {
-//       printf("usage: DisplayImage.out <Image_Path>\n");
-//       return -1;
-//   }
-//   Mat image;
-//   image = imread(argv[1], 0);
-//   if (!image.data)
-//   {
-//       printf("No image data \n");
-//       return -1;
-//   }
-//   imshow("Display Image", image);
-//   waitKey(0);
-//   Mat image2 = transfo_fourier(image);
-//   imshow("Image TF", image2);
-//   waitKey(0);
-//
-//   return 0;
-// }
