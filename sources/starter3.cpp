@@ -99,8 +99,9 @@ Mat transfo_fourier( Mat image){
     // Mat q1(magI, Rect(cx, 0, cx, cy));  // Top-Right
     // Mat q2(magI, Rect(0, cy, cx, cy));  // Bottom-Left
     // Mat q3(magI, Rect(cx, cy, cx, cy));
+    //std::cout << res << std::endl;
     normalize(res, res, 0, 1, NORM_MINMAX);
-    std::cout << res << std::endl;
+    //std::cout << res << std::endl;
     return res;
 
 
