@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
+#include <iostream>
 #include "starter_1.h"
 #include "blur.h"
 
