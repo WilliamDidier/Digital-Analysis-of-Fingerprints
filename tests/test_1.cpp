@@ -23,8 +23,8 @@ int main(int argc, char** argv )
     }
     cout << "Image succesfully imported" << endl;
 
-
-    /* TESTING THE FLOAT AND COLOR CONVERSION */
+    /*
+    //TESTING THE FLOAT AND COLOR CONVERSION
     cout << "Converting to gray...";
     cvtColor(image, image, COLOR_BGR2GRAY);
     imwrite("./Grey_Image.png", image);
@@ -32,7 +32,7 @@ int main(int argc, char** argv )
     cout << " Done." << endl;
 
 
-    /*TETSING THE SYMETRIES*/
+    //TETSING THE SYMETRIES
     Mat image_sym;
     cout << "testing diagonal symetry...";
     image_sym = symetry_diag(image);
@@ -45,7 +45,7 @@ int main(int argc, char** argv )
     cout << " Done." << endl;
 
 
-    /* TESTING THE RECTANGLE DRAWING*/
+    // TESTING THE RECTANGLE DRAWING
     cout << "Inserting rectangles" << endl;
     cout << image.rows << " "<< image.cols << endl;
     Rect r1(image.cols/2,image.rows/2,image.cols/4,image.rows/4);
@@ -55,12 +55,14 @@ int main(int argc, char** argv )
     draw_uniform_rectangle(image, r2, 255.0);
     imwrite("./Rectangles.png", convert_to_int(image));
     cout << "Done." << endl;
+    */
 
-    /* TESTING THE ELLIPTICAL FUNCTION*/
+    // TESTING THE ELLIPTICAL FUNCTION
+    image = convert_to_float(image);
     Mat ellipse_test;
     ellipse_test.create(image.cols, image.rows, CV_32F);
-    Point2i param(20, 30);
-    Point2i press(image.cols/2, image.rows/2);
+    Point2i param(90, 60);
+    Point2i press(image.rows/2, image.cols/2);
     ellipse_test = ellipse(param, press, Point2i(image.rows, image.cols));
     imwrite("./test_filter.png", convert_to_int(ellipse_test));
 

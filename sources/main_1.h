@@ -33,7 +33,7 @@ bool test_ellipse(Point2f parameters, Point2i pressure_center, Point2i coordinat
     float res = pow((coordinates.x - pressure_center.x)/parameters.x, 2);
     res += pow((coordinates.y - pressure_center.y)/parameters.y, 2);
     res = sqrt(res);
-    return(res<=1);
+    return(res>=1);
 }
 
 Mat ellipse(Point2i parameters, Point2i pressure_center, Point2i dimensions) {
@@ -41,14 +41,30 @@ Mat ellipse(Point2i parameters, Point2i pressure_center, Point2i dimensions) {
     int nCols = dimensions.y;
     Mat res;
     res.create(nRows, nCols, CV_32F);
-    for (uint i = 0; i < nRows; i++) {
-      for (uint j = 0; j < nCols; j++) {
-        res.at<float>(j, i) = test_ellipse(parameters, pressure_center, Point2i(i,j)) ? 0. : 1.;
+    for (uint j = 0; j < nCols; j++) {
+      for (uint i = 0; i < nRows; i++) {
+        cout << "i " << i << " j " << j << " " << test_ellipse(parameters, pressure_center, Point2i(i,j)) << endl;
+        res.at<float>(i, j) = test_ellipse(parameters, pressure_center, Point2i(i,j));
       }
     }
     return(res);
 }
 
-void apply_iso(Mat &image);
+void apply_iso(Mat &image) {
+    int nRows = image.rows;
+    int nCols = image.cols;
+    Point2f parameters = parameters_computation(image);
+    Point2f pressure_center;
+    Mat protected_zone = ellipse(parameters, pressure_center, Point2i(nRows, nCols));
+    for (uint j = 0; j < nCols; j++) {
+      for (uint i = 0; i < nRows; i++) {
+        if (protected_zone.at<float>(i,j) == 1f) {
+            Point2i point(i,j);
+            coefficient_computation(true, pressure_center, point);
+            change_intensity(image, pressure_center, point);
+        }
+      }
+    }
+}
 
 #endif //MAIN_1_H
