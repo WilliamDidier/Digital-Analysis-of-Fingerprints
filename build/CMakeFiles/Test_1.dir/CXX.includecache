@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/T/TMP-Didier/Fingerprint_project/Digital-analysis/sources/starter_1.h
+starter_1.h
+/home/T/TMP-Didier/Fingerprint_project/Digital-analysis/sources/starter_1.h
+opencv2/opencv.hpp
+-
+stdio.h
+-
+
+/home/T/TMP-Didier/Fingerprint_project/Digital-analysis/tests/test_1.cpp
+stdio.h
+-
+opencv2/opencv.hpp
+-
+../sources/starter_1.h
+/home/T/TMP-Didier/Fingerprint_project/Digital-analysis/sources/starter_1.h
+
