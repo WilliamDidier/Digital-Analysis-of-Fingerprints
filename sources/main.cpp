@@ -17,10 +17,14 @@ int main(int argc, char** argv )
         return -1;
     }
     Mat image;
-    image = imread(argv[1], 1);
+    image = imread(argv[1], 0);
     if (!image.data)
     {
         printf("No image data \n");
         return -1;
     }
+
+    image = convert_to_float(image);
+    test_blur(image);
+    imwrite("../test_filter.png", convert_to_int(image));
 }
