@@ -4,19 +4,32 @@
 #include <time.h>
 #include <vector>
 
+#include <cmath>
+
+float pi = 3.14159265359;
+
+
 using namespace cv;
 
-int produit_coefbycoef(Mat A, Mat B){
+Mat convert_to_floatXXX(Mat image){
+  Mat dst;
+  image.convertTo(dst, CV_32F, 1.0/255.0);
+  return(dst);
+}
+
+
+
+float produit_coefbycoef(Mat A, Mat B){
   /*
   Produit coefficient par coefficient, A et B doivent
   être de même dimension
   */
-  int res = 0;
+  float res = 0;
   for (int i = 0; i < A.cols; i++){
     for (int j = 0; j < A.rows; j++){
-      Scalar tmp = A.at<uchar>(j,i);
-      Scalar tmp2 = B.at<uchar>(j,i);
-      res += tmp[0]*tmp2[0];
+      float tmp = A.at<float>(j,i);
+      float tmp2 = B.at<float>(j,i);
+      res += tmp*tmp2;
     }
   }
   return res;
@@ -27,20 +40,22 @@ Mat Convol_TopRight(Mat X, Mat H){
 Donne X**H, centré sur le coefficient en haut à droite de la matrice H
 Données entières !!
 */
+// std::cout << X << std::endl;
+// std::cout << H << std::endl;
   uint ColX = X.cols;
   uint RowX = X.rows;
   uint ColH = H.cols;
   uint RowH = H.rows;
-  Mat Res(RowX, ColX, CV_8UC1);
-  Mat BigX = Mat::zeros(RowX+RowH-1, ColX+ColH-1, CV_8UC1);
+  Mat Res(RowX, ColX, CV_32FC1);
+  Mat BigX = Mat::zeros(RowX+RowH-1, ColX+ColH-1, CV_32FC1);
   Rect roi = Rect(ColH-1,0,ColX,RowX);
   X.copyTo(BigX(roi));
   for (int i1 = 0; i1 < ColX; i1++){
     for (int j1 = 0; j1 < RowX; j1++){
       Rect tmp = Rect(i1,j1,ColH,RowH);
-      //std::cout << BigX(tmp) << std::endl << H << std::endl;
-      //std::cout << produit_coefbycoef(BigX(tmp),H) << std::endl;
-      Res.at<uchar>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
+      // std::cout << H << std::endl;
+      // std::cout << produit_coefbycoef(BigX(tmp),H) << std::endl;
+      Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
     }
   }
   return Res;
@@ -55,18 +70,19 @@ Pour H : matrice carrée impaire obligatoirement
   uint RowX = X.rows;
   uint ColH = H.cols;
   uint RowH = H.rows;
-  Mat Res(RowX, ColX, CV_8UC1);
-  Mat BigX = Mat::zeros(RowX+RowH-1, ColX+ColH-1, CV_8UC1);
+  Mat Res(RowX, ColX, CV_32FC1);
+  Mat BigX = Mat::zeros(RowX+RowH-1, ColX+ColH-1, CV_32FC1);
   Rect roi = Rect((ColH-1)/2,(RowH-1)/2,ColX,RowX);
   X.copyTo(BigX(roi));
   for (int i1 = 0; i1 < ColX; i1++){
     for (int j1 = 0; j1 < RowX; j1++){
       Rect tmp = Rect(i1,j1,ColH,RowH);
-      //std::cout << BigX(tmp) << std::endl << H << std::endl;
+      //std::cout << BigX(tmp) << std::endl;
       //std::cout << produit_coefbycoef(BigX(tmp),H) << std::endl;
-      Res.at<uchar>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
+      Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
     }
   }
+  //std::cout << Res << std::endl;
   return Res;
 }
 
@@ -110,7 +126,7 @@ Mat img_magnitude(Mat img_complexe){
   return res;Mat O = Mat::ones(2, 2, CV_32F);
 }
 
-Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
+/*Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
   Mat res;
   idft(image, res, DFT_REAL_OUTPUT|DFT_SCALE);
   cv::Mat finalImage;
@@ -118,23 +134,36 @@ Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
   normalize(res, finalImage, 0, 1, NORM_MINMAX);
 
   return finalImage(Rect(0, 0, nbCols, nbRows));
-}
+}*/
 
-Mat convolution_matrice(Mat image1, Mat image2){
-  Mat image_complex1 = transfo_fourier(image1);
-  Mat image_complex2 = transfo_fourier(image2);
+Mat convolution_fft(Mat x, Mat h){
+  Mat X = transfo_fourier(x);
+  copyMakeBorder(h, h, 0, x.rows - h.rows, 0, x.cols - h.cols, BORDER_CONSTANT, Scalar::all(0));
+  Mat H = transfo_fourier(h);
 
-  Mat produit = image_complex1 * image_complex2;
+  Mat Y;
+  mulSpectrums(X,H,Y,0,false);
 
-  Mat res = inv_transfo_fourier(produit);
+  // Mat S(Y.rows, Y.cols, CV_32FC2, Scalar(0,0));
+  // for (int sx = 0; sx < X.rows; sx++){
+  //   for (int sy = 0; sy < X.cols; sy++){
+  //     float tmp1 = float(sx)/X.rows;
+  //     float tmp2 = float(sy)/X.cols;
+  //     S.at<Scalar>(sy,sx) = Scalar(cos(2*pi*(tmp1+tmp2)), sin(2*pi*(tmp1+tmp2)));
+  //   }
+  // }
+  // std::cout << S << std::endl;
+  // mulSpectrums(Y,S,Y,0,false);
+
+  Mat res = inv_transfo_fourier(Y, x.cols, x.rows);
   // std::cout << produit<< std::endl;
 
   return res;
 
-}
+}*/
 
 
-int main(int argc, char** argv){
+/*int main(int argc, char** argv){
 
   if ( argc != 2 )
   {
@@ -149,15 +178,15 @@ int main(int argc, char** argv){
       return -1;
   }
 
-
-  Mat kernel(3,3,CV_32FC1, Scalar(1));
-  std::cout << kernel << std::endl;
+  image = convert_to_floatXXX(image);
+  Mat kernel(3,3,CV_32FC1, Scalar(1./9.));
+  //std::cout << image << std::endl;
   Mat naive = Convol_Centered(image, kernel);
   // std::cout << naive << std::endl;
   imshow("naive", naive);
   waitKey(0);
-  Mat with_transorm = convolution_matrice(kernel, kernel);
-  // std::cout << with_transorm << std::endl;
-  // imshow("with_transorm", with_transorm);
-  // waitKey(0);
+  Mat with_transorm = convolution_fft(image, kernel);
+  imshow("with_transorm", with_transorm);
+  // std::cout << with_transorm(Rect(0,0,10,10)) << std::endl;
+  waitKey(0);
 }
