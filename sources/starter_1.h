@@ -44,8 +44,8 @@ Mat symetry_y(Mat &image) {
     Mat image_sym;
     //creation of a Mat with the same size as 'image'
     image_sym.create(nRows, nCols, CV_32F);
-    for (uint i = 0; i < nCols; ++i) {
-      for (uint j = 0; j < nRows; ++j) {
+    for (uint i = 0; i < nCols; i++) {
+      for (uint j = 0; j < nRows; j++) {
         //gets the intensity value of image
         Scalar intensity = image.at<float>(j, i);
         //fills 'image_sym' according to the symetry
@@ -62,8 +62,8 @@ Mat symetry_diag(Mat &image) {
     Mat image_sym;
     //creation of a Mat with the same size as 'image'
     image_sym.create(nCols, nRows, CV_32F);
-    for (uint i = 0; i < nCols; ++i) {
-      for (uint j = 0; j < nRows; ++j) {
+    for (uint i = 0; i < nCols; i++) {
+      for (uint j = 0; j < nRows; j++) {
         //gets the intensity value of image
         Scalar intensity = image.at<float>(j, i);
         //fills 'image_sym' according to the symetry

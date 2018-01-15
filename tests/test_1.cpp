@@ -26,7 +26,7 @@ int main(int argc, char** argv )
     /* TESTING THE FLOAT AND COLOR CONVERSION */
     cout << "Converting to gray...";
     cvtColor(image, image, COLOR_BGR2GRAY);
-    imwrite("../Grey_Image.png", image);
+    imwrite("./Grey_Image.png", image);
     image = convert_to_float(image);
     cout << " Done." << endl;
 
@@ -35,12 +35,12 @@ int main(int argc, char** argv )
     Mat image_sym;
     cout << "testing diagonal symetry...";
     image_sym = symetry_diag(image);
-    imwrite("../Diagonal_symetry.png", convert_to_int(image_sym));
+    imwrite("./Diagonal_symetry.png", convert_to_int(image_sym));
     cout << " Done." << endl;
 
     cout << "testing y-axis symetry...";
     image_sym = symetry_y(image);
-    imwrite("../Y-axis_symetry.png", convert_to_int(image_sym));
+    imwrite("./Y-axis_symetry.png", convert_to_int(image_sym));
     cout << " Done." << endl;
 
 
@@ -50,8 +50,16 @@ int main(int argc, char** argv )
     Rect r2(image.cols/8,image.rows/8,image.cols/3,image.rows/6);
     draw_uniform_rectangle(image, r1, 0.0);
     draw_uniform_rectangle(image, r2, 255.0);
-    imwrite("../Rectangles.png", convert_to_int(image));
-    cout << " Done." << endl;
+    imwrite("./Rectangles.png", convert_to_int(image));
+    cout << "Done." << endl;
+
+    /* TESTING THE ELLIPTICAL FUNCTION*/
+    Mat ellipse_test;
+    ellipse_test.create(image.cols, image.rows, CV_32F);
+    Point2i param(20, 30);
+    Point2i press(image.cols/2, image.rows/2);
+    ellipse_test = ellipse(param, press, Point2i(image.rows, image.cols));
+    imwrite("./test_filter.png", convert_to_int(ellipse_test));
 
     /* TESTING POINTS AIGAIN */
     image = imread("../fingerprints/black.png", 0);

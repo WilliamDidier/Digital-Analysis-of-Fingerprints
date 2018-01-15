@@ -83,9 +83,26 @@ Point2i parameters_computation(Mat &image){
 }
 
 
-Mat ellipse(Point2i parameters, Point2i pressure_center, Point2i dimensions);
+bool test_ellipse(Point2f parameters, Point2i pressure_center, Point2i coordinates) {
+    float res = pow((coordinates.x - pressure_center.x)/parameters.x, 2);
+    res += pow((coordinates.y - pressure_center.y)/parameters.y, 2);
+    res = sqrt(res);
+    return(res<=1);
+}
+
+Mat ellipse(Point2i parameters, Point2i pressure_center, Point2i dimensions) {
+    int nRows = dimensions.x;
+    int nCols = dimensions.y;
+    Mat res;
+    res.create(nRows, nCols, CV_32F);
+    for (uint i = 0; i < nRows; i++) {
+      for (uint j = 0; j < nCols; j++) {
+        res.at<float>(j, i) = test_ellipse(parameters, pressure_center, Point2i(i,j)) ? 0. : 1.;
+      }
+    }
+    return(res);
+}
 
 void apply_iso(Mat &image);
-
 
 #endif //MAIN_1_H
