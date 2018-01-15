@@ -9,6 +9,23 @@ using std::cout;
 using std::endl;
 
 
+<<<<<<< HEAD
+// int main(int argc, char** argv )
+// {
+//     if ( argc < 2 )
+//     {
+//         printf("usage: Digital_anlysis <Image_Path> [Test]\n");
+//         return -1;
+//     }
+//     Mat image;
+//     image = imread(argv[1], 1);
+//     if (!image.data)
+//     {
+//         printf("No image data \n");
+//         return -1;
+//     }
+// }
+=======
 /*int main(int argc, char** argv )
 {
     if ( argc < 2 )
@@ -27,5 +44,5 @@ using std::endl;
     image = convert_to_float(image);
     test_blur(image);
     imwrite("../test_filter.png", convert_to_int(image));
-}
-*/
+}*/
+>>>>>>> bbc5efee0d6acea07b068de5705143ad81ce3bf9
