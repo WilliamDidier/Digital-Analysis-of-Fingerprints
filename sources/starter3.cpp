@@ -107,7 +107,7 @@ Mat img_magnitude(Mat img_complexe){
   //on transforme la matrice avec des float entre 0 et 1 pour qu'elle soit affichable
   normalize(res, res, 0, 1, NORM_MINMAX);
 
-  return res;
+  return res;Mat O = Mat::ones(2, 2, CV_32F);
 }
 
 Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
@@ -120,6 +120,18 @@ Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
   return finalImage(Rect(0, 0, nbCols, nbRows));
 }
 
+Mat convolution_matrice(Mat image1, Mat image2){
+  Mat image_complex1 = transfo_fourier(image1);
+  Mat image_complex2 = transfo_fourier(image2);
+
+  Mat produit = image_complex1 * image_complex2;
+
+  Mat res = inv_transfo_fourier(produit);
+  // std::cout << produit<< std::endl;
+
+  return res;
+
+}
 
 
 int main(int argc, char** argv){
@@ -136,16 +148,16 @@ int main(int argc, char** argv){
       printf("No image data \n");
       return -1;
   }
-  namedWindow("Display Image", WINDOW_AUTOSIZE );
-  imshow("Display Image", image);
-  waitKey(0);
-  Mat img_complex = transfo_fourier(image);
-  Mat image2 = img_magnitude(img_complex);
-  imshow("ImageTF2", image2);
-  waitKey(0);
-  Mat inv_image = inv_transfo_fourier(img_complex, image.cols, image.rows);
-  imshow("ImageTF", inv_image);
-  waitKey(0);
-  return 0;
 
+
+  Mat kernel(3,3,CV_32FC1, Scalar(1));
+  std::cout << kernel << std::endl;
+  Mat naive = Convol_Centered(image, kernel);
+  // std::cout << naive << std::endl;
+  imshow("naive", naive);
+  waitKey(0);
+  Mat with_transorm = convolution_matrice(kernel, kernel);
+  // std::cout << with_transorm << std::endl;
+  // imshow("with_transorm", with_transorm);
+  // waitKey(0);
 }

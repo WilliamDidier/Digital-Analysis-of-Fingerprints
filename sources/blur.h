@@ -15,9 +15,13 @@ header file associated to blur.cpp
 
 using namespace cv;
 
-void isotropic_blur(Mat &image, int x_s, int y_s, int x, int y);
+void clean_to_weak_iso(Mat &image, int x_s, int y_s, int x, int y);
+
+void weak_to_clean_iso(Mat &image, int x_s, int y_s, int x, int y);
 
 void test_blur(Mat &image);
+
+Mat elliptic_condition(Mat &image, int x_s, int y_s, int x_lim, int y_lim);
 
 
 #endif //BLUR_H
