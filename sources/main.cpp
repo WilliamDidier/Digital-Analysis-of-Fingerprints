@@ -9,7 +9,7 @@ using std::cout;
 using std::endl;
 
 
-int main(int argc, char** argv )
+/*int main(int argc, char** argv )
 {
     if ( argc < 2 )
     {
@@ -27,4 +27,4 @@ int main(int argc, char** argv )
     image = convert_to_float(image);
     test_blur(image);
     imwrite("../test_filter.png", convert_to_int(image));
-}
+}*/
