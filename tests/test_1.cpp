@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
 #include "../sources/starter_1.h"
-
+#include "../sources/main_1.h"
 using namespace cv;
 using std::cout;
 using std::endl;
@@ -46,14 +46,41 @@ int main(int argc, char** argv )
 
     /* TESTING THE RECTANGLE DRAWING*/
     cout << "Inserting rectangles" << endl;
-    cout << image.rows << " "<< image.cols << endl;
     Rect r1(image.cols/2,image.rows/2,image.cols/4,image.rows/4);
     Rect r2(image.cols/8,image.rows/8,image.cols/3,image.rows/6);
-    //waitKey(0);
     draw_uniform_rectangle(image, r1, 0.0);
     draw_uniform_rectangle(image, r2, 255.0);
     imwrite("../Rectangles.png", convert_to_int(image));
     cout << " Done." << endl;
 
-    return 0;
+    /* TESTING POINTS AIGAIN */
+    image = imread("../fingerprints/black.png", 0);
+    Point2i test_pt(image.cols/2, image.rows/2);
+    cout << test_pt << endl;
+    image.at<uchar>(test_pt) = 255;
+    imwrite("../black_test.png",image);
+
+    /*TESTING THE WEAKENING */
+    image = imread("../fingerprints/clean_finger.png", 0);
+    cout << "Weakening clean_finger..." << endl;
+    Point2i pressure_center(image.cols/2, image.rows/2);
+    image = convert_to_float(image);
+    clean_to_weak_iso(image, pressure_center);
+    imwrite("../Weakened_finger.png", convert_to_int(image));
+    cout << " Done." << endl;
+
+    /*TESTING THE REINFORCEMENT*/
+    image = imread("../fingerprints/weak_finger.png", 0);
+    cout << "Reinforcing weak_finger" << endl;
+    pressure_center = Point2i(image.cols/2, image.rows/2);
+    image = convert_to_float(image);
+    weak_to_clean_iso(image, pressure_center);
+    imwrite("../Reinforced_finger.png", convert_to_int(image));
+    cout << " Done." << endl;
+
+    /*TESTING THE XLIM YLIM COMPUTATION */
+    image = imread("../fingerprints/clean_finger.png",0);
+    image = convert_to_float(image);
+    cout << parameters_computation(image) << endl;
+
 }

@@ -8,7 +8,7 @@ using namespace cv;
 using std::cout;
 using std::endl;
 
-/*int main(int argc, char** argv )
+int main(int argc, char** argv )
 {
     if ( argc < 2 )
     {
@@ -22,4 +22,4 @@ using std::endl;
         printf("No image data \n");
         return -1;
     }
-}*/
+}

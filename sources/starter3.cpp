@@ -110,7 +110,7 @@ Mat img_magnitude(Mat img_complexe){
   return res;Mat O = Mat::ones(2, 2, CV_32F);
 }
 
-Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
+/*Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
   Mat res;
   idft(image, res, DFT_REAL_OUTPUT|DFT_SCALE);
   cv::Mat finalImage;
@@ -118,9 +118,9 @@ Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
   normalize(res, finalImage, 0, 1, NORM_MINMAX);
 
   return finalImage(Rect(0, 0, nbCols, nbRows));
-}
+}*/
 
-Mat convolution_matrice(Mat image1, Mat image2){
+/*Mat convolution_matrice(Mat image1, Mat image2){
   Mat image_complex1 = transfo_fourier(image1);
   Mat image_complex2 = transfo_fourier(image2);
 
@@ -131,10 +131,10 @@ Mat convolution_matrice(Mat image1, Mat image2){
 
   return res;
 
-}
+}*/
 
 
-int main(int argc, char** argv){
+/*int main(int argc, char** argv){
 
   if ( argc != 2 )
   {
@@ -160,4 +160,4 @@ int main(int argc, char** argv){
   // std::cout << with_transorm << std::endl;
   // imshow("with_transorm", with_transorm);
   // waitKey(0);
-}
+}*/
