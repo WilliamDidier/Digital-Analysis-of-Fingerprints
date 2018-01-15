@@ -2,6 +2,7 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <time.h>
+#include <vector>
 
 using namespace cv;
 
@@ -85,25 +86,66 @@ Mat transfo_fourier( Mat image){
   // convertis la matrice réelle en matrice complexe
   merge(tab, 2, img_complexe);
   dft(img_complexe, img_complexe);
-  //on sépare partie imaginaire et partie réelle
+
+  return img_complexe;
+}
+
+Mat img_magnitude(Mat img_complexe){
+  Mat tab[] = {Mat_<float>(img_complexe), Mat::zeros(img_complexe.size(), CV_32F)};
+  //on sépare partie imaginaire et partie réell
   split(img_complexe, tab);
   // on prend la norme du résultat, c'est à dire la magnitude
-   magnitude(tab[0], tab[1], tab[0]);
-   Mat res = tab[0];
-   // on remet l'image à la taille initiale
-   res = res(Rect(0, 0, res.cols & -2, res.rows & -2));
-   //on replace l'image afin qu'elle soit centrée
-    // int cx = magI.cols/2;
-    // int cy = magI.rows/2;
-    // Mat q0(magI, Rect(0, 0, cx, cy));   // Top-Left - Create a ROI per quadrant
-    // Mat q1(magI, Rect(cx, 0, cx, cy));  // Top-Right
-    // Mat q2(magI, Rect(0, cy, cx, cy));  // Bottom-Left
-    // Mat q3(magI, Rect(cx, cy, cx, cy));
-    std::cout << res << std::endl;
+  magnitude(tab[0], tab[1], tab[0]);
+  Mat res = tab[0];
 
-    normalize(res, res, 0, 1, NORM_MINMAX);
-    std::cout << res << std::endl;
-    return res;
+  // on met à l'échelle logarythmique
+  res += Scalar::all(1);
+  log(res, res);
+  // on remet l'image à la taille initiale
+  res = res(Rect(0, 0, res.cols & -2, res.rows & -2));
 
+  //on transforme la matrice avec des float entre 0 et 1 pour qu'elle soit affichable
+  normalize(res, res, 0, 1, NORM_MINMAX);
+
+  return res;
+}
+
+Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
+  Mat res;
+  idft(image, res, DFT_REAL_OUTPUT|DFT_SCALE);
+  cv::Mat finalImage;
+
+  normalize(res, finalImage, 0, 1, NORM_MINMAX);
+
+  return finalImage(Rect(0, 0, nbCols, nbRows));
+}
+
+
+
+int main(int argc, char** argv){
+
+  if ( argc != 2 )
+  {
+      printf("usage: DisplayImage.out <Image_Path>\n");
+      return -1;
+  }
+  Mat image;
+  image = imread(argv[1], 0);
+  if (!image.data)
+  {
+      printf("No image data \n");
+      return -1;
+  }
+  namedWindow("Display Image", WINDOW_AUTOSIZE );
+  imshow("Display Image", image);
+  waitKey(0);
+  Mat img_complex = transfo_fourier(image);
+  Mat image2 = img_magnitude(img_complex);
+  imshow("ImageTF2", image2);
+  waitKey(0);
+  Mat inv_image = inv_transfo_fourier(img_complex, image.cols, image.rows);
+  imshow("ImageTF", inv_image);
+  waitKey(0);
+  return 0;
 
 }
