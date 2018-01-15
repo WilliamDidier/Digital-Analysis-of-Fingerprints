@@ -22,16 +22,33 @@ float coefficient_computation(bool clean_to_weak, Point2f pressure_center, Point
 void change_intensity(Mat &image, Point2f pressure_center, Point2f point);
 
 
-/* apply an isotropic transformation on the image */
+/* */
 void apply_iso(Mat &image);
 
 
-/* apply an anisotropic transformation on the image */
+/* */
 Point2f parameters_computation(Mat &image);
 
-Mat ellipse(Point2f parameters, Point2f pressure_center, Point2f dimensions);
+bool test_ellipse(Point2f parameters, Point2i pressure_center, Point2i coordinates) {
+    float res = pow((coordinates.x - pressure_center.x)/parameters.x, 2);
+    res += pow((coordinates.y - pressure_center.y)/parameters.y, 2);
+    res = sqrt(res);
+    return(res<=1);
+}
+
+Mat ellipse(Point2i parameters, Point2i pressure_center, Point2i dimensions) {
+    int nRows = dimensions.x;
+    int nCols = dimensions.y;
+    Mat res;
+    res.create(nRows, nCols, CV_32F);
+    for (uint i = 0; i < nRows; i++) {
+      for (uint j = 0; j < nCols; j++) {
+        res.at<float>(j, i) = test_ellipse(parameters, pressure_center, Point2i(i,j)) ? 0. : 1.;
+      }
+    }
+    return(res);
+}
 
 void apply_iso(Mat &image);
-
 
 #endif //MAIN_1_H

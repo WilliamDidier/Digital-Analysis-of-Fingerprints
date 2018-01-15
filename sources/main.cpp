@@ -9,7 +9,6 @@ using std::cout;
 using std::endl;
 
 
-<<<<<<< HEAD
 // int main(int argc, char** argv )
 // {
 //     if ( argc < 2 )
@@ -25,7 +24,7 @@ using std::endl;
 //         return -1;
 //     }
 // }
-=======
+
 /*int main(int argc, char** argv )
 {
     if ( argc < 2 )
@@ -45,4 +44,3 @@ using std::endl;
     test_blur(image);
     imwrite("../test_filter.png", convert_to_int(image));
 }*/
->>>>>>> bbc5efee0d6acea07b068de5705143ad81ce3bf9
