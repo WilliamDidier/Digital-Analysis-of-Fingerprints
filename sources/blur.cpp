@@ -66,7 +66,12 @@ void test_blur(Mat &image) {
 }
 */
 
+/*
 Mat elliptic_condition(Mat &image, int x_s, int y_s, int x_lim, int y_lim) {
     Mat conditions;
-    
+    int nRows = image.rows;
+    int nCols = image.cols;
+    conditions.create(nRows, nCols, CV_32F);
+
 }
+*/
