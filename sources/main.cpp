@@ -23,8 +23,4 @@ using std::endl;
         printf("No image data \n");
         return -1;
     }
-
-    image = convert_to_float(image);
-    test_blur(image);
-    imwrite("../test_filter.png", convert_to_int(image));
 }*/
