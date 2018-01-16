@@ -79,7 +79,7 @@ Point2i parameters_computation(Mat &image){
       }
     }
   }
-  return Point2i(x_min, y_max);
+  return Point2i(y_max, x_min); //g interverti les 2
 }
 
 
@@ -97,19 +97,21 @@ Mat ellipse(Point2i parameters, Point2i pressure_center, Point2i dimensions) {
     res.create(nRows, nCols, CV_32F);
     for (uint j = 0; j < nCols; j++) {
       for (uint i = 0; i < nRows; i++) {
-        cout << "i " << i << " j " << j << " " << test_ellipse(parameters, pressure_center, Point2i(i,j)) << endl;
         res.at<float>(i, j) = test_ellipse(parameters, pressure_center, Point2i(i,j));
       }
     }
     return(res);
 }
 
-void apply_iso(Mat &image) {
+void apply_iso(Mat &image, Point2i pressure_center) {
     int nRows = image.rows;
     int nCols = image.cols;
     Point2f parameters = parameters_computation(image);
-    Point2f pressure_center;
+    parameters.x = pressure_center.x - parameters.x;
+    parameters.y = parameters.y - pressure_center.y;
+    cout << parameters << endl;
     Mat protected_zone = ellipse(parameters, pressure_center, Point2i(nRows, nCols));
+    imwrite("./test_iso_ellipse.png", convert_to_int(protected_zone));
     for (uint j = 0; j < nCols; j++) {
       for (uint i = 0; i < nRows; i++) {
         if (protected_zone.at<float>(i,j) == 1.) {
