@@ -3,7 +3,7 @@ header file associated to 'starter_1.cpp'
 contains the functions related to the starter 1
 */
 /**
-  This is a Doxygenb documentation.
+  This is a Doxygen documentation.
   \file starter_1.h
   \brief Header for the functions of the Starter 1
   \author Romain C. & Théo M. & Théo L. & William D.

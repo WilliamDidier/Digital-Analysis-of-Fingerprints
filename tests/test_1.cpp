@@ -64,15 +64,11 @@ int main(int argc, char** argv )
     imwrite("../fingerprints/test_limpt.png", convert_to_int(ellipse_test));
     cout << " Done. (image saved at fingerprints/test_limpt.png)" << endl;
 
-    /* TESTING POINTS AIGAIN */
-    /*image = imread("../fingerprints/black.png", 0);
-    Point2i test_pt(image.cols/2, image.rows/2);
-    image.at<uchar>(test_pt) = 255;
-    imwrite("../black_test.png",image);*/
+
 
     /*TESTING THE WEAKENING */
-    image = imread("./fingerprints/clean_finger.png", 0);
-    cout << "Weakening clean_finger..." << endl;
+    image = imread("../fingerprints/clean_finger.png", 0);
+    cout << "Weakening clean_finger...";
     Point2i pressure_center(image.cols/2, image.rows/2);
     image = convert_to_float(image);
     clean_to_weak_iso(image, pressure_center);
@@ -80,8 +76,8 @@ int main(int argc, char** argv )
     cout << " Done." << endl;
 
     /*TESTING THE REINFORCEMENT*/
-    image = imread("./fingerprints/weak_finger.png", 0);
-    cout << "Reinforcing weak_finger" << endl;
+    image = imread("../fingerprints/weak_finger.png", 0);
+    cout << "Reinforcing weak_finger";
     pressure_center = Point2i(image.rows*3/4, image.cols/2);
     image = convert_to_float(image);
     weak_to_clean_iso(image, pressure_center);
@@ -89,10 +85,53 @@ int main(int argc, char** argv )
     cout << " Done." << endl;
 
     /*TESTING THE XLIM YLIM COMPUTATION */
-    image = imread("./fingerprints/clean_finger.png",0);
+    cout << "Testing the extreme points computation..." << endl;;
+    image = imread("../fingerprints/test_limpt.png",0);
     image = convert_to_float(image);
-    cout << pressure_center << endl;
-    cout << parameters_computation(image) << endl;
+    //assert(parameters_computation(image) == Point2i(69,233));
+    cout << " Done" << endl;
+
+    /* TESTING POINTS AIGAIN */
+    cout << "Creating image for highest intensity test...";
+    image = imread("../fingerprints/black.png", 0);
+    Point2i test_pt(image.cols/2, image.rows/2);
+    image.at<uchar>(test_pt) = 255;
+    imwrite("../black_test.png",image);
+    cout << " Done" << endl;
+
+    /*TESTING THE ROI FINDING*/
+    cout << "Testing highest intensity zone research...";
+    image = imread("../black_test.png", 0);
+    Mat gblur;
+    image.copyTo(gblur);
+    GaussianBlur(image, gblur, Size(17, 17), 0, 0);
+    double minVal = 0;
+    double maxVal = 0;
+    Point minLoc, maxLoc;
+    minMaxLoc(gblur, &minVal, &maxVal, &minLoc, &maxLoc);
+    Rect roi;
+    roi = Rect(maxLoc.x-25, maxLoc.y-25, 50, 50);
+    image=image(roi);
+    imwrite("../roi.png",image);
+    cout << " Done." << endl;
+
+    /*TESTING ON FINGERPRINT*/
+    cout << "Testing with fingerprint...";
+    Mat image_color = imread("../fingerprints/clean_finger.png", 1);
+    image_color.copyTo(image);
+    cvtColor(image_color, image, COLOR_BGR2GRAY);
+    GaussianBlur(image, image, Size(11,11), 0, 0);
+    minMaxLoc(image, &minVal, &maxVal, &minLoc, &maxLoc);
+    circle(image_color, minLoc, 5, Scalar(0,0,255));
+    imwrite("img_roi.png", image_color);
+
+
+    /*TESTING ISOTROPIC FILTERING*/
+    /*cout << "Testing isotropic transformation..." << endl;
+    image = imread("../fingerprints/test_limpt.png",0);
     apply_iso(image, pressure_center);
-    imwrite("./test_iso.png", convert_to_int(image));
+    imwrite("../test_iso.png", convert_to_int(image));
+    cout << " Done." << endl;*/
+
+
 }
