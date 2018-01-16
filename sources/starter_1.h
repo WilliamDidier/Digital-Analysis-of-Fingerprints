@@ -4,7 +4,7 @@ contains the functions related to the starter 1
 */
 /**
   This is a Doxygenb documentation.
-  \file dtarter_1.h
+  \file starter_1.h
   \brief Header for the functions of the Starter 1
   \author Romain C. & Théo M. & Théo L. & William D.
   \ date 2018, January the 16th
