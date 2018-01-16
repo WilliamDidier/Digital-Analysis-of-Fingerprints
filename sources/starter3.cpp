@@ -126,7 +126,7 @@ Mat img_magnitude(Mat img_complexe){
   return res;Mat O = Mat::ones(2, 2, CV_32F);
 }
 
-/*Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
+Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
   Mat res;
   idft(image, res, DFT_REAL_OUTPUT|DFT_SCALE);
   cv::Mat finalImage;
@@ -134,7 +134,7 @@ Mat img_magnitude(Mat img_complexe){
   normalize(res, finalImage, 0, 1, NORM_MINMAX);
 
   return finalImage(Rect(0, 0, nbCols, nbRows));
-}*/
+}
 
 Mat convolution_fft(Mat x, Mat h){
   Mat X = transfo_fourier(x);
@@ -160,7 +160,7 @@ Mat convolution_fft(Mat x, Mat h){
 
   return res;
 
-}*/
+}
 
 
 /*int main(int argc, char** argv){
@@ -190,3 +190,4 @@ Mat convolution_fft(Mat x, Mat h){
   // std::cout << with_transorm(Rect(0,0,10,10)) << std::endl;
   waitKey(0);
 }
+*/
