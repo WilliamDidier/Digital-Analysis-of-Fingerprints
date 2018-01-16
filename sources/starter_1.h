@@ -2,7 +2,15 @@
 header file associated to 'starter_1.cpp'
 contains the functions related to the starter 1
 */
+/**
+  This is a Doxygenb documentation.
+  \file dtarter_1.h
+  \brief Header for the functions of the Starter 1
+  \author Romain C. & Théo M. & Théo L. & William D.
+  \ date 2018, January the 16th
 
+
+*/
 #ifndef STARTER_1
 #define STARTER_1
 
@@ -14,14 +22,25 @@ using namespace cv;
 using std::cout;
 using std::endl;
 
-
+/**
+  \fn Mat convert_to_float(Mat image)
+  \brief Casts the data of a Mat from ints to floats, returning the corresponding header.
+  \param image Image that you want to switch to float values
+  \return New header pointing to the data casted to floats.
+  \author Théo L.
+*/
 Mat convert_to_float(Mat image){
   Mat dst;
   image.convertTo(dst, CV_32F, 1.0/255.0);
   return(dst);
 }
 
-
+/**
+  \fn Mat convert_to_int(Mat image)
+  \param image Image that you want to switch to int values
+  \return New header pointing to the data casted to ints.
+  \author Théo L.
+*/
 Mat convert_to_int(Mat image) {
   Mat dst;
   image.convertTo(dst, CV_8UC1, 255);
@@ -29,14 +48,28 @@ Mat convert_to_int(Mat image) {
 }
 
 
-
-int draw_uniform_rectangle (Mat image, Rect r, float color){
-
+/**
+  \fn int draw_uniform_rectangle (Mat image, Rect r, float color)
+  \brief Draws a rectangle of the given size and color on the image rperesented by image.
+  \param Image image on chich you want to insert a rectangle. Has to be casted to float values.
+  \param r Region of the image that will be colored. Has to be included in the image
+  \param color Floating point nuber corresponding to the color of the rectangle. Has to be between 0.0(black) and 1.0(white)
+  \return Nothing : the data is modified through the passed-by copy of the image.
+  \author William D.
+*/
+void draw_uniform_rectangle (Mat image, Rect r, float color){
   image = image(r);
   image = Scalar(color);
-  return 0;
 }
 
+
+/**
+  \fn symetry_y(Mat &image)
+  \brief
+  \param &image
+  \return
+  \author Romain C. & Théo M.
+*/
 Mat symetry_y(Mat &image) {
     /* returns the symetry along the y axis */
     int nRows = image.rows;
@@ -55,6 +88,13 @@ Mat symetry_y(Mat &image) {
     return(image_sym);
 }
 
+/**
+  \fn symetry_y(Mat &image)
+  \brief
+  \param &image
+  \return
+  \author Romain C. & Théo M.
+*/
 Mat symetry_diag(Mat &image) {
     /* returns the symetry along the x/y diagonal */
     int nRows = image.rows;
