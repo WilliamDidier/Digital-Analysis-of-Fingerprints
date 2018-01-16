@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
-#include "../sources/starter_1.h"
-#include "../sources/main_1.h"
+#include "starter_1.h"
+#include "main_1.h"
 using namespace cv;
 using std::cout;
 using std::endl;
