@@ -112,10 +112,10 @@ void apply_iso(Mat &image) {
     Mat protected_zone = ellipse(parameters, pressure_center, Point2i(nRows, nCols));
     for (uint j = 0; j < nCols; j++) {
       for (uint i = 0; i < nRows; i++) {
-        if (protected_zone.at<float>(i,j) == 1f) {
-            Point2i point(i,j);
-            coefficient_computation(true, pressure_center, point);
-            change_intensity(image, pressure_center, point);
+        if (protected_zone.at<float>(i,j) == 1.) {
+            Point2i point(j,i);
+            float coef = coefficient_computation(true, pressure_center, point);
+            change_intensity(image, point, coef);
         }
       }
     }
