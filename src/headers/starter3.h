@@ -19,16 +19,16 @@ contains the functions related to the starter 3
 
 using namespace cv;
 
-float produit_coefbycoef(Mat A, Mat B){};
+float produit_coefbycoef(Mat A, Mat B);
 
-Mat Convol_DownRight(Mat X, Mat H){};
+Mat Convol_DownRight(Mat X, Mat H);
 
-Mat Convol_Centered(Mat X, Mat H){};
+Mat Convol_Centered(Mat X, Mat H);
 
-Mat transfo_fourier( Mat image){};
+Mat transfo_fourier( Mat image);
 
-Mat img_magnitude(Mat img_complexe){};
+Mat img_magnitude(Mat img_complexe);
 
-Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){};
+Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows);
 
-Mat convolution_fft(Mat x, Mat h){};
+Mat convolution_fft(Mat x, Mat h);
