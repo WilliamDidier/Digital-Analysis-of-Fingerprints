@@ -1,58 +1,25 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.11)
 
-                
 
-#Configuration du projet
+project(Digital_analysis CXX)
 
-project(Digital_analysis)
+add_subdirectory(src)
 
-set(EXECUTABLE_OUTPUT_PATH bin/${CMAKE_BUILD_TYPE})
+add_executable(exe main.cpp)
+
+add_subdirectory(tests)
+enable_testing ()
 
 find_package( OpenCV REQUIRED )
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
+include_directories("src/headers")
 
-#Génération de la liste des fichiers sources
-
-file(
-
-        GLOB_RECURSE
-
-        source_files
-
-        sources/*
-
+target_link_libraries(exe
+    PUBLIC
+    libFingerPrint
+    ${OpenCV_LIBS}
 )
+message("LIBS opencv" "${OpenCV_LIBS}")
 
-file(
-
-        GLOB_RECURSE
-
-        source_files_tests
-
-        tests/*
-
-)
-
-
-#Déclaration de l'exécutable
-
-add_executable(
-
-        Digital_analysis
-
-        ${source_files}
-
-)
-
-add_executable(
-
-        Test_1
-
-        ${source_files_tests}
-
-)
-
-
-target_link_libraries( Digital_analysis ${OpenCV_LIBS} )
-target_link_libraries( Test_1 ${OpenCV_LIBS} )
+#target_include_directories(exe PUBLIC src ${OpenCV_LIBS})
