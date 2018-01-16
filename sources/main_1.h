@@ -97,7 +97,6 @@ Mat ellipse(Point2i parameters, Point2i pressure_center, Point2i dimensions) {
     res.create(nRows, nCols, CV_32F);
     for (uint j = 0; j < nCols; j++) {
       for (uint i = 0; i < nRows; i++) {
-        cout << "i " << i << " j " << j << " " << test_ellipse(parameters, pressure_center, Point2i(i,j)) << endl;
         res.at<float>(i, j) = test_ellipse(parameters, pressure_center, Point2i(i,j));
       }
     }
