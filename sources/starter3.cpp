@@ -137,7 +137,11 @@ Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
 }
 
 Mat convolution_fft(Mat x, Mat h){
+
+  Mat trans_mat = (Mat_<double>(2,3) << 1, 0, -1, 0, 1, -1);
+  warpAffine(x,x,trans_mat,x.size());
   Mat X = transfo_fourier(x);
+
   copyMakeBorder(h, h, 0, x.rows - h.rows, 0, x.cols - h.cols, BORDER_CONSTANT, Scalar::all(0));
   Mat H = transfo_fourier(h);
 
@@ -181,6 +185,8 @@ Mat convolution_fft(Mat x, Mat h){
   }
 
   image = convert_to_floatXXX(image);
+  imshow("image", image);
+  waitKey(0);
   Mat kernel(3,3,CV_32FC1, Scalar(1./9.));
   //std::cout << image << std::endl;
   Mat naive = Convol_Centered(image, kernel);
@@ -191,5 +197,4 @@ Mat convolution_fft(Mat x, Mat h){
   imshow("with_transorm", with_transorm);
   // std::cout << with_transorm(Rect(0,0,10,10)) << std::endl;
   waitKey(0);
-}
-*/
+}*/
