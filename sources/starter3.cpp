@@ -3,11 +3,12 @@
 #include <iostream>
 #include <time.h>
 #include <vector>
+#include "starter3.h"
 
 using namespace cv;
 
 float produit_coefbycoef(Mat A, Mat B){
-  /*
+  /**
   somme du produit par coefficient, A et B doivent
   être de même dimension
   */
