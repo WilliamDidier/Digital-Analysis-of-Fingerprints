@@ -82,7 +82,10 @@ Point2i parameters_computation(Mat &image){
   return Point2i(y_max, x_min); //g interverti les 2
 }
 
-
+/*
+    @brief: tests if a given point is in the ellipse or not
+    @
+ */
 bool test_ellipse(Point2f parameters, Point2i pressure_center, Point2i coordinates) {
     float res = pow((coordinates.x - pressure_center.x)/parameters.x, 2);
     res += pow((coordinates.y - pressure_center.y)/parameters.y, 2);
