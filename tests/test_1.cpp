@@ -64,18 +64,15 @@ int main(int argc, char** argv )
     imwrite("../fingerprints/test_limpt.png", convert_to_int(ellipse_test));
     cout << " Done. (image saved at fingerprints/test_limpt.png)" << endl;
 
-
-    /* TESTING POINTS COORDINATED */
-    cout << "Testing the computation of the middle point...";
-    image = imread("../fingerprints/black.png", 0);
+    /* TESTING POINTS AIGAIN */
+    /*image = imread("../fingerprints/black.png", 0);
     Point2i test_pt(image.cols/2, image.rows/2);
     image.at<uchar>(test_pt) = 255;
-    imwrite("../black_test.png",image);
-    cout << " Done." << endl;
+    imwrite("../black_test.png",image);*/
 
     /*TESTING THE WEAKENING */
-    cout << "Weakening clean_finger...";
-    image = imread("../fingerprints/clean_finger.png", 0);
+    image = imread("./fingerprints/clean_finger.png", 0);
+    cout << "Weakening clean_finger..." << endl;
     Point2i pressure_center(image.cols/2, image.rows/2);
     image = convert_to_float(image);
     clean_to_weak_iso(image, pressure_center);
@@ -83,19 +80,19 @@ int main(int argc, char** argv )
     cout << " Done." << endl;
 
     /*TESTING THE REINFORCEMENT*/
-    cout << "Reinforcing weak_finger...";
-    image = imread("../fingerprints/weak_finger.png", 0);
-    pressure_center = Point2i(image.cols/2, image.rows/2);
+    image = imread("./fingerprints/weak_finger.png", 0);
+    cout << "Reinforcing weak_finger" << endl;
+    pressure_center = Point2i(image.rows*3/4, image.cols/2);
     image = convert_to_float(image);
     weak_to_clean_iso(image, pressure_center);
     imwrite("../Reinforced_finger.png", convert_to_int(image));
     cout << " Done." << endl;
 
     /*TESTING THE XLIM YLIM COMPUTATION */
-    cout << "Testing border detection...";
-    image = imread("../fingerprints/test_limpt.png",0);
+    image = imread("./fingerprints/clean_finger.png",0);
     image = convert_to_float(image);
-    assert (parameters_computation(image) == Point2i(69,233));
-    cout << " Done." << endl;
-
+    cout << pressure_center << endl;
+    cout << parameters_computation(image) << endl;
+    apply_iso(image, pressure_center);
+    imwrite("./test_iso.png", convert_to_int(image));
 }
