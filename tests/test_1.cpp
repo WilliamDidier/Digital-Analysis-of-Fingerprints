@@ -64,14 +64,14 @@ int main(int argc, char** argv )
     imwrite("./test_filter.png", convert_to_int(ellipse_test));
 
     /* TESTING POINTS AIGAIN */
-    image = imread("../fingerprints/black.png", 0);
+    /*image = imread("../fingerprints/black.png", 0);
     Point2i test_pt(image.cols/2, image.rows/2);
     cout << test_pt << endl;
     image.at<uchar>(test_pt) = 255;
-    imwrite("../black_test.png",image);
+    imwrite("../black_test.png",image);*/
 
     /*TESTING THE WEAKENING */
-    image = imread("../fingerprints/clean_finger.png", 0);
+    image = imread("./fingerprints/clean_finger.png", 0);
     cout << "Weakening clean_finger..." << endl;
     Point2i pressure_center(image.cols/2, image.rows/2);
     image = convert_to_float(image);
@@ -80,17 +80,19 @@ int main(int argc, char** argv )
     cout << " Done." << endl;
 
     /*TESTING THE REINFORCEMENT*/
-    image = imread("../fingerprints/weak_finger.png", 0);
+    image = imread("./fingerprints/weak_finger.png", 0);
     cout << "Reinforcing weak_finger" << endl;
-    pressure_center = Point2i(image.cols/2, image.rows/2);
+    pressure_center = Point2i(image.rows*3/4, image.cols/2);
     image = convert_to_float(image);
     weak_to_clean_iso(image, pressure_center);
     imwrite("../Reinforced_finger.png", convert_to_int(image));
     cout << " Done." << endl;
 
     /*TESTING THE XLIM YLIM COMPUTATION */
-    image = imread("../fingerprints/clean_finger.png",0);
+    image = imread("./fingerprints/clean_finger.png",0);
     image = convert_to_float(image);
+    cout << pressure_center << endl;
     cout << parameters_computation(image) << endl;
-
+    apply_iso(image, pressure_center);
+    imwrite("./test_iso.png", convert_to_int(image));
 }
