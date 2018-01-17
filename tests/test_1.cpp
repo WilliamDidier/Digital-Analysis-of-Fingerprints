@@ -20,56 +20,9 @@ int main(int argc, char** argv )
         printf("No image data \n");
         return -1;
     }
+    cout << "This test program will save all its work to the main directory" << endl;
     cout << "Image succesfully imported" << endl;
 
-
-    //TESTING THE FLOAT AND COLOR CONVERSION
-    cout << "Converting to gray...";
-    cvtColor(image, image, COLOR_BGR2GRAY);
-    imwrite("../Grey_Image.png", image);
-    image = convert_to_float(image);
-    cout << " Done." << endl;
-
-
-    //TETSING THE SYMETRIES
-    Mat image_sym;
-    cout << "Testing diagonal symetry...";
-    image_sym = symetry_diag(image);
-    imwrite("../Diagonal_symetry.png", convert_to_int(image_sym));
-    cout << " Done." << endl;
-
-    cout << "Testing y-axis symetry...";
-    image_sym = symetry_y(image);
-    imwrite("../Y-axis_symetry.png", convert_to_int(image_sym));
-    cout << " Done." << endl;
-
-
-    // TESTING THE RECTANGLE DRAWING
-    cout << "Inserting rectangles...";
-    Rect r1(image.cols/2,image.rows/2,image.cols/4,image.rows/4);
-    Rect r2(image.cols/8,image.rows/8,image.cols/3,image.rows/6);
-    draw_uniform_rectangle(image, r1, 0.0);
-    draw_uniform_rectangle(image, r2, 255.0);
-    imwrite("../Rectangles.png", convert_to_int(image));
-    cout << " Done." << endl;
-
-    /*TESTING THE WEAKENING */
-    image = imread("../fingerprints/clean_finger.png", 0);
-    cout << "Weakening clean_finger...";
-    Point2i pressure_center(image.cols/2, image.rows/2);
-    image = convert_to_float(image);
-    clean_to_weak_iso(image, pressure_center);
-    imwrite("../Weakened_finger.png", convert_to_int(image));
-    cout << " Done." << endl;
-
-    /*TESTING THE REINFORCEMENT*/
-    image = imread("../fingerprints/weak_finger.png", 0);
-    cout << "Reinforcing weak_finger";
-    pressure_center = Point2i(image.rows*3/4, image.cols/2);
-    image = convert_to_float(image);
-    weak_to_clean_iso(image, pressure_center);
-    imwrite("../Reinforced_finger.png", convert_to_int(image));
-    cout << " Done." << endl;
 
     /* TESTING THE ELLIPTICAL FUNCTION */
     cout << "Testing the ellipse creation...";
@@ -78,7 +31,7 @@ int main(int argc, char** argv )
     Point2i param(90, 60);
     Point2i press(image.rows/2, image.cols/2);
     ellipse_test = ellipse(param, press, Point2i(image.rows, image.cols));
-    imwrite("../fingerprints/test_limpt.png", convert_to_int(ellipse_test));
+    imwrite("../test_limpt.png", convert_to_int(ellipse_test));
     cout << " Done. (image saved at fingerprints/test_limpt.png)" << endl;
 
     /*TESTING THE XLIM YLIM COMPUTATION */
@@ -88,7 +41,7 @@ int main(int argc, char** argv )
     assert(fingerprint_boudaries(image) == Point2i(233,69));
     cout << " Done" << endl;
 
-    /* TESTING POINTS AIGAIN */
+    /* TESTING POINT COORDINATES */
     cout << "Creating image for highest intensity test...";
     image = imread("../fingerprints/black.png", 0);
     Point2i test_pt(image.cols/2, image.rows/2);
