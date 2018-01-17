@@ -36,7 +36,8 @@ int main(int argc, char** argv ){
   cout << "Testing the extreme points computation...";;
   Mat image = imread("../img/test_limpt.png",0);
   image = convert_to_float(image);
-  assert(parameters_computation(image) == Point2i(233,69));
+  Point2i pressure_center;
+  assert(parameters_computation(image, pressure_center) == Point2i(233,69));
   cout << " Done" << endl;
 
   /* TESTING POINTS AIGAIN */
