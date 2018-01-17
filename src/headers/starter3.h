@@ -73,3 +73,9 @@ Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows);
 @author Théo M. & Romain
 */
 Mat convolution_fft(Mat x, Mat h);
+
+Mat Normalized_kernel(int NbCols, int NbRows);
+
+float gauss2D(float x, float y, float esp_x, float esp_y, float sigma_x, float sigma_y);
+
+Mat Gaussian_kernel(int size, float sigma_x, float sigma_y);

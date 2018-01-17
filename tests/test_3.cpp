@@ -36,5 +36,4 @@ int main(int argc, char** argv )
     // std::cout << with_transorm(Rect(0,0,10,10)) << std::endl;
     waitKey(0);
 
-
 }

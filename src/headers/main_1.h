@@ -25,13 +25,7 @@ using namespace cv;
   \ date 2018, January the 15th
 */
 
-float distance_computation(const Point2i pressure_center, Point2i point, bool anisotropic) {
-    if (anistropic) {
-        return(float distance = sqrt(pow(pressure_center.x - point.x, 2) + pow(pressure_center.y - point.y, 2)));
-    } else {
-        return(float distance = sqrt(pow(pressure_center.x - point.x, 2) + 2*pow(pressure_center.y - point.y, 2)));
-    }
-}
+float distance_computation(const Point2i pressure_center, Point2i point, bool anisotropic);
 
 /**
   \fn float coefficient_computation(bool clean_to_weak, const Point2i pressure_center, Point2i point)
@@ -98,42 +92,21 @@ void weak_to_clean_iso(Mat &image, const Point2i pressure_center);
   \return Nothing : the image is directly modified.
   \author William D.
 */
-Point2i parameters_computation(Mat &image);
+Point2i fingerprint_boudaries(Mat &image);
 
-Point2i parameters_computation2(Mat &image) {
-    Point2i pressure_center;
-    Point2i boundaries = parameters_computation(&image);
-    Point2i parameters;
-    parameters.x = (pressure_center.x - boundaries.x)*3 / 4;
-    parameters.y = (pressure_center.y - boundaries.y)*2 / 3;
-    return(parameters);
-}
+Point2i pressure_center_computation(Mat &image);
+
+Point2i parameters_computation(Mat &image, Point2i pressure_center);
 
 /*
     @brief: tests if a given point is in the ellipse or not
     @
  */
-bool test_ellipse(Point2f parameters, Point2i pressure_center, Point2i coordinates);
+bool test_ellipse(Point2f const parameters, Point2i const pressure_center, Point2i coordinates);
 
-Mat ellipse(Point2i parameters, Point2i pressure_center, Point2i dimensions);
+Mat ellipse(Point2i const parameters, Point2i const pressure_center, Point2i dimensions);
 
 /* apply an anisotropic transformation on the image */
-void apply_iso(Mat &image, Point2i pressure_center) {
-    int nRows = image.rows;
-    int nCols = image.cols;
-    Point2f parameters = parameters_computation2(image);
-    cout << parameters << endl;
-    Mat protected_zone = ellipse(parameters, pressure_center, Point2i(nRows, nCols));
-    imwrite("./test_iso_ellipse.png", convert_to_int(protected_zone));
-    for (uint j = 0; j < nCols; j++) {
-      for (uint i = 0; i < nRows; i++) {
-        if (protected_zone.at<float>(i,j) == 1.) {
-            Point2i point(j,i);
-            float coef = coefficient_computation(true, pressure_center, point);
-            change_intensity(image, point, coef);
-        }
-      }
-    }
-}
+void apply_iso(Mat &image, Point2i const pressure_center);
 
 #endif //MAIN_1_H
