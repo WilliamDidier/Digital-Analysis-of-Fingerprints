@@ -28,13 +28,7 @@ float produit_coefbycoef(Mat A, Mat B){
 }
 
 Mat Convol(Mat X, Mat H){
-  /**
-    @fn Mat Convol(Mat X, Mat H)
-    @brief give X**H, centered on the downright coefficient of the matrix H
-    @param Input : 2 matrix
-    @return the matrix of convolution
-    @author Théo M. & Romain
-  */
+
   uint ColX = X.cols;
   uint RowX = X.rows;
   uint ColH = H.cols;
@@ -50,7 +44,13 @@ Mat Convol(Mat X, Mat H){
   X.copyTo(BigX(roi));
   // For each pixel of X ...
   for (int i1 = 0; i1 < ColX; i1++){
-    for (int j1 = 0; j1 < RowX; j1++){
+    for (int j1 = 0; j1 < RowX; j1++){  /**
+    @fn Mat convolution_fft(Mat x, Mat h)
+    @brief give the convolution of the two matrix thanks to FFT
+    @param Input : two matrix
+    @return a real matrix
+    @author Théo M. & Romain
+  */
       //... one sélect a small image of dimension H having for beginning the current pixel...
       Rect tmp = Rect(i1,j1,ColH,RowH);
       // ... and finally one complet the result matrix by the sum of product term by term of two matrix
@@ -61,13 +61,7 @@ Mat Convol(Mat X, Mat H){
 }
 
 Mat Convol_Shifted(Mat X, Mat H){
-  /**
-    @fn Mat Convol_Shifted(Mat X, Mat H)
-    @brief give X**H, centered on the centered coefficient of the matrix H
-    @param Input : 2 matrix, H must be a square matrix with an odd dimension
-    @return the matrix of convolution
-    @author Théo M. & Romain
-  */
+
   uint ColX = X.cols;
   uint RowX = X.rows;
   uint ColH = H.cols;
@@ -119,13 +113,6 @@ Mat transfo_fourier( Mat image){
 }
 
 Mat img_magnitude(Mat img_complexe){
-  /**
-    @fn Mat img_magnitude(Mat img_complexe)
-    @brief give the trasform fourier image since a complex matrix
-    @param Input : A complex matrix
-    @return a real matrix as a representation of magnitude
-    @author Théo M. & Romain
-  */
   Mat tab[] = {Mat_<float>(img_complexe), Mat::zeros(img_complexe.size(), CV_32F)};
   //split the real part and the complex part
   split(img_complexe, tab);
@@ -143,13 +130,7 @@ Mat img_magnitude(Mat img_complexe){
 }
 
 Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
-  /**
-    @fn Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows)
-    @brief give the inverse transform fourier since a complex matrix
-    @param Input : A complex matrix, it number of colons and it number of rows
-    @return a real matrix
-    @author Théo M. & Romain
-  */
+
   Mat res;
   // we apply the idft with a real result
   idft(image, res, DFT_REAL_OUTPUT|DFT_SCALE);
@@ -160,13 +141,7 @@ Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
 }
 
 Mat convolution_fft(Mat x, Mat h){
-  /**
-    @fn Mat convolution_fft(Mat x, Mat h)
-    @brief give the convolution of the two matrix thanks to FFT
-    @param Input : two matrix
-    @return a real matrix
-    @author Théo M. & Romain
-  */
+
   Mat trans_mat = (Mat_<double>(2,3) << 1, 0, -1, 0, 1, -1);
   warpAffine(x,x,trans_mat,x.size());
   Mat X = transfo_fourier(x);
@@ -175,7 +150,7 @@ Mat convolution_fft(Mat x, Mat h){
   Mat H = transfo_fourier(h);
 
   Mat Y;
-  // we multiply term by term the two matrix 
+  // we multiply term by term the two matrix
   mulSpectrums(X,H,Y,0,false);
   Mat res = inv_transfo_fourier(Y, x.cols, x.rows);
   return res;
