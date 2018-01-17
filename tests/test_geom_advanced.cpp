@@ -69,8 +69,11 @@ int main(int argc, char** argv ){
   fingerprint.copyTo(image);
   cvtColor(fingerprint, image, COLOR_BGR2GRAY);
   GaussianBlur(image, image, Size(11,11), 0, 0);
+  imwrite("../output/blur.png", image);
   minMaxLoc(image, &minVal, &maxVal, &minLoc, &maxLoc);
-  circle(fingerprint, minLoc, 5, Scalar(0,0,255));
+  circle(image, minLoc, 15, Scalar(0,0,255), 5);
+  imwrite("../output/blur_circle.png", image);
+  circle(fingerprint, minLoc, 15, Scalar(0,0,255), 5);
   imwrite("../output/img_roi.png", fingerprint);
   cout << " Done." << endl;
 }
