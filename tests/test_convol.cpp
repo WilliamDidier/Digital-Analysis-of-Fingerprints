@@ -21,19 +21,12 @@ int main(int argc, char** argv )
         printf("No image data \n");
         return -1;
     }
-
+    //TESTING THE CONVOLUTION SINCE THE RIGHT DOWN POINT
+    cout << "convol from the right down point ...";
     image = convert_to_float(image);
-    imshow("image", image);
-    waitKey(0);
     Mat kernel(3,3,CV_32FC1, Scalar(1./9.));
-    //std::cout << image << std::endl;
-    Mat naive = Convol_Shifted(image, kernel);
-    // std::cout << naive << std::endl;
-    imshow("naive", naive);
+    Mat naive = Convol(image, kernel);
+    imwrite("test_convol.png", naive);
     waitKey(0);
-    Mat with_transorm = convolution_fft(image, kernel);
-    imshow("with_transorm", with_transorm);
-    // std::cout << with_transorm(Rect(0,0,10,10)) << std::endl;
-    waitKey(0);
-
+    cout << " Done." << endl;
 }
