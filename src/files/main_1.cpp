@@ -16,7 +16,7 @@ using namespace cv;
 */
 
 float distance_computation(const Point2i pressure_center, Point2i point, bool anisotropic) {
-    if (anisotropic) {
+    if (!anisotropic) {
         return(sqrt(pow(pressure_center.x - point.x, 2) + pow(pressure_center.y - point.y, 2)));
     } else {
         return(sqrt(pow(pressure_center.x - point.x, 2) + 2*pow(pressure_center.y - point.y, 2)));
@@ -34,7 +34,7 @@ float distance_computation(const Point2i pressure_center, Point2i point, bool an
   \author William D.
 */
 float coefficient_computation(bool clean_to_weak, const Point2i pressure_center, Point2i point){
-  float distance = sqrt(pow(pressure_center.x - point.x, 2) + pow(pressure_center.y - point.y, 2));
+  float distance = distance_computation(pressure_center, point, false);
   if (clean_to_weak){
     return exp(sqrt(distance)/10);
   } else {
@@ -141,8 +141,7 @@ Point2i fingerprint_boudaries(Mat &image){
   return Point2i(y_max, x_min); //g interverti les 2
 }
 
-Point2i parameters_computation(Mat &image) {
-    Point2i pressure_center;
+Point2i parameters_computation(Mat &image, Point2i pressure_center) {
     Point2i boundaries = fingerprint_boudaries(image);
     Point2i parameters;
     parameters.x = (pressure_center.x - boundaries.x)*3 / 4;
@@ -154,14 +153,19 @@ Point2i parameters_computation(Mat &image) {
     @brief: tests if a given point is in the ellipse or not
     @
  */
-bool test_ellipse(Point2f parameters, Point2i pressure_center, Point2i coordinates) {
-    float res = pow((coordinates.x - pressure_center.x)/parameters.x, 2);
+bool test_ellipse(Point2f parameters, Point2i const pressure_center, Point2i coordinates) {
+    Point2i new_coordinates(coordinates.x/parameters.x, coordinates.y/parameters.y);
+    Point2i new_pressure_center(pressure_center.x/parameters.x, pressure_center.y/parameters.y);
+    float res = distance_computation(new_pressure_center, new_coordinates, false);
+    /*
+    float res = pow((coordinates.x - pressure_center.x)/parameters.x, 2); // à refaire avec la fonction distance
     res += pow((coordinates.y - pressure_center.y)/parameters.y, 2);
     res = sqrt(res);
+    */
     return(res>=1);
 }
 
-Mat ellipse(Point2i parameters, Point2i pressure_center, Point2i dimensions) {
+Mat ellipse(Point2i parameters, Point2i const pressure_center, Point2i dimensions) {
     int nRows = dimensions.x;
     int nCols = dimensions.y;
     Mat res;
@@ -175,10 +179,10 @@ Mat ellipse(Point2i parameters, Point2i pressure_center, Point2i dimensions) {
 }
 
 /* apply an anisotropic transformation on the image */
-void apply_iso(Mat &image, Point2i pressure_center) {
+void apply_iso(Mat &image, Point2i const pressure_center) {
     int nRows = image.rows;
     int nCols = image.cols;
-    Point2f parameters = parameters_computation(image);
+    Point2f parameters = parameters_computation(image, pressure_center);
     cout << parameters << endl;
     Mat protected_zone = ellipse(parameters, pressure_center, Point2i(nRows, nCols));
     imwrite("./test_iso_ellipse.png", convert_to_int(protected_zone));
