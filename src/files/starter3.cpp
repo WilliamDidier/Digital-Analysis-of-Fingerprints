@@ -121,58 +121,61 @@ Mat transfo_fourier( Mat image){
 Mat img_magnitude(Mat img_complexe){
   /**
     @fn Mat img_magnitude(Mat img_complexe)
-    @brief give a complex Matrix which is the result of the fourier transform of initial matrix
-    @param Input : one matrix
-    @return the fourier transform of the matrix
+    @brief give the trasform fourier image since a complex matrix
+    @param Input : A complex matrix
+    @return a real matrix as a representation of magnitude
     @author Théo M. & Romain
   */
-  /*
-  Entrée : une matrice à coefficient complexe ( résultant d'une DFT le plus souvent)
-  Sortie : on renvoie la matrice correspondant à l'image du spectre de la
-  matrice en entrée
-  */
   Mat tab[] = {Mat_<float>(img_complexe), Mat::zeros(img_complexe.size(), CV_32F)};
-  //on sépare partie imaginaire et partie réell
+  //split the real part and the complex part
   split(img_complexe, tab);
-  // on prend la norme du résultat, c'est à dire la magnitude
+  // one take the norm of the matrix, that is to say the magnitude
   magnitude(tab[0], tab[1], tab[0]);
   Mat res = tab[0];
-  // on met à l'échelle logarythmique
+  // one put on a logarithmic scale
   res += Scalar::all(1);
   log(res, res);
-  // on remet l'image à la taille initiale
+  // one resize the matrix at the initial size
   res = res(Rect(0, 0, res.cols & -2, res.rows & -2));
-  //on transforme la matrice avec des float entre 0 et 1
+  //one transform the matrix with float between 0 and 1
   normalize(res, res, 0, 1, NORM_MINMAX);
   return res;Mat O = Mat::ones(2, 2, CV_32F);
 }
 
 Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
-  /*
-  on applique la transformée inverse
+  /**
+    @fn Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows)
+    @brief give the inverse transform fourier since a complex matrix
+    @param Input : A complex matrix, it number of colons and it number of rows
+    @return a real matrix
+    @author Théo M. & Romain
   */
   Mat res;
-  // On applique l'idft avec pour résultat une matrice réelle
+  // we apply the idft with a real result
   idft(image, res, DFT_REAL_OUTPUT|DFT_SCALE);
   Mat finalImage;
-  //on transforme la matrice avec des float entre 0 et 1
+  //we noramlize the matrix such that these numbers were between 0 and 1
   normalize(res, finalImage, 0, 1, NORM_MINMAX);
   return finalImage(Rect(0, 0, nbCols, nbRows));
 }
 
 Mat convolution_fft(Mat x, Mat h){
-  /*
-  on applique la convolution de matrice en passant par la FFT
+  /**
+    @fn Mat convolution_fft(Mat x, Mat h)
+    @brief give the convolution of the two matrix thanks to FFT
+    @param Input : two matrix
+    @return a real matrix
+    @author Théo M. & Romain
   */
   Mat trans_mat = (Mat_<double>(2,3) << 1, 0, -1, 0, 1, -1);
   warpAffine(x,x,trans_mat,x.size());
   Mat X = transfo_fourier(x);
-  //on complète h avec des  0 pour atteindre la taille de x
+  //one complete h with zero to reach the size of X
   copyMakeBorder(h, h, 0, x.rows - h.rows, 0, x.cols - h.cols, BORDER_CONSTANT, Scalar::all(0));
   Mat H = transfo_fourier(h);
 
   Mat Y;
-  // on fait la multiplication coef par coef de H et X
+  // we multiply term by term the two matrix 
   mulSpectrums(X,H,Y,0,false);
   Mat res = inv_transfo_fourier(Y, x.cols, x.rows);
   return res;

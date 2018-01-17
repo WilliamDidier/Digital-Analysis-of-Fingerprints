@@ -8,14 +8,16 @@ project (libFingerPrint)
 set(
 	SOURCES
 	files/blur.cpp
+	files/starter_1.cpp
+	files/main_1.cpp
 	files/starter3.cpp
 )
 
 set(
 	HEADERS
 	headers/blur.h
-	headers/main_1.h
 	headers/starter_1.h
+	headers/main_1.h
 	headers/starter3.h
 )
 

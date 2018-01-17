@@ -53,19 +53,6 @@ int main(int argc, char** argv )
     imwrite("../Rectangles.png", convert_to_int(image));
     cout << " Done." << endl;
 
-
-    /* TESTING THE ELLIPTICAL FUNCTION */
-    cout << "Testing the ellipse creation...";
-    Mat ellipse_test;
-    ellipse_test.create(image.cols, image.rows, CV_32F);
-    Point2i param(90, 60);
-    Point2i press(image.rows/2, image.cols/2);
-    ellipse_test = ellipse(param, press, Point2i(image.rows, image.cols));
-    imwrite("../fingerprints/test_limpt.png", convert_to_int(ellipse_test));
-    cout << " Done. (image saved at fingerprints/test_limpt.png)" << endl;
-
-
-
     /*TESTING THE WEAKENING */
     image = imread("../fingerprints/clean_finger.png", 0);
     cout << "Weakening clean_finger...";
@@ -84,11 +71,21 @@ int main(int argc, char** argv )
     imwrite("../Reinforced_finger.png", convert_to_int(image));
     cout << " Done." << endl;
 
+    /* TESTING THE ELLIPTICAL FUNCTION */
+    cout << "Testing the ellipse creation...";
+    Mat ellipse_test;
+    ellipse_test.create(image.cols, image.rows, CV_32F);
+    Point2i param(90, 60);
+    Point2i press(image.rows/2, image.cols/2);
+    ellipse_test = ellipse(param, press, Point2i(image.rows, image.cols));
+    imwrite("../fingerprints/test_limpt.png", convert_to_int(ellipse_test));
+    cout << " Done. (image saved at fingerprints/test_limpt.png)" << endl;
+
     /*TESTING THE XLIM YLIM COMPUTATION */
-    cout << "Testing the extreme points computation..." << endl;;
+    cout << "Testing the extreme points computation...";;
     image = imread("../fingerprints/test_limpt.png",0);
     image = convert_to_float(image);
-    //assert(parameters_computation(image) == Point2i(69,233));
+    assert(parameters_computation(image) == Point2i(233,69));
     cout << " Done" << endl;
 
     /* TESTING POINTS AIGAIN */
@@ -123,7 +120,8 @@ int main(int argc, char** argv )
     GaussianBlur(image, image, Size(11,11), 0, 0);
     minMaxLoc(image, &minVal, &maxVal, &minLoc, &maxLoc);
     circle(image_color, minLoc, 5, Scalar(0,0,255));
-    imwrite("img_roi.png", image_color);
+    imwrite(".../img_roi.png", image_color);
+    cout << " Done." << endl;
 
 
     /*TESTING ISOTROPIC FILTERING*/
@@ -133,5 +131,5 @@ int main(int argc, char** argv )
     imwrite("../test_iso.png", convert_to_int(image));
     cout << " Done." << endl;*/
 
-
+    cout << endl << "All tests have passed successfully, well done !" << endl;
 }
