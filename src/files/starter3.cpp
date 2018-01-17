@@ -76,7 +76,6 @@ Mat Convol_Shifted(Mat X, Mat H){
   Rect roi = Rect((ColH-1)/2,(RowH-1)/2,ColX,RowX);
   // One copy X on the region
   X.copyTo(BigX(roi));
-  std::cout << "FLAG" << std::endl;
   // For each pixel of X ...
   for (int i1 = 0; i1 < ColX; i1++){
     for (int j1 = 0; j1 < RowX; j1++){
@@ -170,7 +169,7 @@ Mat Gaussian_kernel(int size, float sigma_x, float sigma_y){
       kernel.at<float>(j,i) = gauss2D((float) i, (float) j, middle, middle, sigma_x, sigma_y);
     }
   }
-  normalize(kernel, kernel, 1, NORM_L1);
+  kernel = kernel / ((float) norm(kernel, NORM_L1));
   return kernel;
 }
 

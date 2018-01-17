@@ -24,9 +24,9 @@ int main(int argc, char** argv )
     //TESTING THE CONVOLUTION WITH FFT
     cout << "convol thanks to fft...";
     image = convert_to_float(image);
-    Mat kernel(3,3,CV_32FC1, Scalar(1./9.));
+    Mat kernel = Gaussian_kernel(5,2,2);
     Mat naive = convolution_fft(image, kernel);
-    imwrite("test_convol_fft.png", naive);
+    imwrite("tests/test_convol_fft.png", convert_to_int(naive));
     waitKey(0);
     cout << " Done." << endl;
 }
