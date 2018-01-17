@@ -89,19 +89,19 @@ Point2i parameters_computation(Mat &image, Point2i pressure_center) {
     Point2i parameters;
     parameters.x = (pressure_center.x - boundaries.x)*3 / 4;
     parameters.y = (pressure_center.y - boundaries.y)*2 / 3;
+    cout << parameters << endl;
     return(parameters);
 }
 
 
 bool test_ellipse(Point2f parameters, Point2i const pressure_center, Point2i coordinates) {
-    Point2i new_coordinates(coordinates.x/parameters.x, coordinates.y/parameters.y);
+    /*Point2i new_coordinates(coordinates.x/parameters.x, coordinates.y/parameters.y);
     Point2i new_pressure_center(pressure_center.x/parameters.x, pressure_center.y/parameters.y);
-    float res = distance_computation(new_pressure_center, new_coordinates, false);
-    /*
+    float res1 = distance_computation(new_pressure_center, new_coordinates, false);
+    */
     float res = pow((coordinates.x - pressure_center.x)/parameters.x, 2); // à refaire avec la fonction distance
     res += pow((coordinates.y - pressure_center.y)/parameters.y, 2);
     res = sqrt(res);
-    */
     return(res>=1);
 }
 

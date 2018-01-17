@@ -31,7 +31,7 @@ int main(int argc, char** argv )
     Point2i param(90, 60);
     Point2i press(image.rows/2, image.cols/2);
     ellipse_test = ellipse(param, press, Point2i(image.rows, image.cols));
-    imwrite("../fingerprints/test_limpt.png", convert_to_int(ellipse_test));
+    imwrite("../test_limpt.png", convert_to_int(ellipse_test));
     cout << " Done. (image saved at fingerprints/test_limpt.png)" << endl;
 
     /*TESTING THE XLIM YLIM COMPUTATION */
