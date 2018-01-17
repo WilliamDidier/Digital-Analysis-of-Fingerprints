@@ -24,8 +24,7 @@ int main(int argc, char** argv )
     //TESTING THE CONVOLUTION SINCE THE RIGHT DOWN POINT
     cout << "convol from the right down point ...";
     image = convert_to_float(image);
-    Mat kernel = Gaussian_kernel(3,5.1,5.1);
-    cout << endl << kernel << endl;
+    Mat kernel = Gaussian_kernel(5,2,2);
     Mat naive = Convol(image, kernel);
     imwrite("tests/test_convol.png", convert_to_int(naive));
     waitKey(0);

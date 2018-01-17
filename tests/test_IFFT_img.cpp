@@ -24,7 +24,7 @@ int main(int argc, char** argv )
     //TESTING THE INVERSE FOURIER TRANSFORM
     cout << "give the spectre of the fourier transform of an image ...";
     image = convert_to_float(image);
-    Mat kernel(3,3,CV_32FC1, Scalar(1./9.));
+    Mat kernel = Gaussian_kernel(5,2,2);
     Mat complex = transfo_fourier(image);
     int nbCols = complex.cols;
     int nbRows = complex.rows;

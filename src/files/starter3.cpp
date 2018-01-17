@@ -169,7 +169,7 @@ Mat Gaussian_kernel(int size, float sigma_x, float sigma_y){
       kernel.at<float>(j,i) = gauss2D((float) i, (float) j, middle, middle, sigma_x, sigma_y);
     }
   }
-  normalize(kernel, kernel, 1, NORM_L1);
+  kernel = kernel / ((float) norm(kernel, NORM_L1));
   return kernel;
 }
 
