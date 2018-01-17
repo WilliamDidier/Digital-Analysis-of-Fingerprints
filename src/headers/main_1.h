@@ -24,6 +24,14 @@ using namespace cv;
   \ date 2018, January the 15th
 */
 
+float distance_computation(const Point2i pressure_center, Point2i point, bool anisotropic) {
+    if (anistropic) {
+        return(float distance = sqrt(pow(pressure_center.x - point.x, 2) + pow(pressure_center.y - point.y, 2)));
+    } else {
+        return(float distance = sqrt(pow(pressure_center.x - point.x, 2) + 2*pow(pressure_center.y - point.y, 2)));
+    }
+}
+
 /**
   \fn float coefficient_computation(bool clean_to_weak, const Point2i pressure_center, Point2i point)
   \brief Computes the coefficient c(x,y) such that g(x,y) = c(x,y)f(x,y)
@@ -142,6 +150,15 @@ Point2i parameters_computation(Mat &image){
   return Point2i(y_max, x_min); //g interverti les 2
 }
 
+Point2i parameters_computation2(Mat &image) {
+    Point2i pressure_center;
+    Point2i boundaries = parameters_computation(&image);
+    Point2i parameters;
+    parameters.x = (pressure_center.x - boundaries.x)*3 / 4;
+    parameters.y = (pressure_center.y - boundaries.y)*2 / 3;
+    return(parameters);
+}
+
 /*
     @brief: tests if a given point is in the ellipse or not
     @
@@ -170,9 +187,7 @@ Mat ellipse(Point2i parameters, Point2i pressure_center, Point2i dimensions) {
 void apply_iso(Mat &image, Point2i pressure_center) {
     int nRows = image.rows;
     int nCols = image.cols;
-    Point2f parameters = parameters_computation(image);
-    parameters.x = pressure_center.x - parameters.x;
-    parameters.y = parameters.y - pressure_center.y;
+    Point2f parameters = parameters_computation2(image);
     cout << parameters << endl;
     Mat protected_zone = ellipse(parameters, pressure_center, Point2i(nRows, nCols));
     imwrite("./test_iso_ellipse.png", convert_to_int(protected_zone));
