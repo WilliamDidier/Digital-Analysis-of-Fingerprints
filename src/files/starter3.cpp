@@ -3,6 +3,7 @@
 #include <iostream>
 #include <time.h>
 #include <vector>
+#include <cmath>
 #include "starter3.h"
 
 using namespace cv;
@@ -175,8 +176,51 @@ Mat convolution_fft(Mat x, Mat h){
   Mat H = transfo_fourier(h);
 
   Mat Y;
-  // we multiply term by term the two matrix 
+  // we multiply term by term the two matrix
   mulSpectrums(X,H,Y,0,false);
   Mat res = inv_transfo_fourier(Y, x.cols, x.rows);
   return res;
 }
+
+
+Mat Normalized_kernel(int NbCols, int NbRows){
+  Mat kernel(NbRows,NbCols,CV_32FC1, Scalar(1./((float) NbCols*NbRows)));
+  return kernel;
+}
+
+
+float gauss2D(float x, float y, float esp_x, float esp_y, float sigma_x, float sigma_y){
+  return exp(-(x-esp_x)*(x-esp_x)/(2*sigma_x*sigma_x) + -(y-esp_y)*(y-esp_y)/(2*sigma_y*sigma_y));
+}
+
+Mat Gaussian_kernel(int size, float sigma_x, float sigma_y){
+  Mat kernel(size,size,CV_32FC1);
+  float middle = ((float) size-1.)/2.;
+  for (int i = 0; i < size; i++){
+    for (int j = 0; j < size; j++){
+      kernel.at<float>(j,i) = gauss2D((float) i, (float) j, middle, middle, sigma_x, sigma_y);
+    }
+  }
+  normalize(kernel, kernel, 1, NORM_L1);
+  return kernel;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
