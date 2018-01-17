@@ -91,13 +91,7 @@ Mat Convol_Shifted(Mat X, Mat H){
 
 
 Mat transfo_fourier( Mat image){
-  /**
-    @fn Mat transfo_fourier( Mat image)
-    @brief give a complex Matrix which is the result of the fourier transform of initial matrix
-    @param Input : one matrix
-    @return the fourier transform of the matrix
-    @author Théo M. & Romain
-  */
+
   Mat optimal;
   //extend the matrix with the optimal size
   int  nbRows =   getOptimalDFTSize( image.rows );
