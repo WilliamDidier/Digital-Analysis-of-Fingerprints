@@ -1,18 +1,12 @@
-/*
-header file associated to 'starter_1.cpp'
-contains the functions related to the starter 1
-*/
 /**
   This is a Doxygen documentation.
-  \file starter_1.h
-  \brief Header for the functions of the Starter 1
+  \file starter_1.cpp
+  \brief Functions of the Starter 1
   \author Romain C. & Théo M. & Théo L. & William D.
   \ date 2018, January the 16th
 
 
 */
-#ifndef STARTER_1
-#define STARTER_1
 
 #include <opencv2/opencv.hpp>
 #include <stdio.h>
@@ -20,7 +14,6 @@ contains the functions related to the starter 1
 using namespace cv;
 using std::cout;
 using std::endl;
-
 /**
   \fn Mat convert_to_float(Mat image)
   \brief Casts the data of a Mat from ints to floats, returning the corresponding header.
@@ -111,5 +104,3 @@ Mat symetry_diag(Mat &image) {
     }
     return(image_sym);
 }
-
-#endif
