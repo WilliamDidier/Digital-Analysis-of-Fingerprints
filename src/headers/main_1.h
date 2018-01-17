@@ -117,9 +117,41 @@ void weak_to_clean_iso(Mat &image, const Point2i pressure_center);
 ################################################################################
   */
 
-Point2i fingerprint_boudaries(Mat &image);
+/**
+  @fn: int fingerprint_boundaries_x(Mat &image)
+  @brief: finds the first point in terms of x that define the fingerprint
+  @param: &image: the image on which will be applied the ellipse after
+  @return: the coordinate x
+  @author: Théo L.
+*/
+int fingerprint_boundaries_x(Mat &image);
 
+/**
+    @fn: int fingerprint_boundaries_y(Mat &image)
+    @brief: finds the first point in terms of y that define the fingerprint
+    @param: &image: the image on which will be applied the ellipse after
+    @return: the coordinate y
+    @author: Théo L.
+*/
+int fingerprint_boundaries_y(Mat &image);
 
+/**
+    @fn: Point2i fingerprint_boundaries(Mat &image)
+    @brief: returns the result of the two previous function as point (y, x)
+    @param: &image: the image on which will be applied the ellipse after
+    @return: a point (y, x)
+    @author: Théo L.
+*/
+Point2i fingerprint_boundaries(Mat &image);
+
+/**
+    @fn: Point2i pressure_center_computation(Mat &image)
+    @brief: computes the coordinates of an estimate pressure center (search for
+        a maximum of intensity after having apply a gaussian blur)
+    @param: &image: the image on which to look for a pressure center
+    @return: a point with the coordinates (y, x)
+    @author: William D.
+*/
 Point2i pressure_center_computation(Mat &image);
 
 /**
@@ -167,6 +199,6 @@ Mat ellipse(Point2i const parameters, Point2i const pressure_center,
     @return: nothing: the image is directly modified
     @author: Théo L.
  */
-void apply_iso(Mat &image, Point2i const pressure_center);
+void apply_aniso(Mat &image, Point2i const pressure_center);
 
 #endif //MAIN_1_H

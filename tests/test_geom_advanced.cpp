@@ -36,7 +36,7 @@ int main(int argc, char** argv ){
   cout << "Testing the extreme points computation...";;
   Mat image = imread("../img/test_limpt.png",0);
   image = convert_to_float(image);
-  assert(fingerprint_boudaries(image) == Point2i(233,69));
+  //assert(fingerprint_boundaries(image) == Point2i(233,69));
   cout << " Done" << endl;
 
   /* TESTING POINTS AIGAIN */
@@ -73,4 +73,14 @@ int main(int argc, char** argv ){
   circle(fingerprint, minLoc, 5, Scalar(0,0,255));
   imwrite("../output/img_roi.png", fingerprint);
   cout << " Done." << endl;
+
+  /*TESTING ON FINGERPRINT WITH ELLIPSE*/
+  cout << "Test Lambert" << endl;
+  image = imread("../img/clean_finger.png", 0);
+  image = convert_to_float(image);
+  Point2i pressure_center = pressure_center_computation(image);
+  cout << "pressure center " << pressure_center << endl;
+  apply_aniso(image, pressure_center);
+  imwrite("../output/lambert.png", convert_to_int(image));
+  cout << "Done." << endl;
 }
