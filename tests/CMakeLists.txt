@@ -70,7 +70,6 @@ target_link_libraries(test_FFT_img
     ${OpenCV_LIBS}
 )
 
-<<<<<<< HEAD
 target_link_libraries(Test_geom
     PUBLIC
     libFingerPrint
@@ -82,9 +81,11 @@ target_link_libraries(Test_geom_advanced
     ${OpenCV_LIBS}
 )
 target_link_libraries(Demo_main1
-=======
+    PUBLIC
+    libFingerPrint
+    ${OpenCV_LIBS}
+)
 target_link_libraries(test_IFFT_img
->>>>>>> c8283c2840bf2311f44e8d05bea2c102831e631e
     PUBLIC
     libFingerPrint
     ${OpenCV_LIBS}
