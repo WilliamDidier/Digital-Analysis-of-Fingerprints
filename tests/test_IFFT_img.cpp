@@ -29,7 +29,7 @@ int main(int argc, char** argv )
     int nbCols = complex.cols;
     int nbRows = complex.rows;
     Mat naive = inv_transfo_fourier(complex, nbCols, nbRows);
-    imwrite("test_fourier.png", naive);;
+    imwrite("tests/test_ifft.png", convert_to_int(naive));;
     waitKey(0);
     cout << " Done." << endl;
 }

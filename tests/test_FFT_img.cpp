@@ -27,7 +27,7 @@ int main(int argc, char** argv )
     Mat kernel(3,3,CV_32FC1, Scalar(1./9.));
     Mat complex = transfo_fourier(image);
     Mat naive = img_magnitude(complex);
-    imwrite("test_fourier.png", naive);
+    imwrite("tests/test_fft.png", convert_to_int(naive));
     waitKey(0);
     cout << " Done." << endl;
 }

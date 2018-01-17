@@ -26,7 +26,7 @@ int main(int argc, char** argv )
     image = convert_to_float(image);
     Mat kernel(3,3,CV_32FC1, Scalar(1./9.));
     Mat naive = Convol_Shifted(image, kernel);
-    imwrite("test_convol.png", naive);
+    imwrite("tests/test_convol_shifted.png", convert_to_int(naive));
     waitKey(0);
     cout << " Done." << endl;
 }
