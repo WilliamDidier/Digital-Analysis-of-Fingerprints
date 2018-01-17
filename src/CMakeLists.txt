@@ -16,6 +16,7 @@ set(
 	headers/blur.h
 	headers/main_1.h
 	headers/starter_1.h
+	headers/starter3.h
 )
 
 # Add all the sources to the project
