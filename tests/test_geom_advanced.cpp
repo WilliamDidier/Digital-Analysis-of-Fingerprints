@@ -36,7 +36,6 @@ int main(int argc, char** argv ){
   cout << "Testing the extreme points computation...";;
   Mat image = imread("../img/test_limpt.png",0);
   image = convert_to_float(image);
-  cout << fingerprint_boudaries(image) << endl;
   assert(fingerprint_boudaries(image) == Point2i(233,69));
   cout << " Done" << endl;
 
