@@ -94,17 +94,19 @@ void weak_to_clean_iso(Mat &image, const Point2i pressure_center);
 */
 Point2i fingerprint_boudaries(Mat &image);
 
-Point2i parameters_computation(Mat &image);
+Point2i pressure_center_computation(Mat &image);
+
+Point2i parameters_computation(Mat &image, Point2i pressure_center);
 
 /*
     @brief: tests if a given point is in the ellipse or not
     @
  */
-bool test_ellipse(Point2f parameters, Point2i pressure_center, Point2i coordinates);
+bool test_ellipse(Point2f const parameters, Point2i const pressure_center, Point2i coordinates);
 
-Mat ellipse(Point2i parameters, Point2i pressure_center, Point2i dimensions);
+Mat ellipse(Point2i const parameters, Point2i const pressure_center, Point2i dimensions);
 
 /* apply an anisotropic transformation on the image */
-void apply_iso(Mat &image, Point2i pressure_center);
+void apply_iso(Mat &image, Point2i const pressure_center);
 
 #endif //MAIN_1_H
