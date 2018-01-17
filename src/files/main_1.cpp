@@ -1,9 +1,11 @@
 #include <iostream>
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
+#include"starter_1.h"
 #include"main_1.h"
 
 using namespace cv;
+
 
 /**
   This is a Doxygen documentation.
@@ -162,7 +164,6 @@ void apply_iso(Mat &image, Point2i pressure_center) {
     Point2f parameters = parameters_computation(image);
     parameters.x = pressure_center.x - parameters.x;
     parameters.y = parameters.y - pressure_center.y;
-    cout << parameters << endl;
     Mat protected_zone = ellipse(parameters, pressure_center, Point2i(nRows, nCols));
     imwrite("./test_iso_ellipse.png", convert_to_int(protected_zone));
     for (uint j = 0; j < nCols; j++) {

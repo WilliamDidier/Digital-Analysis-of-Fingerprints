@@ -10,7 +10,6 @@
 
 #include <opencv2/opencv.hpp>
 #include <stdio.h>
-#include "starter_1.h"
 using namespace cv;
 using std::cout;
 using std::endl;

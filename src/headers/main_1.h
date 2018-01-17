@@ -13,6 +13,7 @@ WARNING : the pressure center has to be defined before computations
 #include <iostream>
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
+#include"starter_1.h"
 
 using namespace cv;
 
