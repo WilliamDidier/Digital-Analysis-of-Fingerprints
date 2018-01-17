@@ -36,7 +36,8 @@ int main(int argc, char** argv ){
   cout << "Testing the extreme points computation...";;
   Mat image = imread("../img/test_limpt.png",0);
   image = convert_to_float(image);
-  assert(parameters_computation(image) == Point2i(233,69));
+  cout << fingerprint_boudaries(image) << endl;
+  assert(fingerprint_boudaries(image) == Point2i(233,69));
   cout << " Done" << endl;
 
   /* TESTING POINTS AIGAIN */
@@ -57,6 +58,7 @@ int main(int argc, char** argv ){
   double maxVal = 0;
   Point minLoc, maxLoc;
   minMaxLoc(gblur, &minVal, &maxVal, &minLoc, &maxLoc);
+  assert(pressure_center_computation(image) == minLoc);
   Rect roi;
   roi = Rect(maxLoc.x-25, maxLoc.y-25, 50, 50);
   image=image(roi);

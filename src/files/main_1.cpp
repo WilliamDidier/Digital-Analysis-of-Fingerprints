@@ -141,6 +141,18 @@ Point2i fingerprint_boudaries(Mat &image){
   return Point2i(y_max, x_min); //g interverti les 2
 }
 
+Point2i pressure_center_computation(Mat &image){
+  Mat gblur;
+  image.copyTo(gblur);
+  GaussianBlur(image, gblur, Size(17, 17), 0, 0);
+  double minVal = 0;
+  double maxVal = 0;
+  Point minLoc, maxLoc;
+  minMaxLoc(gblur, &minVal, &maxVal, &minLoc, &maxLoc);
+  return minLoc;
+}
+
+
 Point2i parameters_computation(Mat &image, Point2i pressure_center) {
     Point2i boundaries = fingerprint_boudaries(image);
     Point2i parameters;
