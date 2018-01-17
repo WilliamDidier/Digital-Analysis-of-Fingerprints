@@ -31,7 +31,7 @@ using std::endl;
 */
 Mat convert_to_float(Mat image){
   Mat dst;
-  image.convertTo(dst, CV_32F, 1.0/255.0);
+  image.convertTo(dst, CV_32FC1, 1.0/255.0);
   return(dst);
 }
 

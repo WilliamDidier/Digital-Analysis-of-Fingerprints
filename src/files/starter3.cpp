@@ -27,9 +27,9 @@ float produit_coefbycoef(Mat A, Mat B){
   return res;
 }
 
-Mat Convol_DownRight(Mat X, Mat H){
+Mat Convol(Mat X, Mat H){
   /**
-    @fn Mat Convol_DownRight(Mat X, Mat H)
+    @fn Mat Convol(Mat X, Mat H)
     @brief give X**H, centered on the downright coefficient of the matrix H
     @param Input : 2 matrix
     @return the matrix of convolution
@@ -60,9 +60,9 @@ Mat Convol_DownRight(Mat X, Mat H){
   return Res;
 }
 
-Mat Convol_Centered(Mat X, Mat H){
+Mat Convol_Shifted(Mat X, Mat H){
   /**
-    @fn Mat Convol_Centered(Mat X, Mat H)
+    @fn Mat Convol_Shifted(Mat X, Mat H)
     @brief give X**H, centered on the centered coefficient of the matrix H
     @param Input : 2 matrix, H must be a square matrix with an odd dimension
     @return the matrix of convolution
@@ -81,6 +81,7 @@ Mat Convol_Centered(Mat X, Mat H){
   Rect roi = Rect((ColH-1)/2,(RowH-1)/2,ColX,RowX);
   // One copy X on the region
   X.copyTo(BigX(roi));
+  std::cout << "FLAG" << std::endl;
   // For each pixel of X ...
   for (int i1 = 0; i1 < ColX; i1++){
     for (int j1 = 0; j1 < RowX; j1++){
@@ -163,6 +164,8 @@ Mat convolution_fft(Mat x, Mat h){
   /*
   on applique la convolution de matrice en passant par la FFT
   */
+  Mat trans_mat = (Mat_<double>(2,3) << 1, 0, -1, 0, 1, -1);
+  warpAffine(x,x,trans_mat,x.size());
   Mat X = transfo_fourier(x);
   //on complète h avec des  0 pour atteindre la taille de x
   copyMakeBorder(h, h, 0, x.rows - h.rows, 0, x.cols - h.cols, BORDER_CONSTANT, Scalar::all(0));

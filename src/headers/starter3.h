@@ -21,9 +21,9 @@ using namespace cv;
 
 float produit_coefbycoef(Mat A, Mat B);
 
-Mat Convol_DownRight(Mat X, Mat H);
+Mat Convol(Mat X, Mat H);
 
-Mat Convol_Centered(Mat X, Mat H);
+Mat Convol_Shifted(Mat X, Mat H);
 
 Mat transfo_fourier( Mat image);
 

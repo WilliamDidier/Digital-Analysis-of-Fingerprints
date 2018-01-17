@@ -1,4 +1,5 @@
 add_executable(test_1 test_1.cpp)
+add_executable(test_3 test_3.cpp)
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 include_directories( ${CMAKE_SOURCE_DIR}/src/headers )
@@ -11,8 +12,17 @@ message("LIBS opencv" "${OpenCV_LIBS}")
 add_test (NAME test_1
 		COMMAND test_1
 	 )
+add_test (NAME test_3
+		COMMAND test_3
+	 )
 
-target_link_libraries(test_1 
+target_link_libraries(test_1
+    PUBLIC
+    libFingerPrint
+    ${OpenCV_LIBS}
+)
+
+target_link_libraries(test_3
     PUBLIC
     libFingerPrint
     ${OpenCV_LIBS}
