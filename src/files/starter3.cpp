@@ -125,7 +125,7 @@ Mat img_magnitude(Mat img_complexe){
 
 Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
 
-  Mat res;
+  Mat res;http://math.mad.free.fr/depot/numpy/courbe.html
   // we apply the idft with a real result
   idft(image, res, DFT_REAL_OUTPUT|DFT_SCALE);
   Mat finalImage;
