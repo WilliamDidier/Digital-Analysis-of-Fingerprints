@@ -50,6 +50,14 @@ Mat convert_to_int(Mat image);
 */
 void draw_uniform_rectangle (Mat image, Rect r, float color);
 
+/**
+  \fn symetry_x(Mat &image)
+  \brief
+  \param &image
+  \return
+  \author Romain C. & Théo M.
+*/
+Mat symetry_x(Mat &image);
 
 /**
   \fn symetry_y(Mat &image)

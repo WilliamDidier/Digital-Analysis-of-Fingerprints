@@ -19,6 +19,9 @@ contains the functions related to the starter 3
 
 using namespace cv;
 
+#ifndef STARTER3
+#define STARTER3
+
 float produit_coefbycoef(Mat A, Mat B);
 /**
   @fn Mat Convol(Mat X, Mat H)
@@ -79,3 +82,5 @@ Mat Normalized_kernel(int NbCols, int NbRows);
 float gauss2D(float x, float y, float esp_x, float esp_y, float sigma_x, float sigma_y);
 
 Mat Gaussian_kernel(int size, float sigma_x, float sigma_y);
+
+#endif

@@ -30,12 +30,12 @@ int main(int argc, char** argv)
   std::ofstream monFlux2(nomFichier2.c_str());
   std::ofstream monFlux3(nomFichier3.c_str());
 
-  for (int n = 16; n<1000; n+=50){
+  for (int n = 16; n<2000; n+=50){
     // for (int m = 16; m<1000; m+=50){
       int elt = 3;
       while(elt <16){
         temps1 = clock();
-        Mat image = Mat::ones(n,m, CV_32F);
+        Mat image = Mat::ones(n,n, CV_32F);
         Mat kernel(elt,elt,CV_32FC1, Scalar(1./(elt*elt)));
         Mat naive = Convol_Shifted(image, kernel);
         temps2=clock();
