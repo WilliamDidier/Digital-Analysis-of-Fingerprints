@@ -8,6 +8,7 @@ add_executable(test_convol test_convol.cpp)
 add_executable(test_FFT_img test_FFT_img.cpp)
 add_executable(test_IFFT_img test_IFFT_img.cpp)
 add_executable(test_complexite test_complexite.cpp)
+add_executable(test_rotation test_rotation.cpp)
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 include_directories( ${CMAKE_SOURCE_DIR}/src/headers )
@@ -45,6 +46,9 @@ add_test (NAME test_complexite
 		COMMAND test_complexite
 	 )
 
+add_test (NAME test_rotation
+		COMMAND test_rotation
+	 )
 target_link_libraries(test_1
     PUBLIC
     libFingerPrint
@@ -97,6 +101,12 @@ target_link_libraries(test_IFFT_img
 )
 
 target_link_libraries(test_complexite
+    PUBLIC
+    libFingerPrint
+    ${OpenCV_LIBS}
+)
+
+target_link_libraries(test_rotation
     PUBLIC
     libFingerPrint
     ${OpenCV_LIBS}

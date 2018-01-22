@@ -70,7 +70,9 @@ p1, = plt.plot(n,t1)
 p2, = plt.plot(n,t2)
 p3, = plt.plot(n,y1)
 p4, = plt.plot(n,y2)
-plt.legend([p1, p2, p3, p4], ["Naive", "FFT", "Naive Théorique", "FFT Théorique"])
+plt.legend([p1, p2, p3, p4], ["Naive", "FFT", "Naive Theoretical", "FFT Theoretical"])
+plt.ylabel("Execution time")
+plt.xlabel("Matrix dimension")
 plt.show()
 
 

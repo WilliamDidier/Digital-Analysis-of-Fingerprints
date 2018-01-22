@@ -5,6 +5,7 @@
 #include <vector>
 #include <cmath>
 #include "starter3.h"
+#include "starter_1.h"
 
 using namespace cv;
 
@@ -19,7 +20,7 @@ float produit_coefbycoef(Mat A, Mat B){
   float res = 0;
   for (int i = 0; i < A.rows; i++){
     for (int j = 0; j < A.cols; j++){
-      //one get the coordinates i and j of each matrix
+      //one get the co  image.copyTo(big_image(roi));ordinates i and j of each matrix
       float tmp = A.at<float>(i,j);
       float tmp2 = B.at<float>(i,j);
       res += tmp*tmp2;
@@ -71,7 +72,7 @@ Mat Convol_Shifted(Mat X, Mat H){
   Mat Res(RowX, ColX, CV_32FC1);
   // One complete the matrix X with colH-1 zeros around X ( to remove the bordure issues)
   // To do that, one create a matrix of dimension greater than X
-  Mat BigX = Mat::zeros(RowX+RowH-1, ColX+ColH-1, CV_32FC1);
+  Mat BigX = Mat::ones(RowX+RowH-1, ColX+ColH-1, CV_32FC1);
   // one select the region of dimension X
   Rect roi = Rect((ColH-1)/2,(RowH-1)/2,ColX,RowX);
   // One copy X on the region
@@ -104,6 +105,7 @@ Mat transfo_fourier( Mat image){
   merge(tab, 2, img_complexe);
   dft(img_complexe, img_complexe);
   return img_complexe;
+
 }
 
 Mat img_magnitude(Mat img_complexe){
@@ -126,7 +128,7 @@ Mat img_magnitude(Mat img_complexe){
 Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
 
   Mat res;http://math.mad.free.fr/depot/numpy/courbe.html
-  // we apply the idft with a real result
+  // we apply the idft with a real resultRowX+RowH-1
   idft(image, res, DFT_REAL_OUTPUT|DFT_SCALE);
   Mat finalImage;
   //we noramlize the matrix such that these numbers were between 0 and 1
@@ -134,10 +136,29 @@ Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
   return finalImage(Rect(0, 0, nbCols, nbRows));
 }
 
+
+Mat periodic_image( Mat image){
+  int Rows = image.rows;
+  int Cols = image.cols;
+  Mat symetry_ya = symetry_y(image);
+  Mat symetry_xa = symetry_x(image);
+  Mat big_image = Mat::ones(2*Rows, 2*Cols, CV_32FC1);
+  Rect roi = Rect(0, 0, Cols, Rows);
+  image.copyTo(big_image(roi));
+  roi = Rect(Cols-1, 0, Cols, Rows);
+  symetry_ya.copyTo(big_image(roi));
+  roi = Rect(0, Rows-1, Cols, Rows);
+  symetry_xa.copyTo(big_image(roi));
+  return big_image;
+}
+
 Mat convolution_fft(Mat x, Mat h){
 
-  Mat trans_mat = (Mat_<double>(2,3) << 1, 0, -1, 0, 1, -1);
-  warpAffine(x,x,trans_mat,x.size());
+  // Mat trans_mat = (Mat_<double>(2,3) << 1, 0, 1, 0, 1, 1);
+  // warpAffine(x,x,trans_mat,x.size());
+  int cols = x.cols;
+  int rows = x.rows;
+  x = periodic_image(x);
   Mat X = transfo_fourier(x);
   //one complete h with zero to reach the size of X
   copyMakeBorder(h, h, 0, x.rows - h.rows, 0, x.cols - h.cols, BORDER_CONSTANT, Scalar::all(0));
@@ -147,7 +168,9 @@ Mat convolution_fft(Mat x, Mat h){
   // we multiply term by term the two matrix
   mulSpectrums(X,H,Y,0,false);
   Mat res = inv_transfo_fourier(Y, x.cols, x.rows);
-  return res;
+  Rect roi = Rect(0,0,cols, rows);
+  x = res(roi);
+  return x;
 }
 
 
