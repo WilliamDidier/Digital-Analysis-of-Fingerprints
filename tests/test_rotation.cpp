@@ -34,16 +34,18 @@ int main(int argc, char** argv )
     //TESTING THE ROTATION OF THE IMAGE
     cout << "Rotation of image...";
     image = convert_to_float(image);
-    int angle = 10;
+    int angle = 30;
     Mat rotation = rotate_img(image, angle);
-    rotation = interpolation_2(rotation);
+    // rotation = interpolation_bicubic(rotation);
+
     imwrite("tests/test_rotation.png", convert_to_int(rotation));
     imwrite("tests/image.png", convert_to_int(image));
+    imshow("image", image);
     waitKey(0);
-    //
-    Mat dst;
-    dst = rotate(image, 10);
+    imshow("rotation", rotation);
+    waitKey(0);
+    // imshow("rotation2", rotation);
+    // waitKey(0);
 
-    imwrite("tests/test_rotation1.png", convert_to_int(dst));
     cout << " Done." << endl;
 }
