@@ -15,8 +15,6 @@ int main(int argc, char** argv )
         return -1;
     }
     Mat image;
-    Mat bin_image ;
-    bin_image.create(image.rows, image.cols, CV_32F);
 
     image = imread(argv[1], 0);
     Mat image_bis = imread(argv[1], 0);
@@ -31,17 +29,16 @@ int main(int argc, char** argv )
     convert_to_float(image, image);
 
     /* TESTING THE BINARIZATION OF THE IMAGE */
-    binarization(image, bin_image);
+    binarization(image, image);
     namedWindow( "Display window", WINDOW_AUTOSIZE );
-    imshow( "Display window", bin_image );
+    imshow( "Display window", image );
     waitKey(0);
-    convert_to_int(bin_image, image);
+    convert_to_int(image, image);
     imwrite("../output/test_bin.png", image);
     cout << "Binarization done." << endl;
 
     /* TESTING THE LEVELS COMPUTATION */
     convert_to_float(image_bis, image_bis);
-    cout << "woullaye" << endl;
     vector<int> levels = levels_computation(image_bis);
     cout << "c le bendo" << endl;
     print_vector(levels);
