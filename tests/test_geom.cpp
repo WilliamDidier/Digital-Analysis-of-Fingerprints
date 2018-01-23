@@ -29,7 +29,7 @@ int main(int argc, char** argv )
     cvtColor(image, image, COLOR_BGR2GRAY);
     cout << " Done." << endl;
     cout << "Converting to floating point intensities...";
-    image = convert_to_float(image);
+    convert_to_float(image, image);
     cout << " Done." << endl;
 
 
@@ -37,12 +37,14 @@ int main(int argc, char** argv )
     Mat image_sym;
     cout << "Testing diagonal symetry...";
     image_sym = symetry_diag(image);
-    imwrite("../output/Diagonal_symetry.png", convert_to_int(image_sym));
+    convert_to_int(image_sym, image_sym);
+    imwrite("../output/Diagonal_symetry.png", image_sym);
     cout << " Done." << endl;
 
     cout << "Testing y-axis symetry...";
     image_sym = symetry_y(image);
-    imwrite("../output/Y-axis_symetry.png", convert_to_int(image_sym));
+    convert_to_int(image_sym, image_sym);
+    imwrite("../output/Y-axis_symetry.png", image_sym);
     cout << " Done." << endl;
 
 
@@ -52,6 +54,7 @@ int main(int argc, char** argv )
     Rect r2(image.cols/8,image.rows/8,image.cols/3,image.rows/6);
     draw_uniform_rectangle(image, r1, 0.0);
     draw_uniform_rectangle(image, r2, 255.0);
-    imwrite("../output/Rectangles.png", convert_to_int(image));
+    convert_to_int(image, image);
+    imwrite("../output/Rectangles.png", image);
     cout << " Done." << endl;
 }

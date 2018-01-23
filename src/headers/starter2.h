@@ -18,9 +18,19 @@ vector<int> rotation(int i, int j, int angle );
 
 Mat rotate_img(Mat image, int angle);
 
-Mat interpolation_1(Mat image);
+Mat interpolation_moy_16(Mat image);
 
-Mat interpolation_2(Mat image);
+Mat interpolation_nearest_neighboor(Mat image);
+
+int P(int x);
+
+float  polynome(int x);
+
+int bicubic(int i, int j);
+
+Mat interpolation_bicubic(Mat image);
+
+
 
 
 

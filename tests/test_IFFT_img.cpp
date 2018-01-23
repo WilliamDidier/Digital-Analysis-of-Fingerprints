@@ -23,13 +23,15 @@ int main(int argc, char** argv )
     }
     //TESTING THE INVERSE FOURIER TRANSFORM
     cout << "give the spectre of the fourier transform of an image ...";
-    image = convert_to_float(image);
+    Mat dst = image;
+    convert_to_float(dst, image);
     Mat kernel = Gaussian_kernel(5,2,2);
     Mat complex = transfo_fourier(image);
     int nbCols = complex.cols;
     int nbRows = complex.rows;
     Mat naive = inv_transfo_fourier(complex, nbCols, nbRows);
-    imwrite("tests/test_ifft.png", convert_to_int(naive));;
+    convert_to_int(naive, naive);
+    imwrite("tests/test_ifft.png", naive);
     waitKey(0);
     cout << " Done." << endl;
 }

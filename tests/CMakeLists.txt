@@ -8,8 +8,8 @@ add_executable(test_convol test_convol.cpp)
 add_executable(test_FFT_img test_FFT_img.cpp)
 add_executable(test_IFFT_img test_IFFT_img.cpp)
 add_executable(test_complexite test_complexite.cpp)
+add_executable(test_starter_4 test_starter_4.cpp)
 add_executable(test_rotation test_rotation.cpp)
-
 
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
@@ -46,6 +46,9 @@ add_test (NAME test_IFFT_img
 	 )
 add_test (NAME test_complexite
 		COMMAND test_complexite
+	 )
+add_test (NAME test_starter_4
+	 	COMMAND test_starter_4
 	 )
 
 
@@ -109,9 +112,14 @@ target_link_libraries(test_complexite
     ${OpenCV_LIBS}
 )
 
-target_link_libraries(test_rotation
+target_link_libraries(test_starter_4
     PUBLIC
     libFingerPrint
     ${OpenCV_LIBS}
 )
 
+target_link_libraries(test_rotation
+		PUBLIC
+		libFingerPrint
+		${OpenCV_LIBS}
+)

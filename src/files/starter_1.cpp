@@ -20,10 +20,12 @@ using std::endl;
   \return New header pointing to the data casted to floats.
   \author Théo L.
 */
-Mat convert_to_float(Mat image){
-  Mat dst;
+//Mat convert_to_float(Mat & image){
+void convert_to_float(Mat & image, Mat & dst){
+
+  //Mat dst;
   image.convertTo(dst, CV_32F, 1.0/255.0);
-  return(dst);
+  //return(dst);
 }
 
 /**
@@ -32,10 +34,11 @@ Mat convert_to_float(Mat image){
   \return New header pointing to the data casted to ints.
   \author Théo L.
 */
-Mat convert_to_int(Mat image) {
-  Mat dst;
+//Mat convert_to_int(Mat & image) {
+void convert_to_int(Mat & image, Mat &dst) {
+  //Mat dst;
   image.convertTo(dst, CV_8UC1, 255);
-  return(dst);
+  //return(dst);
 }
 
 
