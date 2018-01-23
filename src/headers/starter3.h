@@ -68,6 +68,8 @@ Mat img_magnitude(Mat img_complexe);
 */
 Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows);
 
+Mat periodic_shift(Mat img, int p);
+
 /**
 @fn Mat convolution_fft(Mat x, Mat h)
 @brief give the convolution of the two matrix thanks to FFT
