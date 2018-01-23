@@ -38,10 +38,8 @@ int main(int argc, char** argv )
     cout << "Binarization done." << endl;
 
     /* TESTING THE LEVELS COMPUTATION */
-    convert_to_float(image_bis, image_bis);
-    vector<int> levels = levels_computation(image_bis);
-    cout << "c le bendo" << endl;
-    print_vector(levels);
+    vector<float> levels = normalized_levels(image_bis);
+    //print_vector(levels);
     cout << "Levels computation done." << endl;
 
     cout << endl << "All tests have passed successfully, well done !" << endl;

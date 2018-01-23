@@ -9,7 +9,7 @@ using std::cout;
 using std::endl;
 
 
-void binarization(const Mat &image, Mat &bin_image) {
+void binarization(Mat &image, Mat &bin_image) {
 
   int nRows = image.rows;
   int nCols = image.cols;
@@ -17,7 +17,8 @@ void binarization(const Mat &image, Mat &bin_image) {
   //bin_image.create(nRows, nCols, CV_32F);
   //bin_image.create(nRows, nCols, CV_32F);
 
-  float threshold = 0.5;
+  float threshold = (float) optimal_threshold(image)/256.;
+  cout << threshold << endl;
 
   for (uint i = 0; i < nCols; i++) {
     for (uint j = 0; j < nRows; j++) {
@@ -28,7 +29,7 @@ void binarization(const Mat &image, Mat &bin_image) {
   //return(bin_image);
 }
 
-void print_vector(vector<int> vect) {
+void print_vector(vector<float> vect) {
     for (uint i = 0; i < vect.size(); i++) {
         cout << vect[i] << endl;
     }
@@ -36,17 +37,63 @@ void print_vector(vector<int> vect) {
 
 std::vector<int> levels_computation(Mat &image) {
 
-    Mat dst;
-    convert_to_int(image, dst);
-
-    std::vector<int> levels(255, 0);
+    std::vector<int> levels(256, 0);
+    int intensity;
     for (uint i = 0; i < image.cols; i++) {
       for (uint j = 0; j < image.rows; j++) {
-        int intensity = dst.at<int>(j, i);
-        cout << intensity << endl;
+        intensity = image.at<uchar>(j, i);
         levels[intensity] += 1;
       }
     }
 
     return(levels);
+}
+
+std::vector<float> normalized_levels(Mat &image) {
+    int nb_pixels = image.rows * image.cols;
+    std::vector<int> levels = levels_computation(image);
+    //creation of a new vector to avoid type conflicts between int and floats
+    std::vector<float> levels_normalized(256, 0);
+    for (uint i = 0; i < levels.size(); i++) {
+        levels_normalized[i] = (float) levels[i]/nb_pixels;
+    }
+    return levels_normalized;
+}
+
+float mean_level(vector<float> levels, int k) {
+    float mean = 0;
+    for (uint i = 0; i <= k; i++) {
+        mean += i * levels[i];
+    }
+    return mean;
+}
+
+float cumulative_moment_0(vector<float> levels, int k) {
+   float omega = 0;
+   for (uint i = 0; i <= k; i++) {
+       omega += levels[i];
+   }
+   return omega;
+}
+
+int index_max(vector<float> vect) {
+    int idx = 0;
+    for (uint k = 1; k < vect.size(); k++) {
+        if (vect[idx] < vect[k]) {
+          idx = k;
+        }
+    }
+    return idx;
+}
+
+int optimal_threshold(Mat &image) {
+    vector<float> levels = normalized_levels(image);
+    vector<float> sigmas(256, 0);
+    float mu_T = mean_level(levels, sigmas.size());
+    for (uint k = 0; k < sigmas.size(); k++) {
+        float mu = mean_level(levels, k);
+        float omega = cumulative_moment_0(levels, k);
+        sigmas[k] = pow(mu_T*omega - mu, 2)/(omega*(1-omega));
+    }
+    return index_max(sigmas);
 }
