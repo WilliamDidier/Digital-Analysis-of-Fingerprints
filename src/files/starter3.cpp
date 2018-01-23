@@ -152,12 +152,38 @@ Mat periodic_image( Mat image){
   return big_image;
 }
 
+Mat periodic_shift(Mat src, int p){
+  int x,y;
+  int idx = 0;
+
+  Mat dest;
+  std::string file("../split_test_");
+  dest.create(src.rows, src.cols, CV_32F);
+  for (uint i = 0; i < src.cols; i++){
+    for (uint j = 0; j < src.rows; j++){
+      file = file.substr(0,14);
+      file += std::to_string(idx) + ".png";
+      x = (i+p) % src.cols;
+      y = (j+p) % src.rows;
+      //cout << "From ("<<i<<","<<j<<") "<<" To (" << x << "," << y << ")";
+      Scalar intensity = src.at<float>(j,i);
+      //cout << "// " << intensity[0] << endl;
+      dest.at<float>(y,x) = intensity[0];
+      //imwrite(file, dest);
+      idx += 1;
+    }
+  }
+  return dest;
+}
+
 Mat convolution_fft(Mat x, Mat h){
 
   // Mat trans_mat = (Mat_<double>(2,3) << 1, 0, 1, 0, 1, 1);
   // warpAffine(x,x,trans_mat,x.size());
+  int p = (h.cols-1)/2;
   int cols = x.cols;
   int rows = x.rows;
+  //x = periodic_shift(x, p);
   x = periodic_image(x);
   Mat X = transfo_fourier(x);
   //one complete h with zero to reach the size of X
@@ -195,23 +221,3 @@ Mat Gaussian_kernel(int size, float sigma_x, float sigma_y){
   kernel = kernel / ((float) norm(kernel, NORM_L1));
   return kernel;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
