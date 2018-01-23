@@ -7,38 +7,36 @@
 #include "starter2.h"
 #define PI 3.14159265
 
-vector<int> rotation(int rows, int cols, int i, int j, int angle ){
+vector<int> rotation( int i, int j, int angle ){
   int max = 0;
-  float i_prime = abs(cos(-PI*angle/180)*i - sin(-PI*angle/180)*j);
-  float j_prime = abs(sin(-PI*angle/180)*i + cos(-PI*angle/180)*j);
+  float i_prime = cos(PI*angle/180)*i - sin(PI*angle/180)*j ;
+  float j_prime = sin(PI*angle/180)*i + cos(PI*angle/180)*j ;
   vector<int> tab(2);
   tab[0] = floor(i_prime + 0.5);
   tab[1] = floor(j_prime + 0.5);
-  if (tab[0]>max ){
-    max = tab[0];
-  }
-  std::cout << max << std::endl;
   return tab;
 }
 
-Mat rotate_img(Mat image, int angle){
+
+Mat rotate_img_to_dest(Mat image, int angle){
   int rows = image.rows;
   int cols = image.cols;
-  vector<int> maxi(2);
-
-  Mat Res = Mat::ones(rows, cols, CV_32FC1);
-  for(int i = 0; i < cols; i++ ){
-    for(int j = 0; j < rows; j++){
-        vector<int> tab(2);
-        tab = rotation(rows, cols,i,j, angle);
-         if( tab[0] >= 0 && tab[1] >= 0 && tab[1] < rows && tab[0] < cols){
-          Scalar intensity = image.at<float>(tab[0], tab[1]);
-          Res.at<float>(i, j) = intensity[0];
+  int dim_output_x = int(sin(PI*angle/180)*cols + rows*cos(PI*angle/180));
+  int dim_output_y = int(sin(PI*angle/180)*rows + cols*cos(PI*angle/180));
+  Mat Res = Mat::zeros(dim_output_x,dim_output_y, CV_32FC1);
+  for(int i = 0; i < rows; i++ ){
+    for(int j = 0; j < cols; j++){
+      Scalar intensity = image.at<float>(i, j);
+       vector<int> tab(2);
+       tab = rotation(i,j, angle);
+       if( tab[0] >= -sin(PI*angle/180)*cols && tab[1] >= 0 && tab[1] < dim_output_x && tab[0] < cols){
+        Res.at<float>(tab[0]+sin(PI*angle/180)*cols, tab[1]) = intensity[0];
        }
     }
   }
   return Res;
 }
+
 Mat interpolation_moy_16(Mat image){
   int rows = image.rows;
   int cols = image.cols;
@@ -49,12 +47,10 @@ Mat interpolation_moy_16(Mat image){
   for(int i = 0; i < rows; i++ ){
     for(int j = 0; j < cols; j++){
       Scalar intensity = image.at<float>(i, j);
-      // if (intensity[0] == 1){
         float moy = (big_image.at<float>(i+2, j+1)+big_image.at<float>(i, j+1)+
         big_image.at<float>(i+1, j+2)+big_image.at<float>(i+1, j)
         +big_image.at<float>(i+2, j+2)+big_image.at<float>(i, j)
         +big_image.at<float>(i+2, j)+ big_image.at<float>(i, j+2))/8.;
-        // std::cout << moy << std::endl;
         image.at<float>(i,j) = moy;
        }
     }
@@ -71,13 +67,36 @@ Mat interpolation_nearest_neighboor(Mat image){
   for(int i = 0; i < rows; i++ ){
     for(int j = 0; j < cols; j++){
       Scalar intensity = image.at<float>(i, j);
-      if (intensity[0] == 1){
+      if (intensity[0] == 0){
         image.at<float>(i,j) = big_image.at<float>(i+2,j+1);
        }
     }
   }
   return image;
 }
+
+
+
+Mat rotate_img_from_source(Mat image, int angle){
+  int rows = image.rows;
+  int cols = image.cols;
+  int opp_angle = -angle;
+  int dim_output_x = int(sin(PI*angle/180)*cols + rows*cos(PI*angle/180));
+  int dim_output_y = int(sin(PI*angle/180)*rows + cols*cos(PI*angle/180));
+  Mat Res = Mat::zeros(dim_output_x,dim_output_y, CV_32FC1);
+  for(int i = -int(sin(PI*angle/180)*cols); i < cols; i++ ){
+    for(int j = 0; j < cols+int(sin(PI*angle/180)*cols); j++){
+        vector<int> tab(2);
+        tab = rotation(i,j, opp_angle);
+         if( tab[0] >= 0 && tab[1] >= 0 && tab[1] < cols && tab[0] < rows){
+          Scalar intensity = image.at<float>(tab[0], tab[1]);
+          Res.at<float>(i+int(sin(PI*angle/180)*cols), j ) = intensity[0];
+       }
+    }
+  }
+  return Res;
+}
+
 
 int P(int x){
   if (x > 0){
@@ -115,8 +134,6 @@ Mat interpolation_bicubic(Mat image){
     for(int j = 0; j < cols; j++){
       Scalar intensity = image.at<float>(i, j);
       image.at<float>(i,j) = bicubic(i+2,j+2, big_image);
-
-
     }
   }
   return image;

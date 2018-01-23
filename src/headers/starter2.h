@@ -16,7 +16,9 @@ contains the functions related to the starter 2
 
 vector<int> rotation(int i, int j, int angle );
 
-Mat rotate_img(Mat image, int angle);
+Mat rotate_img_from_source(Mat image, int angle);
+
+Mat rotate_img_to_dest(Mat image, int angle);
 
 Mat interpolation_moy_16(Mat image);
 
@@ -26,10 +28,13 @@ int P(int x);
 
 float  polynome(int x);
 
-int bicubic(int i, int j);
+float bicubic(float dx, float dy, int i, int j, Mat image);
 
 Mat interpolation_bicubic(Mat image);
 
+vector<float> rotation_cubic( int i, int j, int angle );
+
+Mat rotate_img_from_source_cubic(Mat image, int angle);
 
 
 

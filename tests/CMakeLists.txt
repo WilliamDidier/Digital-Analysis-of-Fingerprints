@@ -4,6 +4,7 @@ add_executable(Demo_main1 demo_main1.cpp)
 add_executable(test_1 test_1.cpp)
 add_executable(test_convol_fft test_convol_fft.cpp)
 add_executable(test_convol_shifted test_convol_shifted.cpp)
+add_executable(test_convol_xy test_convol_xy.cpp)
 add_executable(test_convol test_convol.cpp)
 add_executable(test_FFT_img test_FFT_img.cpp)
 add_executable(test_IFFT_img test_IFFT_img.cpp)
@@ -34,6 +35,9 @@ add_test (NAME test_convol_fft
 add_test (NAME test_convol
 		COMMAND test_convol
 	 )
+add_test (NAME test_convol_xy
+		COMMAND test_convol_xy
+	 )
 
 add_test (NAME test_convol_shifted
 		COMMAND test_convol_shifted
@@ -50,8 +54,6 @@ add_test (NAME test_complexite
 add_test (NAME test_starter_4
 	 	COMMAND test_starter_4
 	 )
-
-
 add_test (NAME test_rotation
 		COMMAND test_rotation
 	 )
@@ -113,6 +115,12 @@ target_link_libraries(test_complexite
 )
 
 target_link_libraries(test_starter_4
+    PUBLIC
+    libFingerPrint
+    ${OpenCV_LIBS}
+)
+
+target_link_libraries(test_convol_xy
     PUBLIC
     libFingerPrint
     ${OpenCV_LIBS}
