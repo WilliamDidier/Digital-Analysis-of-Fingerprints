@@ -30,9 +30,15 @@ int main(int argc, char** argv )
     imwrite("tests/test_convol.png", naive);
     waitKey(0);
     cout << " Done." << endl;*/
-    cout << "Testing the image shifting" << endl;
+    /*cout << "Testing the image shifting" << endl;
     convert_to_float(image,image);
     image = periodic_shift(image, 350);
     convert_to_int(image,image);
-    imwrite("../output/shift.png", image);
+    imwrite("../output/shift.png", image);*/
+    Mat kernel(3,3,CV_8UC1, 1);
+    erode(image,image,kernel);
+    imwrite("../dilatation.png", image);
+    dilate(image,image,kernel);
+    imwrite("../erodation.png", image);
+
 }
