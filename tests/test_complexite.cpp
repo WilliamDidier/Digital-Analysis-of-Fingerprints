@@ -24,7 +24,7 @@ int main(int argc, char** argv)
       while(elt <16){
         temps1 = clock();
         Mat image = Mat::ones(n,m, CV_32F);
-        image = convert_to_float(image);
+        convert_to_float(image, image);
         Mat kernel(elt,elt,CV_32FC1, Scalar(1./(elt*elt)));
         Mat naive = Convol_Shifted(image, kernel);
         temps2=clock();
@@ -32,7 +32,7 @@ int main(int argc, char** argv)
 
         temps1 = clock();
         Mat image2 = Mat::ones(n,m, CV_32F);
-        image2 = convert_to_float(image2);
+        convert_to_float(image2, image2);
         Mat kernel2(elt,elt,CV_32FC1, Scalar(1./(elt*elt)));
         Mat naive2 = convolution_fft(image2, kernel2);
         temps2=clock();

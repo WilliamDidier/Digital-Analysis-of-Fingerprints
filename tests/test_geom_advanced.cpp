@@ -29,13 +29,14 @@ int main(int argc, char** argv ){
   Point2i param(90, 60);
   Point2i press(144, 128);
   ellipse_test = ellipse(param, press, Point2i(288, 256));
-  imwrite("../img/test_limpt.png", convert_to_int(ellipse_test));
+  convert_to_int(ellipse_test, ellipse_test);
+  imwrite("../img/test_limpt.png", ellipse_test);
   cout << " Done. (image saved at img/test_limpt.png)" << endl;
 
   /*TESTING THE XLIM YLIM COMPUTATION */
-  cout << "Testing the extreme points computation...";;
+  cout << "Testing the extreme points computation...";
   Mat image = imread("../img/test_limpt.png",0);
-  image = convert_to_float(image);
+  convert_to_float(image, image);
   //assert(fingerprint_boundaries(image) == Point2i(233,69));
   cout << " Done" << endl;
 
@@ -77,10 +78,11 @@ int main(int argc, char** argv ){
   /*TESTING ON FINGERPRINT WITH ELLIPSE*/
   cout << "Test Lambert" << endl;
   image = imread("../img/clean_finger.png", 0);
-  image = convert_to_float(image);
+  convert_to_float(image, image);
   Point2i pressure_center = pressure_center_computation(image);
   cout << "pressure center " << pressure_center << endl;
   apply_aniso(image, pressure_center);
-  imwrite("../output/lambert.png", convert_to_int(image));
+  convert_to_int(image, image);
+  imwrite("../output/lambert.png", image);
   cout << "Done." << endl;
 }

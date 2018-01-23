@@ -11,6 +11,7 @@ set(
 	files/starter_1.cpp
 	files/main_1.cpp
 	files/starter3.cpp
+	files/starter_4.cpp
 )
 
 set(
@@ -19,6 +20,7 @@ set(
 	headers/starter_1.h
 	headers/main_1.h
 	headers/starter3.h
+	headers/starter_4.h
 )
 
 # Add all the sources to the project

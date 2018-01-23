@@ -23,10 +23,11 @@ int main(int argc, char** argv )
     }
     //TESTING THE CONVOLUTION SINCE CENTERED POINT
     cout << "convol from the centered point ...";
-    image = convert_to_float(image);
+    convert_to_float(image, image);
     Mat kernel = Gaussian_kernel(5,2,2);
     Mat naive = Convol_Shifted(image, kernel);
-    imwrite("tests/test_convol_shifted.png", convert_to_int(naive));
+    convert_to_int(naive, naive);
+    imwrite("tests/test_convol_shifted.png", naive);
     waitKey(0);
     cout << " Done." << endl;
 }

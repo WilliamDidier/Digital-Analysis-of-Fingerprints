@@ -15,8 +15,8 @@ contains the functions related to the starter 1
 #define STARTER_1
 
 #include <opencv2/opencv.hpp>
-#include <stdio.h>
-#include "starter_1.h"
+#include <cstdio>
+
 using namespace cv;
 using std::cout;
 using std::endl;
@@ -28,7 +28,9 @@ using std::endl;
   \return New header pointing to the data casted to floats.
   \author Théo L.
 */
-Mat convert_to_float(Mat image);
+//Mat convert_to_float(Mat & image);
+void convert_to_float(Mat & image, Mat &);
+
 
 /**
   \fn Mat convert_to_int(Mat image)
@@ -36,7 +38,8 @@ Mat convert_to_float(Mat image);
   \return New header pointing to the data casted to ints.
   \author Théo L.
 */
-Mat convert_to_int(Mat image);
+//Mat convert_to_int(Mat&  image);
+void convert_to_int(Mat&  image, Mat &);
 
 
 /**

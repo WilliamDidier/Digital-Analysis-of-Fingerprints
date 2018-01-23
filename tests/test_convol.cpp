@@ -23,10 +23,11 @@ int main(int argc, char** argv )
     }
     //TESTING THE CONVOLUTION SINCE THE RIGHT DOWN POINT
     cout << "convol from the right down point ...";
-    image = convert_to_float(image);
+    convert_to_float(image, image);
     Mat kernel = Gaussian_kernel(5,2,2);
     Mat naive = Convol(image, kernel);
-    imwrite("tests/test_convol.png", convert_to_int(naive));
+    convert_to_int(naive, naive);
+    imwrite("tests/test_convol.png", naive);
     waitKey(0);
     cout << " Done." << endl;
 }
