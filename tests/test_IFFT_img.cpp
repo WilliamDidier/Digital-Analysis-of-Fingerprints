@@ -25,7 +25,7 @@ int main(int argc, char** argv )
     cout << "give the spectre of the fourier transform of an image ...";
     Mat dst = image;
     convert_to_float(dst, image);
-    Mat kernel = Gaussian_kernel(5,2,2);
+    Mat kernel = Gaussian_kernel(5,2,2,1);
     Mat complex = transfo_fourier(image);
     int nbCols = complex.cols;
     int nbRows = complex.rows;

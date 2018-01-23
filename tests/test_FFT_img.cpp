@@ -24,7 +24,7 @@ int main(int argc, char** argv )
     //TESTING THE FAST FOURIER TRANSFORM
     cout << "give the spectre of the fourier transform of an image ...";
     convert_to_float(image, image);
-    Mat kernel = Gaussian_kernel(5,2,2);
+    Mat kernel = Gaussian_kernel(5,2,2,1);
     Mat complex = transfo_fourier(image);
     Mat naive = img_magnitude(complex);
     convert_to_int(naive, naive);
