@@ -32,18 +32,22 @@ int main(int argc, char** argv )
         return -1;
     }
     //TESTING THE ROTATION OF THE IMAGE
+    Mat rotation_to_dest_corr ;
+    Mat rotation_from_source_corr;
     cout << "Rotation of image...";
     image = convert_to_float(image);
     int angle = 30;
-    Mat rotation = rotate_img(image, angle);
-    // rotation = interpolation_bicubic(rotation);
+    Mat rotation_to_dest = rotate_img_to_dest(image, angle);
+    rotation_to_dest_corr = interpolation_nearest_neighboor(rotation_to_dest);
+    Mat rotation_from_source = rotate_img_from_source(image, angle);
+    rotation_from_source_corr = interpolation_bicubic(rotation_from_source);
 
-    imwrite("tests/test_rotation.png", convert_to_int(rotation));
-    imwrite("tests/image.png", convert_to_int(image));
-    imshow("image", image);
-    waitKey(0);
-    imshow("rotation", rotation);
-    waitKey(0);
+    // Mat rotation_from_source_cubic = rotate_img_from_source_cubic(image, angle);
+    // imwrite("tests/rotation_to_dest.png", convert_to_int(rotation_to_dest));
+    // imwrite("tests/rotation_to_dest_corr.png", convert_to_int(rotation_to_dest_corr));
+    imwrite("tests/rotation_from_source.png", convert_to_int(rotation_from_source));
+    // imwrite("tests/rotation_from_source_cubic.png", convert_to_int(rotation_from_source_cubic));
+
     // imshow("rotation2", rotation);
     // waitKey(0);
 
