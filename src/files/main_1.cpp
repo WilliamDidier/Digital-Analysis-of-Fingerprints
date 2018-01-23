@@ -19,7 +19,7 @@ float distance_computation(const Point2i pressure_center, Point2i point, bool an
 float coefficient_computation(bool clean_to_weak, const Point2i pressure_center, Point2i point){
   float distance = distance_computation(pressure_center, point, false);
   if (clean_to_weak){
-    return exp(sqrt(distance)/10);
+    return exp(distance/100);
   } else {
     return exp(-distance/500);
   }

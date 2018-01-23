@@ -11,37 +11,49 @@ using namespace cv;
 using std::cout;
 using std::endl;
 
+void create_file(std::ofstream &monFlux, clock_t temps1, clock_t temps2, clock_t temps3, clock_t temps4, int m, int n){
+  monFlux << n << " " << m << " " <<  -(double) temps1/CLOCKS_PER_SEC + (double) temps2/CLOCKS_PER_SEC;
+  monFlux << " " << -(double) temps3/CLOCKS_PER_SEC + (double) temps4/CLOCKS_PER_SEC << endl;
+}
 
 int main(int argc, char** argv)
-{   string const nomFichier("temps.txt");
-    std::ofstream monFlux(nomFichier.c_str());
-    if(monFlux)
-    { clock_t temps1;
-      clock_t temps2;
-      int n = std::stoi(argv[1]);
-      int m = std::stoi(argv[2]);
+{
+  clock_t temps1;
+  clock_t temps2;
+  clock_t temps3;
+  clock_t temps4;
+  string const nomFichier1("kernel3.txt");
+  string const nomFichier2("kernel9.txt");
+  string const nomFichier3("kernel15.txt");
+
+  std::ofstream monFlux1(nomFichier1.c_str());
+  std::ofstream monFlux2(nomFichier2.c_str());
+  std::ofstream monFlux3(nomFichier3.c_str());
+
+  for (int n = 16; n<2000; n+=50){
+    // for (int m = 16; m<1000; m+=50){
       int elt = 3;
       while(elt <16){
         temps1 = clock();
-        Mat image = Mat::ones(n,m, CV_32F);
-        convert_to_float(image, image);
+        Mat image = Mat::ones(n,n, CV_32F);
         Mat kernel(elt,elt,CV_32FC1, Scalar(1./(elt*elt)));
         Mat naive = Convol_Shifted(image, kernel);
         temps2=clock();
-        monFlux << elt  << " " << n << " " << m << " " <<  -(double) temps1/CLOCKS_PER_SEC + (double) temps2/CLOCKS_PER_SEC << endl;
-
-        temps1 = clock();
-        Mat image2 = Mat::ones(n,m, CV_32F);
-        convert_to_float(image2, image2);
-        Mat kernel2(elt,elt,CV_32FC1, Scalar(1./(elt*elt)));
-        Mat naive2 = convolution_fft(image2, kernel2);
-        temps2=clock();
-        monFlux << elt  << " " << n << " " << m << " " <<  -(double) temps1/CLOCKS_PER_SEC + (double) temps2/CLOCKS_PER_SEC << endl;
+        temps3= clock();
+        Mat naive2 = convolution_fft(image, kernel);
+        temps4=clock();
+        if( elt == 3){
+          create_file(monFlux1, temps1, temps2, temps3, temps4, n, n);
+        }
+        if( elt == 9){
+          create_file(monFlux2, temps1, temps2, temps3, temps4, n, n);
+        }
+        if( elt == 15){
+          create_file(monFlux3, temps1, temps2, temps3, temps4, n, n);
+        }
         elt += 6;
-      }
+      // }
     }
-    else
-    {
-        cout << "ERREUR: Impossible d'ouvrir le fichier." << endl;
-    }
+  cout << n << endl;
+  }
 }

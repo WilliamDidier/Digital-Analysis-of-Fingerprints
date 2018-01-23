@@ -83,6 +83,31 @@ Mat symetry_y(Mat &image) {
 }
 
 /**
+  \fn symetry_x(Mat &image)
+  \brief
+  \param &image
+  \return
+  \author Romain C. & Théo M.
+*/
+Mat symetry_x(Mat &image) {
+    /* returns the symetry along the y axis */
+    int nRows = image.rows;
+    int nCols = image.cols;
+    Mat image_sym;
+    //creation of a Mat with the same size as 'image'
+    image_sym.create(nRows, nCols, CV_32F);
+    for (uint i = 0; i < nCols; i++) {
+      for (uint j = 0; j < nRows; j++) {
+        //gets the intensity value of image
+        Scalar intensity = image.at<float>(j, i);
+        //fills 'image_sym' according to the symetry
+        image_sym.at<float>(nRows-j-1, i) = intensity[0];
+      }
+    }
+    return(image_sym);
+}
+
+/**
   \fn symetry_y(Mat &image)
   \brief
   \param &image

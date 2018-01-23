@@ -11,7 +11,7 @@ add_executable(exe main.cpp)
 
 add_subdirectory(tests)
 enable_testing ()
-
+add_subdirectory(docs)
 find_package( OpenCV REQUIRED )
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
