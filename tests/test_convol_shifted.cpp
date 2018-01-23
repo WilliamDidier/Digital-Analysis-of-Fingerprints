@@ -24,7 +24,7 @@ int main(int argc, char** argv )
     //TESTING THE CONVOLUTION SINCE CENTERED POINT
     cout << "convol from the centered point ...";
     image = convert_to_float(image);
-    Mat kernel = Normalized_kernel(5,5);
+    Mat kernel = Normalized_kernel(9,9);
     Mat naive = Convol_Shifted(image, kernel);
     imwrite("tests/test_convol_shifted.png", convert_to_int(naive));
     waitKey(0);

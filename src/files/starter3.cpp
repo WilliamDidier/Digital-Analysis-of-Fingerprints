@@ -152,12 +152,18 @@ Mat periodic_image( Mat image){
   return big_image;
 }
 
+Mat periodic_shift(Mat x, int p){
+
+}
+
 Mat convolution_fft(Mat x, Mat h){
 
   // Mat trans_mat = (Mat_<double>(2,3) << 1, 0, 1, 0, 1, 1);
   // warpAffine(x,x,trans_mat,x.size());
+  int p = (h.cols-1)/2;
   int cols = x.cols;
   int rows = x.rows;
+  //x = periodic_shift(x, p);
   x = periodic_image(x);
   Mat X = transfo_fourier(x);
   //one complete h with zero to reach the size of X
@@ -195,23 +201,3 @@ Mat Gaussian_kernel(int size, float sigma_x, float sigma_y){
   kernel = kernel / ((float) norm(kernel, NORM_L1));
   return kernel;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
