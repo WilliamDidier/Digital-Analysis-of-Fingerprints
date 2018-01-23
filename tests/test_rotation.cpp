@@ -35,7 +35,7 @@ int main(int argc, char** argv )
     Mat rotation_to_dest_corr ;
     Mat rotation_from_source_corr;
     cout << "Rotation of image...";
-    image = convert_to_float(image);
+    convert_to_float(image, image);
     int angle = 30;
     Mat rotation_to_dest = rotate_img_to_dest(image, angle);
     rotation_to_dest_corr = interpolation_nearest_neighboor(rotation_to_dest);

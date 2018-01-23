@@ -39,8 +39,8 @@ def fic_to_tab_square(fichier):
         if tmp != []:
             if int(tmp[0])==int(tmp[1]):
                 tab_n = np.append(tab_n, [int(tmp[0])])
-                tab_t1 = np.append(tab_t1, [float(tmp[2])])
-                tab_t2 = np.append(tab_t2, [float(tmp[3])])
+                tab_t1 = np.append(tab_t1, [float(tmp[2])*10**7])
+                tab_t2 = np.append(tab_t2, [float(tmp[3])*10**7])
     fic.close()
     return tab_n, tab_t1, tab_t2
 
@@ -63,19 +63,19 @@ def plot_3D(n,m,t):
 #plot_3D(n,m,t1-t2)
 
 
-n,t1,t2 = fic_to_tab_square("kernel15.txt")
-y1 = 15*15*n*n/100000000
-y2 = (6*n*np.log(2*n)+n*n)/10000000
-p1, = plt.plot(n,t1)
-p2, = plt.plot(n,t2)
-p3, = plt.plot(n,y1)
-p4, = plt.plot(n,y2)
-plt.legend([p1, p2, p3, p4], ["Naive", "FFT", "Naive Theoretical", "FFT Theoretical"])
-plt.ylabel("Execution time")
-plt.xlabel("Matrix dimension")
+n,t1,t2 = fic_to_tab_square("kernel9.txt")
+#y1 = 15*15*n*n/100000000
+#y2 = (6*n*np.log(2*n)+n*n)/10000000
+p1, = plt.plot((n),(t1))
+p2, = plt.plot((n),(t2))
+n2 = [i for i in range(16,5000)]
+#n3 = [i*i*np.log(i) for i in n2]
+#n4 = [i*i for i in n2]
+#p4, = plt.plot(np.log2(n2),np.log2(n3))
+#p5, = plt.plot(np.log2(n2),np.log2(n4))
+plt.title("Logarithmic scale : kernel of size 3")
+plt.legend([p1, p2], ["Naive", "FFT"], loc = "best")
+plt.ylabel("Number of computations (log2)")
+plt.xlabel("Matrix dimension (log2)")
 plt.show()
-
-
-
-
 

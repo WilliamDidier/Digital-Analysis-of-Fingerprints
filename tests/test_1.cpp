@@ -31,13 +31,14 @@ int main(int argc, char** argv )
     Point2i param(90, 60);
     Point2i press(image.rows/2, image.cols/2);
     ellipse_test = ellipse(param, press, Point2i(image.rows, image.cols));
-    imwrite("../test_limpt.png", convert_to_int(ellipse_test));
+    convert_to_int(ellipse_test, ellipse_test);
+    imwrite("../test_limpt.png", ellipse_test);
     cout << " Done. (image saved at fingerprints/test_limpt.png)" << endl;
 
     /*TESTING THE XLIM YLIM COMPUTATION */
     cout << "Testing the extreme points computation...";;
     image = imread("../fingerprints/test_limpt.png",0);
-    image = convert_to_float(image);
+    convert_to_float(image, image);
     assert(fingerprint_boundaries(image) == Point2i(233,69));
     cout << " Done" << endl;
 

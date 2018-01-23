@@ -22,11 +22,17 @@ int main(int argc, char** argv )
         return -1;
     }
     //TESTING THE CONVOLUTION SINCE THE RIGHT DOWN POINT
-    cout << "convol from the right down point ...";
-    image = convert_to_float(image);
+    /*cout << "convol from the right down point ...";
+    convert_to_float(image, image);
     Mat kernel = Gaussian_kernel(5,2,2);
     Mat naive = Convol(image, kernel);
-    imwrite("tests/test_convol.png", convert_to_int(naive));
+    convert_to_int(naive, naive);
+    imwrite("tests/test_convol.png", naive);
     waitKey(0);
-    cout << " Done." << endl;
+    cout << " Done." << endl;*/
+    cout << "Testing the image shifting" << endl;
+    convert_to_float(image,image);
+    image = periodic_shift(image, 350);
+    convert_to_int(image,image);
+    imwrite("../output/shift.png", image);
 }

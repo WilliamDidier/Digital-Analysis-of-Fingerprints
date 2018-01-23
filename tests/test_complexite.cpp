@@ -30,7 +30,7 @@ int main(int argc, char** argv)
   std::ofstream monFlux2(nomFichier2.c_str());
   std::ofstream monFlux3(nomFichier3.c_str());
 
-  for (int n = 16; n<2000; n+=50){
+  for (int n = 16; n<10000; n+=100){
     // for (int m = 16; m<1000; m+=50){
       int elt = 3;
       while(elt <16){
