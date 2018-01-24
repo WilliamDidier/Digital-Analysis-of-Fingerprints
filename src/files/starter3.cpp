@@ -182,20 +182,14 @@ Mat periodic_image( Mat image){
 
 Mat periodic_shift(Mat src, int p){
   int x,y;
-  int idx = 0;
-
   Mat dest;
   std::string file("../split_test_");
   dest.create(src.rows, src.cols, CV_32F);
   for (uint i = 0; i < src.cols; i++){
     for (uint j = 0; j < src.rows; j++){
-      file = file.substr(0,14);
-      file += std::to_string(idx) + ".png";
-      x = (i-p) % src.cols;
-      y = (j-p) % src.rows;
-      Scalar intensity = src.at<float>(j,i);
-      dest.at<float>(y,x) = intensity[0];
-      idx += 1;
+      x = (i+p) % src.cols;
+      y = (j+p) % src.rows;
+      dest.at<float>(y,x) = src.at<float>(j,i);
     }
   }
   return dest;
