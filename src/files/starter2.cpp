@@ -84,7 +84,7 @@ Mat rotate_img_from_source(Mat image, int angle){
   int dim_output_x = int(sin(PI*angle/180)*cols + rows*cos(PI*angle/180));
   int dim_output_y = int(sin(PI*angle/180)*rows + cols*cos(PI*angle/180));
   Mat Res = Mat::zeros(dim_output_x,dim_output_y, CV_32FC1);
-  for(int i = -int(sin(PI*angle/180)*cols); i < cols; i++ ){
+  for(int i = -int(sin(PI*angle/180)*cols); i < cols+ sin(PI*angle/180)*cols; i++ ){
     for(int j = 0; j < cols+int(sin(PI*angle/180)*cols); j++){
         vector<int> tab(2);
         tab = rotation(i,j, opp_angle);
@@ -96,6 +96,58 @@ Mat rotate_img_from_source(Mat image, int angle){
   }
   return Res;
 }
+
+float step_bilinear(float x, float y, Mat image){
+  float res ;
+  float floorx = float(floor(x));
+  float floory = float(floor(y));
+  float ceilx = float(ceil(x));
+  float ceily = float(ceil(y));
+
+  float dx = (x-floorx)/(ceilx-floorx);
+  float dy = (y-floory)/(ceily-floory);
+
+  float intensity1 = image.at<float>(floorx,  floory);
+  float intensity2 = image.at<float>(ceilx,  floory);
+  float intensity3 = image.at<float>(ceilx,  ceily);
+  float intensity4 = image.at<float>(floorx,  ceily);
+
+  res = (1-dx)*(1-dy)*intensity1+dx*(1-dy)*intensity2+dx*dy*intensity3+(1-dx)*dy*intensity4;
+  if (res > 1){
+    res = 1;
+  }
+  return res;
+  }
+
+vector<float> rotation_bilinear( int i, int j, int angle ){
+    int max = 0;
+    float i_prime = cos(PI*angle/180)*i - sin(PI*angle/180)*j ;
+    float j_prime = sin(PI*angle/180)*i + cos(PI*angle/180)*j ;
+    vector<float> tab(2);
+    tab[0] = i_prime;
+    tab[1] = j_prime;
+    return tab;
+  }
+
+Mat rotate_img_from_source_bilinear(Mat image, int angle){
+    int rows = image.rows;
+    int cols = image.cols;
+    int opp_angle = -angle;
+    int dim_output_x = int(sin(PI*angle/180)*cols + rows*cos(PI*angle/180));
+    int dim_output_y = int(sin(PI*angle/180)*rows + cols*cos(PI*angle/180));
+    Mat Res = Mat::zeros(dim_output_x,dim_output_y, CV_32FC1);
+    for(int i = -int(sin(PI*angle/180)*cols); i < cols + sin(PI*angle/180)*cols  ; i++ ){
+      for(int j = 0; j < cols+int(sin(PI*angle/180)*cols); j++){
+          vector<float> tab(2);
+          tab = rotation_bilinear(i,j, opp_angle);
+           if( tab[0] >= 0 && tab[1] >= 0 && tab[1] < cols && tab[0] < rows){
+            float intensity = step_bilinear(tab[0], tab[1], image);
+            Res.at<float>(i+int(sin(PI*angle/180)*cols), j ) = intensity;
+         }
+      }
+    }
+    return Res;
+  }
 
 
 int P(int x){

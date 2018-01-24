@@ -34,7 +34,9 @@ Mat interpolation_bicubic(Mat image);
 
 vector<float> rotation_cubic( int i, int j, int angle );
 
-Mat rotate_img_from_source_cubic(Mat image, int angle);
+Mat rotate_img_from_source_bilinear(Mat image, int angle);
+
+vector<float> rotation_bilinear( int i, int j, int angle );
 
 
 

@@ -36,17 +36,19 @@ int main(int argc, char** argv )
     Mat rotation_from_source_corr;
     cout << "Rotation of image...";
     convert_to_float(image, image);
-    int angle = 30;
-    Mat rotation_to_dest = rotate_img_to_dest(image, angle);
-    rotation_to_dest_corr = interpolation_nearest_neighboor(rotation_to_dest);
-    Mat rotation_from_source = rotate_img_from_source(image, angle);
-    rotation_from_source_corr = interpolation_bicubic(rotation_from_source);
 
+    int angle = 20;
+    // Mat rotation_to_dest = rotate_img_to_dest(image, angle);
+    // rotation_to_dest_corr = interpolation_nearest_neighboor(rotation_to_dest);
+    Mat rotation_from_source_bilinear = rotate_img_from_source_bilinear(image, angle);
+    Mat rotation_from_source = rotate_img_from_source(image, angle);
+    convert_to_int(rotation_from_source_bilinear, rotation_from_source_bilinear);
+    convert_to_int(rotation_from_source, rotation_from_source);
     // Mat rotation_from_source_cubic = rotate_img_from_source_cubic(image, angle);
     // imwrite("tests/rotation_to_dest.png", convert_to_int(rotation_to_dest));
     // imwrite("tests/rotation_to_dest_corr.png", convert_to_int(rotation_to_dest_corr));
-    imwrite("tests/rotation_from_source.png", convert_to_int(rotation_from_source));
-    // imwrite("tests/rotation_from_source_cubic.png", convert_to_int(rotation_from_source_cubic));
+    imwrite("tests/rotation_from_source_bilinear.png", rotation_from_source_bilinear);
+     imwrite("tests/rotation_from_source.png", rotation_from_source);
 
     // imshow("rotation2", rotation);
     // waitKey(0);
