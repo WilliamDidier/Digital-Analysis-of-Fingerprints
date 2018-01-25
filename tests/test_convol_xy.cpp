@@ -28,7 +28,7 @@ int main(int argc, char** argv )
     cout << "convol_xy from the centered point ...";
     convert_to_float(image,image);
     Point2i pc(image.cols/2, image.rows/2);
-    Mat naive = Convol_Shifted_xy(image, 11, pc);
+    Mat naive = Convol_Shifted_xy(image, 11);
     convert_to_int(naive, naive);
     imwrite("tests/test_convol_shifted_xy.png", naive);
     //waitKey(0);

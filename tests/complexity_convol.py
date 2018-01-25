@@ -63,11 +63,11 @@ def plot_3D(n,m,t):
 #plot_3D(n,m,t1-t2)
 
 
-n,t1,t2 = fic_to_tab_square("kernel9.txt")
+n,t1,t2 = fic_to_tab_square("kernel3.txt")
 #y1 = 15*15*n*n/100000000
 #y2 = (6*n*np.log(2*n)+n*n)/10000000
-p1, = plt.plot((n),(t1))
-p2, = plt.plot((n),(t2))
+p1, = plt.plot(np.log(n),np.log(t1))
+p2, = plt.plot(np.log(n),np.log(t2))
 n2 = [i for i in range(16,5000)]
 #n3 = [i*i*np.log(i) for i in n2]
 #n4 = [i*i for i in n2]

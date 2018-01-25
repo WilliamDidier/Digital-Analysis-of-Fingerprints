@@ -25,9 +25,12 @@ int main(int argc, char** argv )
     cout << "convol thanks to fft...";
     convert_to_float(image,image);
     // Mat kernel = Normalized_kernel(7,7);
-    Mat kernel1 = Gaussian_kernel(9,2,0.2,1);
-    Mat kernel2 = Gaussian_kernel(9,0.2,2,1);
-    Mat kernel3 = Gaussian_kernel(9,2,2,1);
+    // Mat kernel1 = Gaussian_kernel(9,2,0.2,1);
+    // Mat kernel2 = Gaussian_kernel(9,0.2,2,1);
+    // Mat kernel3 = Gaussian_kernel(9,2,2,1);
+    Mat kernel1 = Normalized_kernel(9,9);
+    Mat kernel2 = Normalized_kernel(11,11);
+    Mat kernel3 = Gaussian_kernel(11,5,5,1);
     Mat naive1 = convolution_fft(image, kernel1);
     convert_to_int(naive1, naive1);
     imwrite("tests/test_convol_fft11.png", naive1);

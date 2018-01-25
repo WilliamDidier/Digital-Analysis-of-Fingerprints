@@ -6,6 +6,7 @@
 #include <cmath>
 #include "starter3.h"
 #include "starter_1.h"
+#include "main_1.h"
 
 using namespace cv;
 
@@ -90,25 +91,31 @@ Mat Convol_Shifted(Mat X, Mat H){
 }
 
 
-Mat Convol_Shifted_xy(Mat X, uint ColH, Point2i pc){
-
+Mat Convol_Shifted_xy(Mat X, uint size_h){
+  float P = (size_h-1)/2;
   uint ColX = X.cols;
   uint RowX = X.rows;
+  Point2i pc = pressure_center_computation(X);
   //  one create a float matrix which has the same dimension than X
   Mat Res(RowX, ColX, CV_32FC1);
   // One complete the matrix X with colH-1 zeros around X ( to remove the bordure issues)
   // To do that, one create a matrix of dimension greater than X
-  Mat BigX = Mat::ones(RowX+ColH-1, ColX+ColH-1, CV_32FC1);
+  Mat BigX = Mat::ones(RowX+size_h-1, ColX+size_h-1, CV_32FC1);
   // one select the region of dimension X
-  Rect roi = Rect((ColH-1)/2,(ColH-1)/2,ColX,RowX);
+  Rect roi = Rect((size_h-1)/2,(size_h-1)/2,ColX,RowX);
   // One copy X on the region
   X.copyTo(BigX(roi));
   // For each pixel of X ...
+  Point2i semi_axes = parameters_computation(X, pc);
+  float dist;
   for (int i1 = 0; i1 < ColX; i1++){
     for (int j1 = 0; j1 < RowX; j1++){
-      Mat H = Gaussian_kernel(11,8.*abs(i1-pc.x)/(float) RowX, 8.*abs(j1-pc.y)/(float) ColX, 1);
+      float sigma = (P/2.)*((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y)+(j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x));
+      //cout << sigma << endl;
+      Mat H = Gaussian_kernel(size_h, sigma, sigma, 0.5);
+      std::cout << norm(H, NORM_L1) << std::endl;
       //... one sélect a small image of dimension H having for beginning the current pixel...
-      Rect tmp = Rect(i1,j1,ColH,ColH);
+      Rect tmp = Rect(i1,j1,size_h,size_h);
       // ... and finally one complet the result matrix by the sum of product term by term of two matrix
       Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
     }
@@ -183,12 +190,12 @@ Mat periodic_image( Mat image){
 Mat periodic_shift(Mat src, int p){
   int x,y;
   Mat dest;
-  std::string file("../split_test_");
+  //std::string file("../split_test_");
   dest.create(src.rows, src.cols, CV_32F);
   for (uint i = 0; i < src.cols; i++){
     for (uint j = 0; j < src.rows; j++){
-      x = (i+p) % src.cols;
-      y = (j+p) % src.rows;
+      x = (i-p) % src.cols;
+      y = (j-p) % src.rows;
       dest.at<float>(y,x) = src.at<float>(j,i);
     }
   }
@@ -235,6 +242,9 @@ Mat Gaussian_kernel(int size, float sigma_x, float sigma_y, float energy){
   } else if (sigma_y ==  0){
     sigma_y = 0.00000001;
   }
+  // } else if (energy == 0){
+  //   energy = 0.0000001;
+  // }
   Mat kernel(size,size,CV_32FC1);
   float middle = ((float) size-1.)/2.;
   for (int i = 0; i < size; i++){
@@ -242,6 +252,6 @@ Mat Gaussian_kernel(int size, float sigma_x, float sigma_y, float energy){
       kernel.at<float>(j,i) = gauss2D((float) i, (float) j, middle, middle, sigma_x, sigma_y);
     }
   }
-  kernel = kernel / (energy * (float) norm(kernel, NORM_L1));
+  kernel = energy * kernel / ((float) norm(kernel, NORM_L1));
   return kernel;
 }
