@@ -6,6 +6,7 @@
 #include <cmath>
 #include "starter3.h"
 #include "starter_1.h"
+#include "main_1.h"
 
 using namespace cv;
 
@@ -90,6 +91,38 @@ Mat Convol_Shifted(Mat X, Mat H){
 }
 
 
+Mat Convol_Shifted_xy(Mat X, uint size_h){
+  float P = (size_h-1)/2;
+  uint ColX = X.cols;
+  uint RowX = X.rows;
+  Point2i pc = pressure_center_computation(X);
+  //  one create a float matrix which has the same dimension than X
+  Mat Res(RowX, ColX, CV_32FC1);
+  // One complete the matrix X with colH-1 zeros around X ( to remove the bordure issues)
+  // To do that, one create a matrix of dimension greater than X
+  Mat BigX = Mat::ones(RowX+size_h-1, ColX+size_h-1, CV_32FC1);
+  // one select the region of dimension X
+  Rect roi = Rect((size_h-1)/2,(size_h-1)/2,ColX,RowX);
+  // One copy X on the region
+  X.copyTo(BigX(roi));
+  // For each pixel of X ...
+  Point2i semi_axes = parameters_computation(X, pc);
+  float dist;
+  for (int i1 = 0; i1 < ColX; i1++){
+    for (int j1 = 0; j1 < RowX; j1++){
+      float sigma = (P/2.)*((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y)+(j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x));
+      //cout << sigma << endl;
+      Mat H = Gaussian_kernel(size_h, sigma, sigma, 0.5);
+      std::cout << norm(H, NORM_L1) << std::endl;
+      //... one sélect a small image of dimension H having for beginning the current pixel...
+      Rect tmp = Rect(i1,j1,size_h,size_h);
+      // ... and finally one complet the result matrix by the sum of product term by term of two matrix
+      Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
+    }
+  }
+  return Res;
+}
+
 
 Mat transfo_fourier( Mat image){
 
@@ -122,7 +155,8 @@ Mat img_magnitude(Mat img_complexe){
   res = res(Rect(0, 0, res.cols & -2, res.rows & -2));
   //one transform the matrix with float between 0 and 1
   normalize(res, res, 0, 1, NORM_MINMAX);
-  return res;Mat O = Mat::ones(2, 2, CV_32F);
+  return res;
+  Mat O = Mat::ones(2, 2, CV_32F);
 }
 
 Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
@@ -152,25 +186,18 @@ Mat periodic_image( Mat image){
   return big_image;
 }
 
+
+
 Mat periodic_shift(Mat src, int p){
   int x,y;
-  int idx = 0;
-
   Mat dest;
-  std::string file("../split_test_");
+  //std::string file("../split_test_");
   dest.create(src.rows, src.cols, CV_32F);
   for (uint i = 0; i < src.cols; i++){
     for (uint j = 0; j < src.rows; j++){
-      file = file.substr(0,14);
-      file += std::to_string(idx) + ".png";
-      x = (i+p) % src.cols;
-      y = (j+p) % src.rows;
-      //cout << "From ("<<i<<","<<j<<") "<<" To (" << x << "," << y << ")";
-      Scalar intensity = src.at<float>(j,i);
-      //cout << "// " << intensity[0] << endl;
-      dest.at<float>(y,x) = intensity[0];
-      //imwrite(file, dest);
-      idx += 1;
+      x = (i-p) % src.cols;
+      y = (j-p) % src.rows;
+      dest.at<float>(y,x) = src.at<float>(j,i);
     }
   }
   return dest;
@@ -183,7 +210,7 @@ Mat convolution_fft(Mat x, Mat h){
   int p = (h.cols-1)/2;
   int cols = x.cols;
   int rows = x.rows;
-  //x = periodic_shift(x, p);
+  x = periodic_shift(x, p);
   x = periodic_image(x);
   Mat X = transfo_fourier(x);
   //one complete h with zero to reach the size of X
@@ -210,7 +237,15 @@ float gauss2D(float x, float y, float esp_x, float esp_y, float sigma_x, float s
   return exp(-(x-esp_x)*(x-esp_x)/(2*sigma_x*sigma_x) + -(y-esp_y)*(y-esp_y)/(2*sigma_y*sigma_y));
 }
 
-Mat Gaussian_kernel(int size, float sigma_x, float sigma_y){
+Mat Gaussian_kernel(int size, float sigma_x, float sigma_y, float energy){
+  if (sigma_x ==  0){
+    sigma_x = 0.00000001;
+  } else if (sigma_y ==  0){
+    sigma_y = 0.00000001;
+  }
+  // } else if (energy == 0){
+  //   energy = 0.0000001;
+  // }
   Mat kernel(size,size,CV_32FC1);
   float middle = ((float) size-1.)/2.;
   for (int i = 0; i < size; i++){
@@ -218,6 +253,6 @@ Mat Gaussian_kernel(int size, float sigma_x, float sigma_y){
       kernel.at<float>(j,i) = gauss2D((float) i, (float) j, middle, middle, sigma_x, sigma_y);
     }
   }
-  kernel = kernel / ((float) norm(kernel, NORM_L1));
+  kernel = energy * kernel / ((float) norm(kernel, NORM_L1));
   return kernel;
 }

@@ -4,6 +4,7 @@ add_executable(Demo_main1 demo_main1.cpp)
 add_executable(test_1 test_1.cpp)
 add_executable(test_convol_fft test_convol_fft.cpp)
 add_executable(test_convol_shifted test_convol_shifted.cpp)
+add_executable(test_convol_xy test_convol_xy.cpp)
 add_executable(test_convol test_convol.cpp)
 add_executable(test_FFT_img test_FFT_img.cpp)
 add_executable(test_IFFT_img test_IFFT_img.cpp)
@@ -11,7 +12,7 @@ add_executable(test_complexite test_complexite.cpp)
 add_executable(test_starter_4 test_starter_4.cpp)
 add_executable(test_rotation test_rotation.cpp)
 add_executable(anisotropic_test anisotropic_test.cpp)
-
+add_executable(test_rotation_accuracy test_rotation_accuracy.cpp)
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 include_directories( ${CMAKE_SOURCE_DIR}/src/headers )
@@ -34,6 +35,9 @@ add_test (NAME test_convol_fft
 	 )
 add_test (NAME test_convol
 		COMMAND test_convol
+	 )
+add_test (NAME test_convol_xy
+		COMMAND test_convol_xy
 	 )
 
 add_test (NAME test_convol_shifted
@@ -58,6 +62,9 @@ add_test (NAME anisotropic_test
 
 add_test (NAME test_rotation
 		COMMAND test_rotation
+	 )
+add_test (NAME test_rotation_accuracy
+		COMMAND test_rotation_accuracy
 	 )
 target_link_libraries(test_1
     PUBLIC
@@ -122,6 +129,12 @@ target_link_libraries(test_starter_4
     ${OpenCV_LIBS}
 )
 
+target_link_libraries(test_convol_xy
+    PUBLIC
+    libFingerPrint
+    ${OpenCV_LIBS}
+)
+
 target_link_libraries(test_rotation
 		PUBLIC
 		libFingerPrint
@@ -129,6 +142,12 @@ target_link_libraries(test_rotation
 )
 
 target_link_libraries(anisotropic_test
+		PUBLIC
+		libFingerPrint
+		${OpenCV_LIBS}
+)
+
+target_link_libraries(test_rotation_accuracy
 		PUBLIC
 		libFingerPrint
 		${OpenCV_LIBS}

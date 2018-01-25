@@ -83,6 +83,8 @@ Mat Normalized_kernel(int NbCols, int NbRows);
 
 float gauss2D(float x, float y, float esp_x, float esp_y, float sigma_x, float sigma_y);
 
-Mat Gaussian_kernel(int size, float sigma_x, float sigma_y);
+Mat Gaussian_kernel(int size, float sigma_x, float sigma_y, float energy);
+
+Mat Convol_Shifted_xy(Mat X, uint size_h);
 
 #endif
