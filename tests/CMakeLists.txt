@@ -10,6 +10,7 @@ add_executable(test_IFFT_img test_IFFT_img.cpp)
 add_executable(test_complexite test_complexite.cpp)
 add_executable(test_starter_4 test_starter_4.cpp)
 add_executable(test_rotation test_rotation.cpp)
+add_executable(anisotropic_test anisotropic_test.cpp)
 
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
@@ -51,6 +52,9 @@ add_test (NAME test_starter_4
 	 	COMMAND test_starter_4
 	 )
 
+add_test (NAME anisotropic_test
+ 	 	COMMAND anisotropic_test
+ 	 )
 
 add_test (NAME test_rotation
 		COMMAND test_rotation
@@ -119,6 +123,12 @@ target_link_libraries(test_starter_4
 )
 
 target_link_libraries(test_rotation
+		PUBLIC
+		libFingerPrint
+		${OpenCV_LIBS}
+)
+
+target_link_libraries(anisotropic_test
 		PUBLIC
 		libFingerPrint
 		${OpenCV_LIBS}
