@@ -156,7 +156,8 @@ Mat img_magnitude(Mat img_complexe){
   res = res(Rect(0, 0, res.cols & -2, res.rows & -2));
   //one transform the matrix with float between 0 and 1
   normalize(res, res, 0, 1, NORM_MINMAX);
-  return res;Mat O = Mat::ones(2, 2, CV_32F);
+  return res;
+  Mat O = Mat::ones(2, 2, CV_32F);
 }
 
 Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){

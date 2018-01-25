@@ -38,8 +38,7 @@ using namespace cv;
   @return A float containing the distance
   @author Théo L.
 */
-float distance_computation(const Point2i pressure_center, Point2i point,
-    bool anisotropic);
+float distance_computation(const Point2i pressure_center, Point2i point);
 
 /**
   @fn float coefficient_computation(bool clean_to_weak, const Point2i
@@ -147,24 +146,42 @@ Point2i fingerprint_boundaries(Mat &image);
 Point2i pressure_center_computation(Mat &image);
 
 /**
+<<<<<<< HEAD
     @fn Point2i parameters_computation(Mat &image, Point2i pressure_center)
     @brief Computes the semi-major and semi-minor axes of an ellipse
     @param &image the image on which will be applied the ellipse after
     @param pressure_center coordinates of the pressure center
     @return A point that contains semi-major and semi-minor axes length
     @author Théo L.
+=======
+    @fn: Point2i parameters_computation(Mat &image, Point2i pressure_center)
+    @brief: computes the semi-major and semi-minor axes of the future ellipse
+    @param: &image: the image on which will be applied the ellipse after
+    @param: pressure_center: the coordinates of the pressure pressure_center
+    @return: a point that contains semi-major and semi-minor axes length
+    @author: Théo L.
+>>>>>>> 367dd97c05adf17dc2c45e0091b3a92780fa1b04
  */
 Point2i parameters_computation(Mat &image, Point2i pressure_center);
 
  /**
     @fn bool test_ellipse(Point2f const parameters, Point2i const
         pressure_center, Point2i coordinates)
+<<<<<<< HEAD
     @brief Tests if a given point is in the parametrized ellipse or not
     @param parameters semi-major and semi-minor axes length
     @param pressure_center coordinates of the pressure center
     @param pt the point that is tested
     @return A boolean representing the belonging of the point to the ellipse
     @author Théo L.
+=======
+    @brief: tests if a given point is in the ellipse or not
+    @param: parameters: semi-major and semi-minor axes
+    @param: pressure_center: the coordinates of the pressure pressure_center
+    @param: coordinates: the point that is tested
+    @return: a boolean function of the tests
+    @author: Théo L.
+>>>>>>> 367dd97c05adf17dc2c45e0091b3a92780fa1b04
   */
 bool test_ellipse(Point2f const parameters, Point2i const pressure_center,
     Point2i pt);
@@ -172,23 +189,64 @@ bool test_ellipse(Point2f const parameters, Point2i const pressure_center,
 /**
     @fn Mat ellipse(Point2i const parameters, Point2i const pressure_center,
         Point2i dimensions)
+<<<<<<< HEAD
     @brief Creats a binary matrix representing the parametrized ellipse
     @param parameters semi-major and semi-minor axes
     @param pressure_center coordinates of the pressure center
     @param dimensions dimensions of the image
     @return A binary Mat object representing an ellipse
     @author Théo L.
+=======
+    @brief: tests for each point if it is in the ellipse or not, and store the
+        result
+    @param: parameters: semi-major and semi-minor axes
+    @param: pressure_center: the coordinates of the pressure pressure_center
+    @param: dimensions: dimensions of the image
+    @return: a Mat object which values are 0 or 1 (0 : true, 1 : false)
+    @author: Théo L.
+>>>>>>> 367dd97c05adf17dc2c45e0091b3a92780fa1b04
  */
 Mat ellipse(Point2i const parameters, Point2i const pressure_center,
     Point2i dimensions);
 
 /**
+<<<<<<< HEAD
     @fn void apply_iso(Mat &image, Point2i const pressure_center)
     @brief Applies the anisotropic transformation on the image
     @param &image the image on which the filter will be applied
     @param pressure_center coordinates of the pressure pressure_center
     @author Théo L.
+=======
+    @fn: void per_layer_filtering(Mat &image, Mat &protected_zone)
+    @brief: apply the coefficient transform outside the ellipse
+    @param: &image: the image on which the filter will be applied
+    @param: pressure_center: the coordinates of the pressure pressure_center
+    @return: nothing: the image is directly modified
+    @author: Théo L.
+>>>>>>> 367dd97c05adf17dc2c45e0091b3a92780fa1b04
  */
-void apply_aniso(Mat &image, Point2i const pressure_center);
+void per_layer_filtering(Mat &image, Mat &protected_zone);
+
+/**
+    @fn: int number_of_iterations(Mat &image, Point2i pressure_center)
+    @brief: computes the approximate number of iterations that will be recquired
+        to apply correctly the anisotropic filtering process
+    @param: &image: the image on which the filter will be applied
+    @param: pressure_center: the coordinates of the pressure pressure_center
+    @return: an int containing the number of iterations
+    @author: Théo L.
+ */
+int number_of_iterations(Mat &image, Point2i pressure_center);
+
+/**
+    @fn: void anisotropic_filtering(Mat &image, Point2i const pressure_center)
+    @brief: compute at each step the new ellipse and apply the filter outside
+    @param: &image: the image on which the filter will be applied
+    @param: pressure_center: the coordinates of the pressure pressure_center
+    @return: nothing: the image is directly modified
+    @author: Théo L.
+ */
+void anisotropic_filtering(Mat &image, Point2i const pressure_center);
+
 
 #endif //MAIN_1_H

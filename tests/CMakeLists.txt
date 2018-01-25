@@ -11,7 +11,8 @@ add_executable(test_IFFT_img test_IFFT_img.cpp)
 add_executable(test_complexite test_complexite.cpp)
 add_executable(test_starter_4 test_starter_4.cpp)
 add_executable(test_rotation test_rotation.cpp)
-
+add_executable(anisotropic_test anisotropic_test.cpp)
+add_executable(test_rotation_accuracy test_rotation_accuracy.cpp)
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 include_directories( ${CMAKE_SOURCE_DIR}/src/headers )
@@ -54,8 +55,16 @@ add_test (NAME test_complexite
 add_test (NAME test_starter_4
 	 	COMMAND test_starter_4
 	 )
+
+add_test (NAME anisotropic_test
+ 	 	COMMAND anisotropic_test
+ 	 )
+
 add_test (NAME test_rotation
 		COMMAND test_rotation
+	 )
+add_test (NAME test_rotation_accuracy
+		COMMAND test_rotation_accuracy
 	 )
 target_link_libraries(test_1
     PUBLIC
@@ -127,6 +136,18 @@ target_link_libraries(test_convol_xy
 )
 
 target_link_libraries(test_rotation
+		PUBLIC
+		libFingerPrint
+		${OpenCV_LIBS}
+)
+
+target_link_libraries(anisotropic_test
+		PUBLIC
+		libFingerPrint
+		${OpenCV_LIBS}
+)
+
+target_link_libraries(test_rotation_accuracy
 		PUBLIC
 		libFingerPrint
 		${OpenCV_LIBS}
