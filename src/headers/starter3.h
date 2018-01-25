@@ -85,6 +85,6 @@ float gauss2D(float x, float y, float esp_x, float esp_y, float sigma_x, float s
 
 Mat Gaussian_kernel(int size, float sigma_x, float sigma_y, float energy);
 
-Mat Convol_Shifted_xy(Mat X, uint ColH, Point2i pc);
+Mat Convol_Shifted_xy(Mat X, uint size_h);
 
 #endif
