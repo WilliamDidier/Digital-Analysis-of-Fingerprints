@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
 #include <iostream>
@@ -13,7 +14,7 @@ using namespace cv;
 float produit_coefbycoef(Mat A, Mat B){
   /**
     @fn float produit_coefbycoef(Mat A, Mat B)
-    @brief make the sum of product term by term of two matrix
+    @brief Computes the sum of product term by term of two matrix
     @param Input : 2 matrix with the same size
     @return a float
     @author Théo M. & Romain

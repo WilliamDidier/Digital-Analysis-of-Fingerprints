@@ -118,9 +118,9 @@ Point2i parameters_computation(Mat &image, Point2i pressure_center) {
 }
 
 
-bool test_ellipse(Point2f parameters, Point2i const pressure_center, Point2i coordinates) {
-    float res = pow((coordinates.x - pressure_center.x)/parameters.x, 2); // à refaire avec la fonction distance
-    res += pow((coordinates.y - pressure_center.y)/parameters.y, 2);
+bool test_ellipse(Point2f parameters, Point2i const pressure_center, Point2i pt) {
+    float res = pow((pt.x - pressure_center.x)/parameters.x, 2); // à refaire avec la fonction distance
+    res += ((pt.y - pressure_center.y)/parameters.y) * ((pt.y - pressure_center.y)/parameters.y); 
     res = sqrt(res);
     return(res>=1);
 }
