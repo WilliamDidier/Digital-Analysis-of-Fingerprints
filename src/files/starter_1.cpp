@@ -75,6 +75,7 @@ Mat symetry_y(Mat &image) {
       for (uint j = 0; j < nRows; j++) {
         //gets the intensity value of image
         Scalar intensity = image.at<float>(j, i);
+
         //fills 'image_sym' according to the symetry
         image_sym.at<float>(j, nCols - i) = intensity[0];
       }
@@ -110,7 +111,9 @@ Mat symetry_x(Mat &image) {
 /**
   \fn symetry_y(Mat &image)
   \brief
-  \param &image
+  \param &image      if(neg == 1){
+        Res = symetry_y(Res);
+      }
   \return
   \author Romain C. & Théo M.
 */

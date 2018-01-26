@@ -34,8 +34,7 @@ Mat rotate_img_to_dest(Mat image, int angle){
        }
     }
   }
-  Rect roi = Rect((dim_output_x-cols)/2, (dim_output_y-rows)/2, cols, rows);
-
+  Rect roi = Rect(dim_output_y/2-cols/2+1, dim_output_x/2-rows/2, cols, rows);
   return Res(roi);
 }
 
@@ -78,25 +77,24 @@ Mat interpolation_nearest_neighboor(Mat image){
 }
 
 
-
 Mat rotate_img_from_source(Mat image, int angle){
   int rows = image.rows;
   int cols = image.cols;
   int opp_angle = -angle;
-  int dim_output_x = int(sin(PI*angle/180)*cols + rows*cos(PI*angle/180));
-  int dim_output_y = int(sin(PI*angle/180)*rows + cols*cos(PI*angle/180));
+  int dim_output_x = int(fabs(sin(PI*angle/180.))*cols + rows*fabs(cos(PI*angle/180.)));
+  int dim_output_y = int(fabs(sin(PI*angle/180.))*rows + cols*fabs(cos(PI*angle/180.)));
   Mat Res = Mat::zeros(dim_output_x,dim_output_y, CV_32FC1);
-  for(int i = -int(sin(PI*angle/180)*cols); i < cols+ sin(PI*angle/180)*cols; i++ ){
-    for(int j = 0; j < cols+int(sin(PI*angle/180)*cols); j++){
-        vector<int> tab(2);
-        tab = rotation(i,j, opp_angle);
-         if( tab[0] >= 0 && tab[1] >= 0 && tab[1] < cols && tab[0] < rows){
-          Scalar intensity = image.at<float>(tab[0], tab[1]);
-          Res.at<float>(i+int(sin(PI*angle/180)*cols), j ) = intensity[0];
-       }
+  for(int i = -int(sin(PI*angle/180.)*cols); i < dim_output_x-int(sin(PI*angle/180.)*cols); i++ ){
+    for(int j = -1; j < dim_output_y; j++){
+      vector<int> tab(2);
+      tab = rotation(i,j, opp_angle);
+      if( tab[0] >= 0 && tab[1] >= 0 && tab[1] <= cols && tab[0] <= rows){
+        float intensity = image.at<float>(tab[0], tab[1]);
+        Res.at<float>(i +int(sin(PI*angle/180.)*cols), j ) = intensity;
+      }
     }
   }
-  Rect roi = Rect((dim_output_x-cols)/2, (dim_output_y-rows)/2, cols, rows);
+  Rect roi = Rect(dim_output_y/2-cols/2+1, dim_output_x/2-rows/2, cols, rows);
   return Res(roi);
 }
 
@@ -122,36 +120,28 @@ float step_bilinear(float x, float y, Mat image){
   return res;
   }
 
-vector<float> rotation_bilinear( int i, int j, int angle ){
-    int max = 0;
-    float i_prime = cos(PI*angle/180)*i - sin(PI*angle/180)*j ;
-    float j_prime = sin(PI*angle/180)*i + cos(PI*angle/180)*j ;
-    vector<float> tab(2);
-    tab[0] = i_prime;
-    tab[1] = j_prime;
-    return tab;
-  }
 
 Mat rotate_img_from_source_bilinear(Mat image, int angle){
-    int rows = image.rows;
-    int cols = image.cols;
-    int opp_angle = -angle;
-    int dim_output_x = int(sin(PI*angle/180)*cols + rows*cos(PI*angle/180));
-    int dim_output_y = int(sin(PI*angle/180)*rows + cols*cos(PI*angle/180));
-    Mat Res = Mat::zeros(dim_output_x,dim_output_y, CV_32FC1);
-    for(int i = -int(sin(PI*angle/180)*cols); i < cols + sin(PI*angle/180)*cols  ; i++ ){
-      for(int j = 0; j < cols+int(sin(PI*angle/180)*cols); j++){
-          vector<float> tab(2);
-          tab = rotation_bilinear(i,j, opp_angle);
-           if( tab[0] >= 0 && tab[1] >= 0 && tab[1] < cols && tab[0] < rows){
-            float intensity = step_bilinear(tab[0], tab[1], image);
-            Res.at<float>(i+int(sin(PI*angle/180)*cols), j ) = intensity;
+      int rows = image.rows;
+      int cols = image.cols;
+      int opp_angle = -angle;
+      int dim_output_x = int(fabs(sin(PI*angle/180.))*cols + rows*fabs(cos(PI*angle/180.)));
+      int dim_output_y = int(fabs(sin(PI*angle/180.))*rows + cols*fabs(cos(PI*angle/180.)));
+      Mat Res = Mat::zeros(dim_output_x,dim_output_y, CV_32FC1);
+
+      for(int i = -int(sin(PI*angle/180.)*cols); i < dim_output_x-int(sin(PI*angle/180.)*cols); i++ ){
+        for(int j = -1; j < dim_output_y; j++){
+            vector<float> tab(2);
+            tab = rotation_bilinear(i,j, opp_angle);
+            if( tab[0] >= 0 && tab[1] >= 0 && tab[1] <= cols && tab[0] <= rows){
+              float intensity = step_bilinear(tab[0], tab[1], image);
+              Res.at<float>(i +int(sin(PI*angle/180.)*cols), j ) = intensity;
+            }
          }
       }
+      Rect roi = Rect(dim_output_y/2-cols/2+1, dim_output_x/2-rows/2, cols, rows);
+      return Res(roi);
     }
-    Rect roi = Rect((dim_output_x-cols)/2, (dim_output_y-rows)/2, cols, rows);
-    return Res(roi);
-  }
 
 
 float derive_x(float x, float y, Mat image){
@@ -261,19 +251,82 @@ Mat rotate_img_from_source_bicubic(Mat image, int angle){
       int rows = image.rows;
       int cols = image.cols;
       int opp_angle = -angle;
-      int dim_output_x = int(sin(PI*angle/180)*cols + rows*cos(PI*angle/180));
-      int dim_output_y = int(sin(PI*angle/180)*rows + cols*cos(PI*angle/180));
+      int dim_output_x = int(fabs(sin(PI*angle/180.))*cols + rows*fabs(cos(PI*angle/180.)));
+      int dim_output_y = int(fabs(sin(PI*angle/180.))*rows + cols*fabs(cos(PI*angle/180.)));
       Mat Res = Mat::zeros(dim_output_x,dim_output_y, CV_32FC1);
-      for(int i = -int(sin(PI*angle/180)*cols); i < cols + sin(PI*angle/180)*cols  ; i++ ){
-        for(int j = 0; j < cols+int(sin(PI*angle/180)*cols) ; j++){
+
+      for(int i = -int(sin(PI*angle/180.)*cols); i < dim_output_x-int(sin(PI*angle/180.)*cols); i++ ){
+        for(int j = -1; j < dim_output_y; j++){
             vector<float> tab(2);
             tab = rotation_bilinear(i,j, opp_angle);
-            if( tab[0] >= 0 && tab[1] >= 0 && tab[1] < cols && tab[0] < rows){
+            if( tab[0] >= 0 && tab[1] >= 0 && tab[1] <= cols && tab[0] <= rows){
               float intensity = cubic_interpolation(tab[0], tab[1], image);
-              Res.at<float>(i+int(sin(PI*angle/180)*cols), j ) = intensity;
-           }
-        }
+              Res.at<float>(i +int(sin(PI*angle/180.)*cols), j ) = intensity;
+            }
+         }
       }
-      Rect roi = Rect((dim_output_x-cols)/2, (dim_output_y-rows)/2, cols, rows);
+      Rect roi = Rect(dim_output_y/2-cols/2+1, dim_output_x/2-rows/2, cols, rows);
       return Res(roi);
+    }
+
+float distance(float x, float y){
+  float res = sqrt(x*x+y*y);
+}
+
+float weight(float x, float y, Mat image){
+  float floorx = float(floor(x));
+  float floory = float(floor(y));
+  float ceilx = floorx+1;
+  float ceily = floory+1;
+  if (floorx == x && floory == y){
+    return image.at<float>(floorx,  floory);
+  }else{
+    float dist_left_top =distance(x-floorx, y-floory);
+    float dist_right_top = distance(x-ceilx, y-floory);
+    float dist_left_bottom = distance(x-floorx, y-ceily);
+    float dist_right_bottom = distance(x-ceilx, y-ceily);
+
+    float intensity1 = image.at<float>(floorx,  floory);
+    float intensity2 = image.at<float>(ceilx,  floory);
+    float intensity3 = image.at<float>(ceilx,  ceily);
+    float intensity4 = image.at<float>(floorx,  ceily);
+
+    float res = (1./dist_left_top)*intensity1+(1./dist_right_top)*intensity2+(1./dist_left_bottom)*intensity4+(1./dist_right_bottom)*intensity3;
+    return res/((1./dist_left_top)+(1./dist_right_top)+(1./dist_left_bottom)+(1./dist_right_bottom));
+  }
+}
+vector<float> rotation_bilinear( int i, int j, int angle ){
+  vector<float> tab(2);
+  tab[0] = cos(PI*angle/180.)*i - sin(PI*angle/180.)*j ;
+  tab[1] = sin(PI*angle/180.)*i + cos(PI*angle/180.)*j ;
+
+  return tab;
+}
+
+
+Mat rotate_img_from_source_weighted(Mat image, int angle){
+      int quot = angle/90;
+      int rest = angle%90;
+      int rows = image.rows;
+      int cols = image.cols;
+      int opp_angle = -angle;
+      int dim_output_x = int(fabs(sin(PI*angle/180.))*cols + rows*fabs(cos(PI*angle/180.)));
+      int dim_output_y = int(fabs(sin(PI*angle/180.))*rows + cols*fabs(cos(PI*angle/180.)));
+      Mat Res = Mat::zeros(dim_output_x,dim_output_y, CV_32FC1);
+
+      for(int i = -int(sin(PI*angle/180.)*cols); i < dim_output_x-int(sin(PI*angle/180.)*cols); i++ ){
+        for(int j = -1; j < dim_output_y; j++){
+            vector<float> tab(2);
+            tab = rotation_bilinear(i,j, opp_angle);
+            if( tab[0] >= 0 && tab[1] >= 0 && tab[1] <= cols && tab[0] <= rows){
+              float intensity = weight(tab[0], tab[1], image);
+              Res.at<float>(i +int(sin(PI*angle/180.)*cols), j ) = intensity;
+            }
+         }
+      }
+      // Rect roi = Rect(dim_output_y/2-cols/2+1, dim_output_x/2-rows/2, cols, rows);
+      for( int i = 0; i< quot; i++){
+        Res = rotate_img_from_source_weighted(Res, rest);
+      }
+      return Res;
     }
