@@ -9,26 +9,6 @@ using std::cout;
 using std::endl;
 
 
-void binarization(Mat &image, Mat &bin_image) {
-
-  int nRows = image.rows;
-  int nCols = image.cols;
-  //Mat bin_image;
-  //bin_image.create(nRows, nCols, CV_32F);
-  //bin_image.create(nRows, nCols, CV_32F);
-
-  float threshold = (float) optimal_threshold(image)/256.;
-  cout << threshold << endl;
-
-  for (uint i = 0; i < nCols; i++) {
-    for (uint j = 0; j < nRows; j++) {
-      bin_image.at<float>(j, i) = (image.at<float>(j, i) > threshold);
-    }
-  }
-
-  //return(bin_image);
-}
-
 void print_vector(vector<float> vect) {
     for (uint i = 0; i < vect.size(); i++) {
         cout << vect[i] << endl;
@@ -96,4 +76,19 @@ int optimal_threshold(Mat &image) {
         sigmas[k] = pow(mu_T*omega - mu, 2)/(omega*(1-omega));
     }
     return index_max(sigmas);
+}
+
+void binarization(Mat &image, Mat &bin_image) {
+
+  int nRows = image.rows;
+  int nCols = image.cols;
+
+  float threshold = (float) optimal_threshold(image)/256.;
+  cout << threshold << endl;
+
+  for (uint i = 0; i < nCols; i++) {
+    for (uint j = 0; j < nRows; j++) {
+      bin_image.at<float>(j, i) = (image.at<float>(j, i) > threshold);
+    }
+  }
 }

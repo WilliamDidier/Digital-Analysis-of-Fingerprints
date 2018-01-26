@@ -78,14 +78,4 @@ int main(int argc, char** argv ){
   imwrite("../output/img_roi.png", fingerprint);
   cout << " Done." << endl;
 
-  /*TESTING ON FINGERPRINT WITH ELLIPSE*/
-  cout << "Test Lambert" << endl;
-  image = imread("../img/clean_finger.png", 0);
-  convert_to_float(image, image);
-  Point2i pressure_center = pressure_center_computation(image);
-  cout << "pressure center " << pressure_center << endl;
-  apply_aniso(image, pressure_center);
-  convert_to_int(image, image);
-  imwrite("../output/lambert.png", image);
-  cout << "Done." << endl;
 }
