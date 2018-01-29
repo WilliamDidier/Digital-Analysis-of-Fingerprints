@@ -13,6 +13,10 @@ contains the functions related to the main 2
 */
 #ifndef MAIN2
 #define MAIN2
+Mat get_zone(int x, int y, int width, int height, Mat image);
 
+vector<float> decrease_rotation(int x, int y, int i, int j, float angle);
+
+Mat rotate_elasticity(Mat image, float angle);
 
 #endif

@@ -24,15 +24,10 @@ Mat interpolation_moy_16(Mat image);
 
 Mat interpolation_nearest_neighboor(Mat image);
 
-int P(int x);
-
-float  polynome(int x);
-
-float bicubic(float dx, float dy, int i, int j, Mat image);
+float step_bilinear(float x, float y, Mat image);
 
 Mat interpolation_bicubic(Mat image);
 
-vector<float> rotation_cubic( int i, int j, float angle );
 
 Mat rotate_img_from_source_bilinear(Mat image, float angle);
 

@@ -27,9 +27,10 @@ int main(int argc, char** argv )
     //TESTING THE ELASTICITY IN THE IMAGE
 
     cout << "Elasticity of image...";
-    convert_to_float(image, image);
-    mat zone = get_zone(100,100,25,25, image);
-    imshow("zone", zone);
+    // convert_to_float(image, image);
+    Mat zone = get_zone(200,200,200,200, image);
+    Mat elasticity = rotate_elasticity(image, 10);
+    imshow("elasticity", elasticity);
     waitKey(0);
     cout << "done." << std::endl;
 }
