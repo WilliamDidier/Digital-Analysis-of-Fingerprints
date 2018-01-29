@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../src/headers/starter2.h
+
+../src/headers/starter3.h
+stdio.h
+-
+opencv2/opencv.hpp
+-
+iostream
+-
+time.h
+-
+vector
+-
+
+../src/headers/starter_1.h
+opencv2/opencv.hpp
+-
+cstdio
+-
+
+/user/5/.base/coudercr/home/Digital-analysis/src/files/starter2.cpp
+stdio.h
+-
+opencv2/opencv.hpp
+-
+iostream
+-
+starter3.h
+/user/5/.base/coudercr/home/Digital-analysis/src/files/starter3.h
+starter_1.h
+/user/5/.base/coudercr/home/Digital-analysis/src/files/starter_1.h
+math.h
+-
+starter2.h
+/user/5/.base/coudercr/home/Digital-analysis/src/files/starter2.h
+

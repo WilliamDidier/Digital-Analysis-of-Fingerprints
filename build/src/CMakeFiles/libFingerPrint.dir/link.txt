@@ -1,0 +1,2 @@
+/usr/bin/ar cr liblibFingerPrint.a  CMakeFiles/libFingerPrint.dir/files/blur.cpp.o CMakeFiles/libFingerPrint.dir/files/starter_1.cpp.o CMakeFiles/libFingerPrint.dir/files/main_1.cpp.o CMakeFiles/libFingerPrint.dir/files/starter3.cpp.o CMakeFiles/libFingerPrint.dir/files/starter_4.cpp.o CMakeFiles/libFingerPrint.dir/files/starter2.cpp.o
+/usr/bin/ranlib liblibFingerPrint.a

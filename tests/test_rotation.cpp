@@ -37,7 +37,7 @@ int main(int argc, char** argv )
     cout << "Rotation of image...";
     convert_to_float(image, image);
 
-    int angle = 120;
+    int angle = -45;
 
     Mat rotation_weighted = rotate_img_from_source_weighted(image, angle);
     // Mat rotation_from_source_bicubic = rotate_img_from_source_bicubic(image, angle);

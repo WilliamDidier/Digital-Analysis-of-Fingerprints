@@ -305,28 +305,29 @@ vector<float> rotation_bilinear( int i, int j, int angle ){
 
 
 Mat rotate_img_from_source_weighted(Mat image, int angle){
-      int quot = angle/90;
-      int rest = angle%90;
       int rows = image.rows;
       int cols = image.cols;
       int opp_angle = -angle;
       int dim_output_x = int(fabs(sin(PI*angle/180.))*cols + rows*fabs(cos(PI*angle/180.)));
       int dim_output_y = int(fabs(sin(PI*angle/180.))*rows + cols*fabs(cos(PI*angle/180.)));
       Mat Res = Mat::zeros(dim_output_x,dim_output_y, CV_32FC1);
-
-      for(int i = -int(sin(PI*angle/180.)*cols); i < dim_output_x-int(sin(PI*angle/180.)*cols); i++ ){
-        for(int j = -1; j < dim_output_y; j++){
+      int decal_pos = 0;
+      int decal_neg = 0;
+      if ( angle > 0){
+        decal_pos = int(sin(PI*angle/180.)*cols);
+      }else{
+        decal_neg = int(sin(PI*angle/180.)*rows);
+      }
+      for(int i = -decal_pos; i < dim_output_x-decal_pos; i++ ){
+        for(int j = decal_neg; j < dim_output_y + decal_neg; j++){
             vector<float> tab(2);
             tab = rotation_bilinear(i,j, opp_angle);
             if( tab[0] >= 0 && tab[1] >= 0 && tab[1] <= cols && tab[0] <= rows){
               float intensity = weight(tab[0], tab[1], image);
-              Res.at<float>(i +int(sin(PI*angle/180.)*cols), j ) = intensity;
+              Res.at<float>(i + decal_pos, j - decal_neg) = intensity;
             }
          }
       }
       // Rect roi = Rect(dim_output_y/2-cols/2+1, dim_output_x/2-rows/2, cols, rows);
-      for( int i = 0; i< quot; i++){
-        Res = rotate_img_from_source_weighted(Res, rest);
-      }
       return Res;
-    }
+}

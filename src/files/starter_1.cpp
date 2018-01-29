@@ -30,7 +30,7 @@ void draw_uniform_rectangle (Mat image, Rect r, float color){
   image = Scalar(color);
 }
 
-<<<<<<< HEAD
+
 
 /**
   \fn symetry_y(Mat &image)
@@ -54,7 +54,10 @@ Mat symetry_y(Mat &image) {
         //fills 'image_sym' according to the symetry
         image_sym.at<float>(j, nCols - i) = intensity[0];
       }
-=======
+    }
+    return image_sym;
+  }
+
 Mat symetry_x(Mat &image) {
   /* returns the symmetry along the y axis */
   int nRows = image.rows;
@@ -65,27 +68,13 @@ Mat symetry_x(Mat &image) {
   for (uint i = 0; i < nCols; i++) {
     for (uint j = 0; j < nRows; j++) {
       image_sym.at<float>(nRows-j-1, i) = image.at<float>(j, i);
->>>>>>> ecb96d1f26e8fedbaa74a1229937049f9f50b888
     }
   }
   return(image_sym);
 }
 
-Mat symetry_y(Mat &image) {
-    int nRows = image.rows;
-    int nCols = image.cols;
-    Mat image_sym;
-    //creation of a Mat with the same size as 'image'
-    image_sym.create(nRows, nCols, CV_32F);
-    for (uint i = 0; i < nCols; i++) {
-      for (uint j = 0; j < nRows; j++) {
-        image_sym.at<float>(j, nCols - i) = image.at<float>(j, i);
-      }
-    }
-    return(image_sym);
-}
 
-<<<<<<< HEAD
+
 /**
   \fn symetry_y(Mat &image)
   \brief
@@ -95,8 +84,7 @@ Mat symetry_y(Mat &image) {
   \return
   \author Romain C. & Théo M.
 */
-=======
->>>>>>> ecb96d1f26e8fedbaa74a1229937049f9f50b888
+
 Mat symetry_diag(Mat &image) {
     int nRows = image.rows;
     int nCols = image.cols;
