@@ -50,7 +50,7 @@ int main(int argc, char** argv )
     Mat rotation_from_source_corr;
     cout << "Rotation accuracy of image..." <<endl;
     convert_to_float(image, image);
-    int angle = 85;
+    float angle = 15;
     Mat rotation_weighted = rotate_img_from_source_weighted(image, angle);
     Mat rotation_img_to_dest = rotate_img_to_dest(image, angle);
     rotation_img_to_dest = interpolation_nearest_neighboor(rotation_img_to_dest);
