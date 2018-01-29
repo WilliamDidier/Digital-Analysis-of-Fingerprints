@@ -20,7 +20,8 @@ int main(int argc, char** argv )
     /*TESTING THE WEAKENING */
     image = imread("../img/clean_finger.png", 0);
     cout << "Weakening clean_finger...";
-    Point2i pressure_center(image.cols/2, image.rows/2);
+    Point2i pressure_center;
+    pressure_center = pressure_center_computation(image);
     convert_to_float(image, image);
     clean_to_weak_iso(image, pressure_center);
     convert_to_int(image, image);
@@ -30,7 +31,8 @@ int main(int argc, char** argv )
     /*TESTING THE REINFORCEMENT*/
     image = imread("../img/weak_finger.png", 0);
     cout << "Reinforcing weak_finger...";
-    pressure_center = Point2i(image.rows*3/4, image.cols/2);
+    Point2i pressure_center;
+    pressure_center = pressure_center_computation(image);
     convert_to_float(image, image);
     weak_to_clean_iso(image, pressure_center);
     convert_to_int(image, image);
