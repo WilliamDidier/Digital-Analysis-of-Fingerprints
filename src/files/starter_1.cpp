@@ -30,10 +30,6 @@ void draw_uniform_rectangle (Mat image, Rect r, float color){
   image = Scalar(color);
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> af81fe4386d7b27086fadf6d0447ce9b384b6774
 
 /**
   \fn symetry_y(Mat &image)
@@ -87,10 +83,7 @@ Mat symetry_x(Mat &image) {
   \return
   \author Romain C. & Théo M.
 */
-<<<<<<< HEAD
-=======
 
->>>>>>> af81fe4386d7b27086fadf6d0447ce9b384b6774
 Mat symetry_diag(Mat &image) {
     int nRows = image.rows;
     int nCols = image.cols;
