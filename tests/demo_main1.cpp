@@ -31,7 +31,6 @@ int main(int argc, char** argv )
     /*TESTING THE REINFORCEMENT*/
     image = imread("../img/weak_finger.png", 0);
     cout << "Reinforcing weak_finger...";
-    Point2i pressure_center;
     pressure_center = pressure_center_computation(image);
     convert_to_float(image, image);
     weak_to_clean_iso(image, pressure_center);
