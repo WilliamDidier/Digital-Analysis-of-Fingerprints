@@ -41,7 +41,7 @@ int main(int argc, char** argv )
     imwrite("../output/Diagonal_symetry.png", image_sym);
     cout << " Done." << endl;
 
-    cout << "Testing y-axis symetry...";
+    std::cerr << "Testing y-axis symetry...";
     image_sym = symetry_y(image);
     convert_to_int(image_sym, image_sym);
     imwrite("../output/Y-axis_symetry.png", image_sym);
