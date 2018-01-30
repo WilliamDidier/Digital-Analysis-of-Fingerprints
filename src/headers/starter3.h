@@ -79,6 +79,8 @@ void periodic_shift(Mat &src, Mat &dst, int p);
 */
 void convolution_fft(Mat &x, Mat &dst, Mat &h);
 
+void deconvolution_fft(Mat &x, Mat &dst, Mat &h);
+
 Mat Normalized_kernel(int NbCols, int NbRows);
 
 float gauss2D(float x, float y, float esp_x, float esp_y, float sigma_x, float sigma_y);
@@ -86,5 +88,7 @@ float gauss2D(float x, float y, float esp_x, float esp_y, float sigma_x, float s
 Mat Gaussian_kernel(int size, float sigma_x, float sigma_y, float energy);
 
 Mat Convol_Shifted_xy(Mat X, uint size_h);
+
+void deconvolution_kernel(Mat &y, Mat &dst, Mat &x);
 
 #endif

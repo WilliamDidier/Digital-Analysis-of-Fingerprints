@@ -24,13 +24,20 @@ int main(int argc, char** argv )
     //TESTING THE CONVOLUTION WITH FFT
     cout << "convol thanks to fft...";
     convert_to_float(image,image);
-    for (int i = 1; i < 7; i++){
-      Mat kernel = Gaussian_kernel(11, i, i, 1);
-      Mat naive;
-      // cout << kernel << endl << endl;
-      convolution_fft(image, naive, kernel);
-      convert_to_int(naive, naive);
-      imwrite("../img/Banques/convol_blur_" + std::to_string(i)+".png", naive);
-      cout << " Done." << endl;
-    }
+    // for (int i = 1; i < 7; i++){
+    //   Mat kernel = Gaussian_kernel(11, i, i, 1);
+    //   Mat naive;
+    //   // cout << kernel << endl << endl;
+    //   convolution_fft(image, naive, kernel);
+    //   convert_to_int(naive, naive);
+    //   imwrite("../img/Banques/convol_blur_" + std::to_string(i)+".png", naive);
+    //   cout << " Done." << endl;
+    // }
+    Mat kernel = Gaussian_kernel(11, 2, 2, 1);
+    Mat naive;
+    // cout << kernel << endl << endl;
+    convolution_fft(image, naive, kernel);
+    convert_to_int(naive, naive);
+    imwrite("../img/Banques/convol_fft.png", naive);
+    cout << " Done." << endl;
 }
