@@ -25,12 +25,16 @@ int main(int argc, char** argv )
         return -1;
     }
     //TESTING THE ELASTICITY IN THE IMAGE
-
+    float angle = 10;
     cout << "Elasticity of image...";
-    // convert_to_float(image, image);
-    Mat zone = get_zone(200,200,200,200, image);
-    Mat elasticity = rotate_elasticity(image, 10);
-    imshow("elasticity", elasticity);
-    waitKey(0);
+    convert_to_float(image, image);
+    // Mat zone = get_zone(200,200,200,200, image);
+    Mat elasticity = rotate_elasticity(image, angle);
+    convert_to_int(image, image);
+    convert_to_int(elasticity, elasticity);
+    imwrite("tests/image.png", image);
+
+    imwrite("tests/elasticity.png", elasticity);
+
     cout << "done." << std::endl;
 }

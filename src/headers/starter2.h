@@ -14,7 +14,7 @@ contains the functions related to the starter 2
 #ifndef STARTER2
 #define STARTER2
 
-vector<int> rotation( int i, int j, float angle );
+vector<int> rotation(int x, int y, int i, int j, float angle );
 
 Mat rotate_img_from_source(Mat image, float angle);
 
@@ -31,7 +31,7 @@ Mat interpolation_bicubic(Mat image);
 
 Mat rotate_img_from_source_bilinear(Mat image, float angle);
 
-vector<float> rotation_bilinear( int i, int j, float angle );
+vector<float> rotation_bilinear(int x, int y, int i, int j, float angle );
 
 float derive_x(float x, float y, Mat image);
 
@@ -53,7 +53,6 @@ Mat rotate_img_from_source_weighted(Mat image, float angle);
 
 
 
-vector<int> decal_angle(Mat image, float angle);
 
 
 

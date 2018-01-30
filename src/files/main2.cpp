@@ -18,32 +18,27 @@ Mat get_zone(int x, int y, int width, int height, Mat image){
   return big_image(zone);
 }
 
-Point2i decrease_rotation(int x, int y, int i, int j, float angle){
-  Point2i pt;
-  float angle_decrease = angle*exp(-((i-x)*(i-x)+(j-y)*(j-y)));
-  angle = angle_decrease*PI/180;
-  pt.x = cos(angle)*i - sin(angle)*j ;
-  pt.y = sin(angle)*i + cos(angle)*j ;
+vector<float> decrease_rotation(int x, int y, int i, int j, float angle){
+  vector<float> tab(2);
+  float dist = distance(x-i,j-y);
+  angle = angle*PI/180 * exp(-dist*dist/1000);
+  tab[0] = cos(angle)*(i-x) - sin(angle)*(j-y)+x ;
+  tab[1] = sin(angle)*(i-x) + cos(angle)*(j-y)+y ;
   return tab;
 }
 
 Mat rotate_elasticity(Mat image, float angle){
-    vector<int> decal(2);
-    decal = decal_angle(image, angle);
     int rows = image.rows;
     int cols = image.cols;
     float opp_angle = -angle;
-    int dim_output_x = int(fabs(sin(PI*angle/180.))*cols + rows*fabs(cos(PI*angle/180.)));
-    int dim_output_y = int(fabs(sin(PI*angle/180.))*rows + cols*fabs(cos(PI*angle/180.)));
-    Mat Res = Mat::zeros(dim_output_x,dim_output_y, CV_32FC1);
-    for(int i = -decal[0]; i < dim_output_x-decal[0]; i++ ){
-      for(int j = decal[1]; j < dim_output_y + decal[1]; j++){
-          Point2i pt;
-          pt = decrease_rotation(cols/2, rows/2, i,j, opp_angle);
-          if( pt.x >= 0 && pt.y >= 0 && pt.y <= cols && pt.x <= rows){
-            float intensity = cubic_interpolation(pt.x, pt.y, image);
-
-            Res.at<float>(i + decal[0], j - decal[1]) = intensity;
+    Mat Res = Mat::zeros(rows,cols, CV_32FC1);
+    for(int i = 0; i < rows; i++ ){
+      for(int j = 0; j < cols ; j++){
+          vector<float> tab(2);
+          tab = decrease_rotation(rows/2, cols/2, i,j, opp_angle);
+          if( tab[0] >= 0 && tab[1] >= 0 && tab[1] <= cols && tab[0] <= rows){
+            float intensity = weight(tab[0], tab[1], image);
+            Res.at<float>(i , j ) = intensity;
           }
        }
     }
