@@ -25,7 +25,7 @@ int main(int argc, char** argv )
         return -1;
     }
     //TESTING THE ELASTICITY IN THE IMAGE
-    float angle = 10;
+    float angle = 30;
     cout << "Elasticity of image...";
     convert_to_float(image, image);
     // Mat zone = get_zone(200,200,200,200, image);

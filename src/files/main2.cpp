@@ -35,7 +35,7 @@ Mat rotate_elasticity(Mat image, float angle){
     for(int i = 0; i < rows; i++ ){
       for(int j = 0; j < cols ; j++){
           vector<float> tab(2);
-          tab = decrease_rotation(rows/2, cols/2, i,j, opp_angle);
+          tab = decrease_rotation(rows/2+100, cols/2, i,j, opp_angle);
           if( tab[0] >= 0 && tab[1] >= 0 && tab[1] <= cols && tab[0] <= rows){
             float intensity = weight(tab[0], tab[1], image);
             Res.at<float>(i , j ) = intensity;
