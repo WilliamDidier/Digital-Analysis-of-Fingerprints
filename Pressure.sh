@@ -1,3 +1,3 @@
 cd build
-make demo_main1
-./build/tests/demo_main1
+make Demo_main1
+./build/tests/Demo_main1
