@@ -31,7 +31,6 @@ void draw_uniform_rectangle (Mat image, Rect r, float color){
 }
 
 
-
 /**
   \fn symetry_y(Mat &image)
   \brief

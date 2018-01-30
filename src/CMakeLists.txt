@@ -13,6 +13,7 @@ set(
 	files/starter3.cpp
 	files/starter_4.cpp
 	files/starter2.cpp
+	files/main2.cpp
 
 )
 
@@ -24,6 +25,7 @@ set(
 	headers/starter3.h
 	headers/starter_4.h
 	headers/starter2.h
+	headers/main2.h
 
 )
 
