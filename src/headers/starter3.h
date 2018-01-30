@@ -39,7 +39,7 @@ Mat Convol(Mat X, Mat H);
   @return the matrix of convolution
   @author Théo M. & Romain
 */
-Mat Convol_Shifted(Mat X, Mat H);
+void Convol_Shifted(Mat &X, Mat &dst, Mat &H);
 
 /**
   @fn Mat transfo_fourier( Mat image)
@@ -68,7 +68,7 @@ Mat img_magnitude(Mat img_complexe);
 */
 Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows);
 
-Mat periodic_shift(Mat img, int p);
+void periodic_shift(Mat &src, Mat &dst, int p);
 
 /**
 @fn Mat convolution_fft(Mat x, Mat h)
@@ -77,7 +77,7 @@ Mat periodic_shift(Mat img, int p);
 @return a real matrix
 @author Théo M. & Romain
 */
-Mat convolution_fft(Mat x, Mat h);
+void convolution_fft(Mat &x, Mat &dst, Mat &h);
 
 Mat Normalized_kernel(int NbCols, int NbRows);
 
