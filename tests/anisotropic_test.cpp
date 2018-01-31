@@ -2,6 +2,7 @@
 
 #include "starter_1.h"
 #include "main_1.h"
+#include "elliptical_modelling.h"
 
 using namespace cv;
 using std::cout;

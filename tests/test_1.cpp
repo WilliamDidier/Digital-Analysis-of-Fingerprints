@@ -2,6 +2,7 @@
 #include <opencv2/opencv.hpp>
 #include "starter_1.h"
 #include "main_1.h"
+#include "elliptical_modelling.h"
 using namespace cv;
 using std::cout;
 using std::endl;
@@ -22,18 +23,6 @@ int main(int argc, char** argv )
     }
     cout << "This test program will save all its work to the main directory" << endl;
     cout << "Image succesfully imported" << endl;
-
-
-    /* TESTING THE ELLIPTICAL FUNCTION */
-    cout << "Testing the ellipse creation...";
-    Mat ellipse_test;
-    ellipse_test.create(image.cols, image.rows, CV_32F);
-    Point2i param(90, 60);
-    Point2i press(image.rows/2, image.cols/2);
-    ellipse_test = ellipse(param, press, Point2i(image.rows, image.cols));
-    convert_to_int(ellipse_test, ellipse_test);
-    imwrite("../test_limpt.png", ellipse_test);
-    cout << " Done. (image saved at fingerprints/test_limpt.png)" << endl;
 
     /*TESTING THE XLIM YLIM COMPUTATION */
     cout << "Testing the extreme points computation...";;

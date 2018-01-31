@@ -6,7 +6,7 @@ using namespace cv;
 
 
 float INTENSITY_FLOOR = 0.065;
-float INTENSITY_STEP = 0.00025;
+float INTENSITY_STEP = 0.00028;
 
 
 int dilation_elem = 1;
@@ -99,7 +99,7 @@ void anisotropic_filtering(Mat &image, Point2i const pressure_center) {
     Mat protected_zone = ellipse(parameters, pressure_center, Point2i(nRows, nCols));
 
     int max_iteration = number_of_iterations(image, pressure_center);
-
+    
     Mat dst;
     dilation(0, 0, image, dst);
     selected_dilation_Protection(dst, image, pressure_center);
@@ -119,8 +119,8 @@ void anisotropic_filtering(Mat &image, Point2i const pressure_center) {
 Point2i ellipse_erosion_parameters(Mat &image, Point2i pressure_center) {
     Point2i boundaries = fingerprint_boundaries(image);
     Point2i parameters;
-    parameters.x = (pressure_center.x - boundaries.x)*16/25;
-    parameters.y = (pressure_center.y - boundaries.y)*24/35;
+    parameters.x = (pressure_center.x - boundaries.x)*17/25;
+    parameters.y = (pressure_center.y - boundaries.y)*25/35;
     return(parameters);
 }
 
