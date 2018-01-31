@@ -13,7 +13,8 @@ set(
 	files/starter3.cpp
 	files/starter_4.cpp
 	files/starter2.cpp
-	files/elliptical_modelling.cpp
+	files/main2.cpp
+
 )
 
 set(
@@ -24,7 +25,8 @@ set(
 	headers/starter3.h
 	headers/starter_4.h
 	headers/starter2.h
-	headers/elliptical_modelling.h
+	headers/main2.h
+
 )
 
 # Add all the sources to the project

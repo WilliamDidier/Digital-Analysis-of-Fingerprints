@@ -18,30 +18,29 @@ using namespace cv;
  */
 Point2i parameters_computation(Mat &image, Point2i pressure_center);
 
- /**
-    @fn: bool test_ellipse(Point2f const parameters, Point2i const
-        pressure_center, Point2i coordinates)
-    @brief: tests if a given point is in the ellipse or not
-    @param: parameters: semi-major and semi-minor axes
-    @param: pressure_center: the coordinates of the pressure pressure_center
-    @param: coordinates: the point that is tested
-    @return: a boolean function of the tests
-    @author: Théo L.
-  */
+/**
+   @fn bool test_ellipse(Point2f const parameters, Point2i const
+       pressure_center, Point2i coordinates)
+   @brief Tests if a given point is in the parametrized ellipse or not
+   @param parameters semi-major and semi-minor axes length
+   @param pressure_center coordinates of the pressure center
+   @param pt the point that is tested
+   @return A boolean representing the belonging of the point to the ellipse
+   @author Théo L.
+ */
 bool test_ellipse(Point2f const parameters, Point2i const pressure_center,
     Point2i coordinates);
 
 /**
-    @fn: Mat ellipse(Point2i const parameters, Point2i const pressure_center,
+    @fn Mat ellipse(Point2i const parameters, Point2i const pressure_center,
         Point2i dimensions)
-    @brief: tests for each point if it is in the ellipse or not, and store the
-        result
-    @param: parameters: semi-major and semi-minor axes
-    @param: pressure_center: the coordinates of the pressure pressure_center
-    @param: dimensions: dimensions of the image
-    @return: a Mat object which values are 0 or 1 (0 : true, 1 : false)
-    @author: Théo L.
- */
+    @brief Creats a binary matrix representing the parametrized ellipse
+    @param parameters semi-major and semi-minor axes
+    @param pressure_center coordinates of the pressure center
+    @param dimensions dimensions of the image
+    @return A binary Mat object representing an ellipse
+    @author Théo L.
+*/
 Mat ellipse(Point2i const parameters, Point2i const pressure_center,
     Point2i dimensions);
 

@@ -13,7 +13,7 @@ using namespace cv;
 float produit_coefbycoef(Mat A, Mat B){
   /**
     @fn float produit_coefbycoef(Mat A, Mat B)
-    @brief make the sum of product term by term of two matrix
+    @brief Computes the sum of product term by term of two matrix
     @param Input : 2 matrix with the same size
     @return a float
     @author Théo M. & Romain
@@ -63,7 +63,7 @@ Mat Convol(Mat X, Mat H){
   return Res;
 }
 
-Mat Convol_Shifted(Mat X, Mat H){
+void Convol_Shifted(Mat &X, Mat &dst, Mat &H){
 
   uint ColX = X.cols;
   uint RowX = X.rows;
@@ -87,7 +87,7 @@ Mat Convol_Shifted(Mat X, Mat H){
       Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
     }
   }
-  return Res;
+  dst = Res;
 }
 
 
@@ -96,27 +96,20 @@ Mat Convol_Shifted_xy(Mat X, uint size_h){
   uint ColX = X.cols;
   uint RowX = X.rows;
   Point2i pc = pressure_center_computation(X);
-  //  one create a float matrix which has the same dimension than X
   Mat Res(RowX, ColX, CV_32FC1);
-  // One complete the matrix X with colH-1 zeros around X ( to remove the bordure issues)
-  // To do that, one create a matrix of dimension greater than X
   Mat BigX = Mat::ones(RowX+size_h-1, ColX+size_h-1, CV_32FC1);
-  // one select the region of dimension X
   Rect roi = Rect((size_h-1)/2,(size_h-1)/2,ColX,RowX);
-  // One copy X on the region
   X.copyTo(BigX(roi));
-  // For each pixel of X ...
   Point2i semi_axes = parameters_computation(X, pc);
   float dist;
   for (int i1 = 0; i1 < ColX; i1++){
     for (int j1 = 0; j1 < RowX; j1++){
       float sigma = (P/2.)*((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y)+(j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x));
-      //cout << sigma << endl;
-      Mat H = Gaussian_kernel(size_h, sigma, sigma, 0.5);
-      std::cout << norm(H, NORM_L1) << std::endl;
-      //... one sélect a small image of dimension H having for beginning the current pixel...
+      if (((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y)+(j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x)) >= 1){
+        sigma = 0.01;
+      }
+      Mat H = Gaussian_kernel(size_h, sigma, sigma, 1);
       Rect tmp = Rect(i1,j1,size_h,size_h);
-      // ... and finally one complet the result matrix by the sum of product term by term of two matrix
       Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
     }
   }
@@ -124,7 +117,7 @@ Mat Convol_Shifted_xy(Mat X, uint size_h){
 }
 
 
-Mat transfo_fourier( Mat image){
+Mat transfo_fourier(Mat image){
 
   Mat optimal;
   //extend the matrix with the optimal size
@@ -161,7 +154,7 @@ Mat img_magnitude(Mat img_complexe){
 
 Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows){
 
-  Mat res;http://math.mad.free.fr/depot/numpy/courbe.html
+  Mat res;
   // we apply the idft with a real resultRowX+RowH-1
   idft(image, res, DFT_REAL_OUTPUT|DFT_SCALE);
   Mat finalImage;
@@ -188,9 +181,8 @@ Mat periodic_image( Mat image){
 
 
 
-Mat periodic_shift(Mat src, int p){
+void periodic_shift(Mat &src, Mat &dest, int p){
   int x,y;
-  Mat dest;
   //std::string file("../split_test_");
   dest.create(src.rows, src.cols, CV_32F);
   for (uint i = 0; i < src.cols; i++){
@@ -200,30 +192,64 @@ Mat periodic_shift(Mat src, int p){
       dest.at<float>(y,x) = src.at<float>(j,i);
     }
   }
-  return dest;
 }
 
-Mat convolution_fft(Mat x, Mat h){
-
-  // Mat trans_mat = (Mat_<double>(2,3) << 1, 0, 1, 0, 1, 1);
-  // warpAffine(x,x,trans_mat,x.size());
+void convolution_fft(Mat &x, Mat &dst, Mat &h){
+  Mat xx;
   int p = (h.cols-1)/2;
   int cols = x.cols;
   int rows = x.rows;
-  x = periodic_shift(x, p);
-  x = periodic_image(x);
-  Mat X = transfo_fourier(x);
+  periodic_shift(x, xx, p);
+  Mat x2 = xx;// periodic_image(xx);
+  Mat X = transfo_fourier(x2);
+  Rect roi = Rect(0,0,cols, rows);
   //one complete h with zero to reach the size of X
-  copyMakeBorder(h, h, 0, x.rows - h.rows, 0, x.cols - h.cols, BORDER_CONSTANT, Scalar::all(0));
+  copyMakeBorder(h, h, 0, x2.rows - h.rows, 0, x2.cols - h.cols, BORDER_CONSTANT, Scalar::all(0));
   Mat H = transfo_fourier(h);
 
   Mat Y;
   // we multiply term by term the two matrix
   mulSpectrums(X,H,Y,0,false);
-  Mat res = inv_transfo_fourier(Y, x.cols, x.rows);
-  Rect roi = Rect(0,0,cols, rows);
-  x = res(roi);
-  return x;
+  imshow("TEST2", img_magnitude(X));
+  waitKey(0);
+  Mat res = inv_transfo_fourier(Y, x2.cols, x2.rows);
+  // imshow("test", res);
+  // waitKey(0);
+  dst = res(roi);
+}
+
+void deconvolution_fft(Mat &y, Mat &dst, Mat &h){
+  int p = (h.cols-1)/2;
+  Mat Y = transfo_fourier(y);
+  copyMakeBorder(h, h, 0, y.rows - h.rows, 0, y.cols - h.cols, BORDER_CONSTANT, Scalar::all(0));
+  Mat H = transfo_fourier(h);
+  H = 1/H;
+  Mat X;
+  mulSpectrums(Y,H,X,0,false);
+  dst = inv_transfo_fourier(X, y.cols, y.rows);
+  //periodic_shift(dst, dst, -p);
+  // Mat xx;
+  // int p = (h.cols-1)/2;
+  // int cols = x.cols;
+  // int rows = x.rows;
+  // Mat x2 = periodic_image(xx);
+  // Mat X = transfo_fourier(x2);
+  // Rect roi = Rect(0,0,cols, rows);
+  // copyMakeBorder(h, h, 0, x2.rows - h.rows, 0, x2.cols - h.cols, BORDER_CONSTANT, Scalar::all(0));
+  // Mat H = transfo_fourier(h);
+  // Mat Y;
+  // Mat res = inv_transfo_fourier(Y, x2.cols, x2.rows);
+  // dst = res(roi);
+}
+
+void deconvolution_kernel(Mat &y, Mat &dst, Mat &x){
+  Mat Y = transfo_fourier(y);
+  Mat X = transfo_fourier(x);
+  Mat H;
+  mulSpectrums(Y,X,H,0,false);
+  Mat h = inv_transfo_fourier(H, y.cols, y.rows);
+  Rect roi = Rect(0,0, H.cols, H.rows);
+  dst = h(roi);
 }
 
 
@@ -234,18 +260,10 @@ Mat Normalized_kernel(int NbCols, int NbRows){
 
 
 float gauss2D(float x, float y, float esp_x, float esp_y, float sigma_x, float sigma_y){
-  return exp(-(x-esp_x)*(x-esp_x)/(2*sigma_x*sigma_x) + -(y-esp_y)*(y-esp_y)/(2*sigma_y*sigma_y));
+  return exp(-(x-esp_x)*(x-esp_x)/(2.*sigma_x*sigma_x) -(y-esp_y)*(y-esp_y)/(2.*sigma_y*sigma_y));
 }
 
 Mat Gaussian_kernel(int size, float sigma_x, float sigma_y, float energy){
-  if (sigma_x ==  0){
-    sigma_x = 0.00000001;
-  } else if (sigma_y ==  0){
-    sigma_y = 0.00000001;
-  }
-  // } else if (energy == 0){
-  //   energy = 0.0000001;
-  // }
   Mat kernel(size,size,CV_32FC1);
   float middle = ((float) size-1.)/2.;
   for (int i = 0; i < size; i++){

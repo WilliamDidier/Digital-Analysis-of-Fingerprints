@@ -2,14 +2,13 @@
 header file associated to 'starter_1.cpp'
 contains the functions related to the starter 1
 */
+
 /**
   This is a Doxygen documentation.
-  \file starter_1.h
-  \brief Header for the functions of the Starter 1
-  \author Romain C. & Théo M. & Théo L. & William D.
-  \ date 2018, January the 16th
-
-
+  @file starter_1.h
+  @brief Header for the functions of the Starter 1
+  @author Romain C. & Théo M. & Théo L. & William D.
+  @date 2018, January the 16th
 */
 #ifndef STARTER_1
 #define STARTER_1
@@ -22,62 +21,59 @@ using std::cout;
 using std::endl;
 
 /**
-  \fn Mat convert_to_float(Mat image)
-  \brief Casts the data of a Mat from ints to floats, returning the corresponding header.
-  \param image Image that you want to switch to float values
-  \return New header pointing to the data casted to floats.
-  \author Théo L.
+  @fn Mat convert_to_float(Mat &src, Mat &dest)
+  @brief Casts the data of a source Mat from ints to floats in a dest Mat.
+  @param &src Image that you want to switch to floating point values. Has to be between 0 and 255
+  @param &dest Image where the data is casted to floating point values between 0.0 and 1.0
+  @author Théo L.
 */
-//Mat convert_to_float(Mat & image);
-void convert_to_float(Mat & image, Mat &);
+void convert_to_float(Mat &src, Mat &dest);
 
 
 /**
-  \fn Mat convert_to_int(Mat image)
-  \param image Image that you want to switch to int values
-  \return New header pointing to the data casted to ints.
-  \author Théo L.
+  @fn Mat convert_to_int(Mat &src, Mat &dest)
+  @brief Casts the data of a source Mat from floats to ints in a dest Mat.
+  @param &src Image that you want to cast to integer values. Has to be between 0.0 and 1.0
+  @param &dest Image where the data is casted to integer values between 0 and 255
+  @author Théo L.
 */
-//Mat convert_to_int(Mat&  image);
-void convert_to_int(Mat&  image, Mat &);
+void convert_to_int(Mat &src, Mat &dest);
 
 
 /**
-  \fn int draw_uniform_rectangle (Mat image, Rect r, float color)
-  \brief Draws a rectangle of the given size and color on the image rperesented by image.
-  \param Image image on chich you want to insert a rectangle. Has to be casted to float values.
-  \param r Region of the image that will be colored. Has to be included in the image
-  \param color Floating point nuber corresponding to the color of the rectangle. Has to be between 0.0(black) and 1.0(white)
-  \return Nothing : the data is modified through the passed-by copy of the image.
-  \author William D.
+  @fn int draw_uniform_rectangle (Mat image, Rect r, float color)
+  @brief Draws a rectangle of the given size and color on the image.
+  @param Image Image on which you want to insert a rectangle. Data has to be floating point values.
+  @param r Region of the image that will be colored. Has to be included in the image
+  @param color Floating point number in [0.0;1.0] corresponding to the intensity of the rectangle
+  @author William D.
 */
 void draw_uniform_rectangle (Mat image, Rect r, float color);
 
 /**
-  \fn symetry_x(Mat &image)
-  \brief
-  \param &image
-  \return
-  \author Romain C. & Théo M.
+@fn symetry_x(Mat &image)
+@brief Computes the x-axis symetry of the image
+@param &image Image to be modified
+@return Mat Image transformed according to the x-axis symetry
+@author Romain C. & Théo M.
 */
-Mat symetry_x(Mat &image);
 
+Mat symetry_x(Mat &image);
 /**
-  \fn symetry_y(Mat &image)
-  \brief
-  \param &image
-  \return
-  \author Romain C. & Théo M.
+  @fn symetry_y(Mat &image)
+  @brief Computes the y-axis symetry of the image
+  @param &image Image to be modified
+  @return Mat Image transformed according to the y-axis symetry
+  @author Romain C. & Théo M.
 */
 Mat symetry_y(Mat &image);
 
-
 /**
-  \fn symetry_y(Mat &image)
-  \brief
-  \param &image
-  \return
-  \author Romain C. & Théo M.
+  @fn symetry_diag(Mat &image)
+  @brief Performs a diagonal symmetry on the image
+  @param &image Image to be modified
+  @return Mat Image transformed according to the diagonal symmetry
+  @author Romain C. & Théo M.
 */
 Mat symetry_diag(Mat &image);
 
