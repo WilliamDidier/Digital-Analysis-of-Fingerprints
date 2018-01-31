@@ -37,8 +37,9 @@ int main(int argc, char** argv )
     cout << "Rotation of image...";
     convert_to_float(image, image);
 
-    float angle = -20;
+    float angle = 20;
     Mat rotation_to_dest = rotate_img_to_dest(image, angle);
+    rotation_to_dest = interpolation_nearest_neighboor(rotation_to_dest);
     Mat rotation_weighted = rotate_img_from_source_weighted(image, angle);
     Mat rotation_from_source_bicubic = rotate_img_from_source_bicubic(image, angle);
     Mat rotation_from_source = rotate_img_from_source(image, angle);

@@ -14,6 +14,7 @@ add_executable(test_rotation test_rotation.cpp)
 add_executable(anisotropic_test anisotropic_test.cpp)
 add_executable(test_rotation_accuracy test_rotation_accuracy.cpp)
 add_executable(test_elasticity test_elasticity.cpp)
+add_executable(test_complexity_rotation test_complexity_rotation.cpp)
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 include_directories( ${CMAKE_SOURCE_DIR}/src/headers )
@@ -69,6 +70,9 @@ add_test (NAME test_rotation_accuracy
 	 )
 add_test (NAME test_elasticity
 		COMMAND test_elasticity
+	 )
+add_test (NAME test_complexity_rotation
+		COMMAND test_complexity_rotation
 	 )
 target_link_libraries(test_1
     PUBLIC
@@ -157,6 +161,11 @@ target_link_libraries(test_rotation_accuracy
 		${OpenCV_LIBS}
 )
 target_link_libraries(test_elasticity
+		PUBLIC
+		libFingerPrint
+		${OpenCV_LIBS}
+)
+target_link_libraries(test_complexity_rotation
 		PUBLIC
 		libFingerPrint
 		${OpenCV_LIBS}

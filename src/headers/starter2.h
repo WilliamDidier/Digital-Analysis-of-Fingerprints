@@ -11,6 +11,12 @@ contains the functions related to the starter 2
 
 
 */
+
+#include <stdio.h>
+#include <opencv2/opencv.hpp>
+#include <iostream>
+#include <time.h>
+#include <vector>
 #ifndef STARTER2
 #define STARTER2
 

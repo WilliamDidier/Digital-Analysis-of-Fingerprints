@@ -53,9 +53,7 @@ int main(int argc, char** argv )
     float angle = 25;
     Mat rotation_weighted = rotate_img_from_source_weighted(image, angle);
     Mat rotation_img_to_dest = rotate_img_to_dest(image, angle);
-    rotation_img_to_dest = interpolation_moy_16(rotation_img_to_dest);
-    imshow("rotation_to_dest", rotation_img_to_dest);
-    waitKey(0);
+    rotation_img_to_dest = interpolation_nearest_neighboor(rotation_img_to_dest);
     Mat rotation_from_source_bicubic = rotate_img_from_source_bicubic(image, angle);
     Mat rotation_from_source = rotate_img_from_source(image, angle);
     Mat rotation_from_source_bilinear = rotate_img_from_source_bilinear(image, angle);
@@ -77,9 +75,6 @@ int main(int argc, char** argv )
     cout << "accuracy_bilinear :" << accuracy_bilinear << endl;
     cout << "accuracy_bicubic :" << accuracy_bicubic << endl;
     cout << "accuracy_weighted :" << accuracy_weighted << endl;
-
-
-
 
     cout << " Done." << endl;
 }

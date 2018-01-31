@@ -5,7 +5,9 @@
 #include "starter_1.h"
 #include <math.h>
 #include "starter2.h"
+#include <vector>
 #define PI 3.14159265
+
 
 vector<int> rotation(int x, int y, int i, int j, float angle ){
   int max = 0;
@@ -68,7 +70,7 @@ Mat interpolation_nearest_neighboor(Mat image){
   for(int i = 0; i < rows; i++ ){
     for(int j = 0; j < cols; j++){
       Scalar intensity = image.at<float>(i, j);
-      if (intensity[0] == 0){
+      if (intensity[0] == 1){
         image.at<float>(i,j) = big_image.at<float>(i+2,j+1);
        }
     }
@@ -276,6 +278,7 @@ Mat rotate_img_from_source_bicubic(Mat image, float angle){
 
 float distance(float x, float y){
   float res = sqrt(x*x+y*y);
+  return res;
 }
 
 float weight(float x, float y, Mat image){
