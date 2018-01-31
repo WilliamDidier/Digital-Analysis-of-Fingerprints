@@ -45,6 +45,8 @@ int main(int argc, char** argv )
     namedWindow("Anisotropic filtering", CV_WINDOW_AUTOSIZE);
     imshow("Anisotropic filtering", image);
     waitKey(0);
+    convert_to_int(image, image);
+    imwrite("tests/weak_v2.png", image);
 
     cout << endl << "Anisotropic filtering done." << endl;
 }
