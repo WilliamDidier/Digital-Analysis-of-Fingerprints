@@ -37,10 +37,12 @@ int main(int argc, char** argv)
         temps1 = clock();
         Mat image = Mat::ones(n,n, CV_32F);
         Mat kernel(elt,elt,CV_32FC1, Scalar(1./(elt*elt)));
-        Mat naive = Convol_Shifted(image, kernel);
+        Mat naive;
+        Convol_Shifted(image, naive, kernel);
         temps2=clock();
         temps3= clock();
-        Mat naive2 = convolution_fft(image, kernel);
+        Mat naive2;
+        convolution_fft(image, naive2, kernel);
         temps4=clock();
         if( elt == 3){
           create_file(monFlux1, temps1, temps2, temps3, temps4, n, n);

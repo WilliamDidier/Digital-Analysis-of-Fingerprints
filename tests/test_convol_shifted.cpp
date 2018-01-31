@@ -29,10 +29,11 @@ int main(int argc, char** argv )
     convert_to_float(image,image);
     for (int i = 1; i<12; i++){
       float ii = i/2.;
-      Mat kernel = Gaussian_kernel(11,ii,ii,(12.-(float) i)/12.);
-      Mat naive = Convol_Shifted(image, kernel);
+      Mat kernel = Gaussian_kernel(11,ii,ii,1);
+      Mat naive;
+      Convol_Shifted(image, naive, kernel);
       convert_to_int(naive, naive);
-      imwrite("tests/test_convol_shifted"+std::to_string(i)+".png", naive);
+      imwrite("../img/Banques/test_convol_shifted"+std::to_string(i)+".png", naive);
       //waitKey(0);
       cout << " Done." << endl;
     }

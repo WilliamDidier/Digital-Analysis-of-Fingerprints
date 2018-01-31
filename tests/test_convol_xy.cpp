@@ -30,7 +30,7 @@ int main(int argc, char** argv )
     Point2i pc(image.cols/2, image.rows/2);
     Mat naive = Convol_Shifted_xy(image, 11);
     convert_to_int(naive, naive);
-    imwrite("tests/test_convol_shifted_xy.png", naive);
+    imwrite("../img/Banques/test_convol_shifted_xy2.png", naive);
     //waitKey(0);
     cout << " Done." << endl;
 }

@@ -3,13 +3,9 @@
 #include <opencv2/opencv.hpp>
 #include "starter_1.h"
 #include "main_1.h"
+#include "elliptical_modelling.h"
 
 using namespace cv;
-
-
-int MARGIN = 10;
-float INTENSITY_FLOOR = 0.05;
-float INTENSITY_STEP = 0.00015;
 
 
 float distance_computation(const Point2i pressure_center, Point2i point) {
@@ -107,99 +103,4 @@ Point2i pressure_center_computation(Mat &image){
     minMaxLoc(gblur, &minVal, &maxVal, &minLoc, &maxLoc);
     Point2i pressure_center(minLoc.y, minLoc.x);
     return pressure_center;
-}
-
-
-Point2i parameters_computation(Mat &image, Point2i pressure_center) {
-    Point2i boundaries = fingerprint_boundaries(image);
-    Point2i parameters;
-    parameters.x = (pressure_center.x - boundaries.x)*1/4;
-    parameters.y = (pressure_center.y - boundaries.y)*1/4;
-    return(parameters);
-}
-
-
-bool test_ellipse(Point2f parameters, Point2i const pressure_center, Point2i pt) {
-    float res = pow((pt.x - pressure_center.x)/parameters.x, 2); // à refaire avec la fonction distance
-    res += ((pt.y - pressure_center.y)/parameters.y) * ((pt.y - pressure_center.y)/parameters.y); 
-    res = sqrt(res);
-    return(res>=1);
-}
-
-
-Mat ellipse(Point2i parameters, Point2i const pressure_center, Point2i dimensions) {
-    int nRows = dimensions.x;
-    int nCols = dimensions.y;
-    Mat res;
-    res.create(nRows, nCols, CV_32F);
-    for (uint j = 0; j < nCols; j++) {
-      for (uint i = 0; i < nRows; i++) {
-        res.at<float>(i, j) = test_ellipse(parameters, pressure_center, Point2i(i,j));
-      }
-    }
-    return(res);
-}
-
-/*
-void apply_aniso(Mat &image, Point2i const pressure_center) {
-    int nRows = image.rows;
-    int nCols = image.cols;
-    Point2f parameters = parameters_computation(image, pressure_center);
-    cout << parameters << endl;
-    Mat protected_zone = ellipse(parameters, pressure_center, Point2i(nRows, nCols));
-    //imwrite("../output/test_iso_ellipse.png", convert_to_int(protected_zone));
-    for (uint j = 0; j < nCols; j++) {
-      for (uint i = 0; i < nRows; i++) {
-        if (protected_zone.at<float>(i,j) == 1.) {
-            Point2i point(j,i);
-            float coef = coefficient_computation(true, pressure_center, point);
-            change_intensity(image, point, coef);
-        }
-      }
-    }
-}
-*/
-
-void per_layer_filtering(Mat &image, Mat &protected_zone, float coef) {
-    int nRows = image.rows;
-    int nCols = image.cols;
-    for (uint j = 0; j < nCols; j++) {
-      for (uint i = 0; i < nRows; i++) {
-        if (protected_zone.at<float>(i,j) == 1.) {
-            Point2i point(j,i);
-            if (image.at<float>(point) == 0.) {
-              image.at<float>(point) += INTENSITY_FLOOR;
-            } else {
-              change_intensity(image, point, coef);
-            }
-        }
-      }
-    }
-}
-
-int number_of_iterations(Mat &image, Point2i pressure_center) {
-    Point2i boundaries = fingerprint_boundaries(image);
-    Point2i parameters = parameters_computation(image, pressure_center);
-    int X = (pressure_center.x - boundaries.x) - parameters.x;
-    int Y = (pressure_center.y - boundaries.y) - parameters.y;
-    return (max(X, Y));
-}
-
-void anisotropic_filtering(Mat &image, Point2i const pressure_center) {
-    int nRows = image.rows;
-    int nCols = image.cols;
-
-    Point2f parameters = parameters_computation(image, pressure_center);
-    Mat protected_zone = ellipse(parameters, pressure_center, Point2i(nRows, nCols));
-    Mat check = protected_zone;
-
-    int max_iteration = number_of_iterations(image, pressure_center);
-
-    float coef = 1.00;
-
-    for (uint k = 0; k < max_iteration; k++) {
-        per_layer_filtering(image, protected_zone, coef + k*INTENSITY_STEP);
-        parameters.x++; parameters.y++;
-        protected_zone = ellipse(parameters, pressure_center, Point2i(nRows, nCols));
-    }
 }

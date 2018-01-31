@@ -16,6 +16,9 @@ add_executable(test_rotation_accuracy test_rotation_accuracy.cpp)
 add_executable(test_elasticity test_elasticity.cpp)
 add_executable(test_complexity_rotation test_complexity_rotation.cpp)
 
+add_executable(test_deconvol test_deconvol.cpp)
+
+
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 include_directories( ${CMAKE_SOURCE_DIR}/src/headers )
 
@@ -71,9 +74,16 @@ add_test (NAME test_rotation_accuracy
 add_test (NAME test_elasticity
 		COMMAND test_elasticity
 	 )
+
 add_test (NAME test_complexity_rotation
 		COMMAND test_complexity_rotation
 	 )
+
+add_test (NAME test_deconvol
+		COMMAND test_deconvol
+	 )
+
+
 target_link_libraries(test_1
     PUBLIC
     libFingerPrint
@@ -142,6 +152,13 @@ target_link_libraries(test_convol_xy
     libFingerPrint
     ${OpenCV_LIBS}
 )
+
+target_link_libraries(test_deconvol
+    PUBLIC
+    libFingerPrint
+    ${OpenCV_LIBS}
+)
+
 
 target_link_libraries(test_rotation
 		PUBLIC

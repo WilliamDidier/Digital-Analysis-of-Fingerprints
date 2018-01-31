@@ -14,6 +14,7 @@ set(
 	files/starter_4.cpp
 	files/starter2.cpp
 	files/main2.cpp
+	files/elliptical_modelling.cpp
 
 )
 
@@ -26,6 +27,7 @@ set(
 	headers/starter_4.h
 	headers/starter2.h
 	headers/main2.h
+	headers/elliptical_modelling.h
 
 )
 
