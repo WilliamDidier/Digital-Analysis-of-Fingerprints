@@ -201,8 +201,10 @@ void convolution_fft(Mat &x, Mat &dst, Mat &h){
   int p = (h.cols-1)/2;
   int cols = x.cols;
   int rows = x.rows;
-  periodic_shift(x, xx, p);
-  Mat x2 = xx;// periodic_image(xx);
+  periodic_shift(x, xx, 0);
+  Mat x2 = periodic_image(xx);
+  imshow("TEST2", x2);
+  waitKey(0);
   Mat X = transfo_fourier(x2);
   Rect roi = Rect(0,0,cols, rows);
   //one complete h with zero to reach the size of X
@@ -212,8 +214,6 @@ void convolution_fft(Mat &x, Mat &dst, Mat &h){
   Mat Y;
   // we multiply term by term the two matrix
   mulSpectrums(X,H,Y,0,false);
-  imshow("TEST2", img_magnitude(X));
-  waitKey(0);
   Mat res = inv_transfo_fourier(Y, x2.cols, x2.rows);
   // imshow("test", res);
   // waitKey(0);
