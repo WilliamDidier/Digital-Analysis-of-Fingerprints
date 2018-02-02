@@ -93,36 +93,6 @@ void Convol_Shifted(Mat &X, Mat &dst, Mat &H){
 }
 
 
-Mat Convol_Shifted_xy(Mat X, uint size_h){
-  float P = (size_h-1)/2;
-  uint ColX = X.cols;
-  uint RowX = X.rows;
-  Point2i pc = pressure_center_computation(X);
-  Mat Res(RowX, ColX, CV_32FC1);
-  Mat BigX = Mat::ones(RowX+size_h-1, ColX+size_h-1, CV_32FC1);
-  Rect roi = Rect((size_h-1)/2,(size_h-1)/2,ColX,RowX);
-  X.copyTo(BigX(roi));
-  Point2i semi_axes = parameters_computation(X, pc);
-  semi_axes.x *= 5;
-  semi_axes.y *= 7/2;
-  float dist;
-  for (int i1 = 0; i1 < ColX; i1++){
-    for (int j1 = 0; j1 < RowX; j1++){
-      float sigma = (P)*((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y))+0.0000001;
-      float sigma2 = (P)*((j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x))+0.0000001;
-      float sigma3 = (P/2.)*((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y)+(j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x));
-      // if (((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y)+(j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x)) >= 1){
-      //   sigma = 0.01;
-      // }
-      Mat H = Gaussian_kernel(size_h, sigma, sigma2, 1+sigma3);
-      Rect tmp = Rect(i1,j1,size_h,size_h);
-      Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
-    }
-  }
-  return Res;
-}
-
-
 Mat transfo_fourier(Mat image){
 
   Mat optimal;
@@ -242,4 +212,59 @@ Mat Gaussian_kernel(int size, float sigma_x, float sigma_y, float energy){
   }
   kernel = energy * kernel / ((float) norm(kernel, NORM_L1));
   return kernel;
+}
+
+
+Mat Convol_Shifted_xy(Mat X, uint size_h){
+  float P = (size_h-1)/2;
+  uint ColX = X.cols;
+  uint RowX = X.rows;
+  Point2i pc = pressure_center_computation(X);
+  Mat Res(RowX, ColX, CV_32FC1);
+  Mat BigX = Mat::ones(RowX+size_h-1, ColX+size_h-1, CV_32FC1);
+  Rect roi = Rect((size_h-1)/2,(size_h-1)/2,ColX,RowX);
+  X.copyTo(BigX(roi));
+  Point2i semi_axes = parameters_computation(X, pc);
+  semi_axes.x *= 5;
+  semi_axes.y *= 7/2;
+  float dist;
+  for (int i1 = 0; i1 < ColX; i1++){
+    for (int j1 = 0; j1 < RowX; j1++){
+      float sigma = (P)*((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y))+0.0000001;
+      float sigma2 = (P)*((j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x))+0.0000001;
+      Mat H = Gaussian_kernel(size_h, sigma, sigma2, 1);
+      Rect tmp = Rect(i1,j1,size_h,size_h);
+      Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
+    }
+  }
+  return Res;
+}
+
+Mat Convol_Shifted_xy_energy(Mat X, uint size_h){
+  float P = (size_h-1)/2;
+  uint ColX = X.cols;
+  uint RowX = X.rows;
+  Point2i pc = pressure_center_computation(X);
+  Mat Res(RowX, ColX, CV_32FC1);
+  Mat BigX = Mat::ones(RowX+size_h-1, ColX+size_h-1, CV_32FC1);
+  Rect roi = Rect((size_h-1)/2,(size_h-1)/2,ColX,RowX);
+  X.copyTo(BigX(roi));
+  Point2i semi_axes = parameters_computation(X, pc);
+  semi_axes.x *= 5;
+  semi_axes.y *= 7/2;
+  float dist;
+  for (int i1 = 0; i1 < ColX; i1++){
+    for (int j1 = 0; j1 < RowX; j1++){
+      float sigma = (P)*((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y))+0.0000001;
+      float sigma2 = (P)*((j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x))+0.0000001;
+      float sigma3 = (P/2.)*((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y)+(j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x));
+      // if (((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y)+(j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x)) >= 1){
+      //   sigma = 0.01;
+      // }
+      Mat H = Gaussian_kernel(size_h, sigma, sigma2, 1+sigma3);
+      Rect tmp = Rect(i1,j1,size_h,size_h);
+      Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
+    }
+  }
+  return Res;
 }

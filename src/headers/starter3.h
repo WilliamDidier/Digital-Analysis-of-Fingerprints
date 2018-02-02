@@ -69,7 +69,7 @@ Mat img_magnitude(Mat img_complexe);
 Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows);
 
 /**
-@fn Mat convolution_fft(Mat x, Mat h)
+@fn void periodic_shift(Mat &src, Mat &dst, int p)
 @brief for a matrix M of size m*n, give the matrix M' where M'[i,j] = M[(i+p)%m, (j+p)%n]
 @param Input : Two matrix : the source and the destination, and a integer that correspond to the shift
 @return a real matrix
@@ -88,16 +88,53 @@ void periodic_shift(Mat &src, Mat &dst, int p);
 
 void convolution_fft(Mat &x, Mat &dst, Mat &h);
 
-void deconvolution_fft(Mat &x, Mat &dst, Mat &h);
+/**
+@fn Mat Normalized_kernel(int NbCols, int NbRows)
+@brief give a normalized kernel of size NbCols*NbRows. Each coefficient is equal to 1/(NbCols*NbRows)
+@param Input : Two integers positives
+@return a real matrix
+@author Théo M. & Romain
+*/
 
 Mat Normalized_kernel(int NbCols, int NbRows);
 
+/**
+@fn float gauss2D(float x, float y, float esp_x, float esp_y, float sigma_x, float sigma_y)
+@brief give the value of the 2D-Gaussian at the point (x,y)
+@param Input : The two coordinates where we compute the value of the gaussian, and four float for the parameters of the gaussian
+@return a float
+@author Théo M. & Romain
+*/
+
 float gauss2D(float x, float y, float esp_x, float esp_y, float sigma_x, float sigma_y);
+
+/**
+@fn Gaussian_kernel(int size, float sigma_x, float sigma_y, float energy)
+@brief give a Matrix filled with coefficient computed with a 2D Gaussian function
+@param Input : An odd integer for the size of the square matrix, two float for the parameters of the gaussian, and a float for the norm of the matrix
+@return a float
+@author Théo M. & Romain
+*/
 
 Mat Gaussian_kernel(int size, float sigma_x, float sigma_y, float energy);
 
+/**
+@fn Mat Convol_Shifted_xy(Mat X, uint size_h)
+@brief Give the convolution of the image with a gaussian kernel where sigma_x and sigma_y depends on coordinates
+@param Input : The input matrix, and the size of the varying kernel
+@return a matrix
+@author Théo M.
+*/
+
 Mat Convol_Shifted_xy(Mat X, uint size_h);
 
-void deconvolution_kernel(Mat &y, Mat &dst, Mat &x);
+/**
+@fn Mat Convol_Shifted_xy(Mat X, uint size_h)
+@brief Give the convolution of the image with a gaussian kernel where sigma_x, sigma_y, and the norm depends on coordinates
+@param Input : The input matrix, and the size of the varying kernel
+@return a matrix
+@author Théo M.
+*/
+Mat Convol_Shifted_xy_energy(Mat X, uint size_h);
 
 #endif
