@@ -68,6 +68,14 @@ Mat img_magnitude(Mat img_complexe);
 */
 Mat inv_transfo_fourier(Mat image, int nbCols, int nbRows);
 
+/**
+@fn Mat convolution_fft(Mat x, Mat h)
+@brief for a matrix M of size m*n, give the matrix M' where M'[i,j] = M[(i+p)%m, (j+p)%n]
+@param Input : Two matrix : the source and the destination, and a integer that correspond to the shift
+@return a real matrix
+@author William
+*/
+
 void periodic_shift(Mat &src, Mat &dst, int p);
 
 /**
@@ -77,6 +85,7 @@ void periodic_shift(Mat &src, Mat &dst, int p);
 @return a real matrix
 @author Théo M. & Romain
 */
+
 void convolution_fft(Mat &x, Mat &dst, Mat &h);
 
 void deconvolution_fft(Mat &x, Mat &dst, Mat &h);

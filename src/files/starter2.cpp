@@ -192,6 +192,7 @@ float derive_xy(float x, float y, Mat image){
     float intensity3 = image.at<float>(ceilx,  floory_1);
     float intensity4 = image.at<float>(ceilx,  ceily);
 
+
     res = (intensity4-intensity3-intensity2+intensity1)/((ceilx-floorx_1)*(ceily-floory_1));
     return res;
   }
@@ -237,7 +238,6 @@ float cubic_interpolation(float x, float y, Mat image){
       Mat coeff = coeff_bicubic(x,y,image);
       float dx = (x-floorx)/(ceilx-floorx);
       float dy = (y-floory)/(ceily-floory);
-
       vector<float> res_int(4);
       for(int i=0; i < 4; i++){
         float puis = 1;
