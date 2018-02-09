@@ -53,9 +53,6 @@ Mat ellipse(Point2i parameters, Point2i const pressure_center, Point2i dimension
     Mat res;
     res.create(nRows, nCols, CV_32F);
     for (uint j = 0; j < nCols; j++) {
-int MARGIN = 10;
-float INTENSITY_FLOOR = 0.065;
-float INTENSITY_STEP = 0.00025;
       for (uint i = 0; i < nRows; i++) {
         res.at<float>(i, j) = test_ellipse(parameters, pressure_center, Point2i(i,j));
       }

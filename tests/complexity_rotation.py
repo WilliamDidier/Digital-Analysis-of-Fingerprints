@@ -33,18 +33,18 @@ def fic_to_tab_square(fichier):
 
 
 
-n,t1,t2 = fic_to_tab_square("compare_bicubic_bilenear.txt")
+n,t1,t2 = fic_to_tab_square("compare_source_bicubic.txt")
 #y1 = 15*15*n*n/100000000
 #y2 = (6*n*np.log(2*n)+n*n)/10000000
-p1, = plt.plot((n),(t1))
-p2, = plt.plot((n),(t2))
-n2 = [i for i in range(3,3600)]
-#n3 = [i*i*np.log(i) for i in n2]
-#n4 = [i*i for i in n2]
-#p4, = plt.plot(np.log2(n2),np.log2(n3))
-#p5, = plt.plot(np.log2(n2),np.log2(n4))
-plt.title("Logarithmic scale : comparaison from dest and to source ")
-plt.legend([p1, p2], ["to_dest", "from_source"], loc = "best")
-plt.ylabel("Number of computations (log2)")
-plt.xlabel("Matrix dimension (log2)")
+p1, = plt.plot((n+256),(t1))
+p2, = plt.plot((n+256),(t2))
+n2 = [i for i in range(3,3200)]
+n3 = [8*i*i for i in n2]
+n4 = [32*i*i for i in range(3,3200)]
+p3, = plt.plot(n2,n3)
+p4, = plt.plot(n2,n4)
+plt.title(" complexity comparaison from source and bicubic ")
+plt.legend([p1, p2, p3, p4], ["from source", "bicubic", "from source theoretical", "bicubic theoretical"], loc = "best")
+plt.ylabel("Number of computations ")
+plt.xlabel("Matrix dimension")
 plt.show()

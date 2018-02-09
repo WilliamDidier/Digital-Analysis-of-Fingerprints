@@ -33,7 +33,7 @@ int main(int argc, char** argv )
     //   imwrite("../img/Banques/convol_blur_" + std::to_string(i)+".png", naive);
     //   cout << " Done." << endl;
     // }
-    Mat kernel = Gaussian_kernel(11, 2, 2, 1);
+    Mat kernel = Gaussian_kernel(11, 7, 0.0001, 1);
     Mat naive;
     // cout << kernel << endl << endl;
     convolution_fft(image, naive, kernel);

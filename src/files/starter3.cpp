@@ -93,32 +93,6 @@ void Convol_Shifted(Mat &X, Mat &dst, Mat &H){
 }
 
 
-Mat Convol_Shifted_xy(Mat X, uint size_h){
-  float P = (size_h-1)/2;
-  uint ColX = X.cols;
-  uint RowX = X.rows;
-  Point2i pc = pressure_center_computation(X);
-  Mat Res(RowX, ColX, CV_32FC1);
-  Mat BigX = Mat::ones(RowX+size_h-1, ColX+size_h-1, CV_32FC1);
-  Rect roi = Rect((size_h-1)/2,(size_h-1)/2,ColX,RowX);
-  X.copyTo(BigX(roi));
-  Point2i semi_axes = parameters_computation(X, pc);
-  float dist;
-  for (int i1 = 0; i1 < ColX; i1++){
-    for (int j1 = 0; j1 < RowX; j1++){
-      float sigma = (P/2.)*((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y)+(j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x));
-      if (((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y)+(j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x)) >= 1){
-        sigma = 0.01;
-      }
-      Mat H = Gaussian_kernel(size_h, sigma, sigma, 1);
-      Rect tmp = Rect(i1,j1,size_h,size_h);
-      Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
-    }
-  }
-  return Res;
-}
-
-
 Mat transfo_fourier(Mat image){
 
   Mat optimal;
@@ -202,7 +176,7 @@ void convolution_fft(Mat &x, Mat &dst, Mat &h){
   int cols = x.cols;
   int rows = x.rows;
   periodic_shift(x, xx, p);
-  Mat x2 = xx;// periodic_image(xx);
+  Mat x2 = periodic_image(xx);
   Mat X = transfo_fourier(x2);
   Rect roi = Rect(0,0,cols, rows);
   //one complete h with zero to reach the size of X
@@ -212,48 +186,11 @@ void convolution_fft(Mat &x, Mat &dst, Mat &h){
   Mat Y;
   // we multiply term by term the two matrix
   mulSpectrums(X,H,Y,0,false);
-  imshow("TEST2", img_magnitude(X));
-  waitKey(0);
   Mat res = inv_transfo_fourier(Y, x2.cols, x2.rows);
   // imshow("test", res);
   // waitKey(0);
   dst = res(roi);
 }
-
-void deconvolution_fft(Mat &y, Mat &dst, Mat &h){
-  int p = (h.cols-1)/2;
-  Mat Y = transfo_fourier(y);
-  copyMakeBorder(h, h, 0, y.rows - h.rows, 0, y.cols - h.cols, BORDER_CONSTANT, Scalar::all(0));
-  Mat H = transfo_fourier(h);
-  H = 1/H;
-  Mat X;
-  mulSpectrums(Y,H,X,0,false);
-  dst = inv_transfo_fourier(X, y.cols, y.rows);
-  //periodic_shift(dst, dst, -p);
-  // Mat xx;
-  // int p = (h.cols-1)/2;
-  // int cols = x.cols;
-  // int rows = x.rows;
-  // Mat x2 = periodic_image(xx);
-  // Mat X = transfo_fourier(x2);
-  // Rect roi = Rect(0,0,cols, rows);
-  // copyMakeBorder(h, h, 0, x2.rows - h.rows, 0, x2.cols - h.cols, BORDER_CONSTANT, Scalar::all(0));
-  // Mat H = transfo_fourier(h);
-  // Mat Y;
-  // Mat res = inv_transfo_fourier(Y, x2.cols, x2.rows);
-  // dst = res(roi);
-}
-
-void deconvolution_kernel(Mat &y, Mat &dst, Mat &x){
-  Mat Y = transfo_fourier(y);
-  Mat X = transfo_fourier(x);
-  Mat H;
-  mulSpectrums(Y,X,H,0,false);
-  Mat h = inv_transfo_fourier(H, y.cols, y.rows);
-  Rect roi = Rect(0,0, H.cols, H.rows);
-  dst = h(roi);
-}
-
 
 Mat Normalized_kernel(int NbCols, int NbRows){
   Mat kernel(NbRows,NbCols,CV_32FC1, Scalar(1./((float) NbCols*NbRows)));
@@ -275,4 +212,59 @@ Mat Gaussian_kernel(int size, float sigma_x, float sigma_y, float energy){
   }
   kernel = energy * kernel / ((float) norm(kernel, NORM_L1));
   return kernel;
+}
+
+
+Mat Convol_Shifted_xy(Mat X, uint size_h){
+  float P = (size_h-1)/2;
+  uint ColX = X.cols;
+  uint RowX = X.rows;
+  Point2i pc = pressure_center_computation(X);
+  Mat Res(RowX, ColX, CV_32FC1);
+  Mat BigX = Mat::ones(RowX+size_h-1, ColX+size_h-1, CV_32FC1);
+  Rect roi = Rect((size_h-1)/2,(size_h-1)/2,ColX,RowX);
+  X.copyTo(BigX(roi));
+  Point2i semi_axes = parameters_computation(X, pc);
+  semi_axes.x *= 5;
+  semi_axes.y *= 7/2;
+  float dist;
+  for (int i1 = 0; i1 < ColX; i1++){
+    for (int j1 = 0; j1 < RowX; j1++){
+      float sigma = (P)*((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y))+0.0000001;
+      float sigma2 = (P)*((j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x))+0.0000001;
+      Mat H = Gaussian_kernel(size_h, sigma, sigma2, 1);
+      Rect tmp = Rect(i1,j1,size_h,size_h);
+      Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
+    }
+  }
+  return Res;
+}
+
+Mat Convol_Shifted_xy_energy(Mat X, uint size_h){
+  float P = (size_h-1)/2;
+  uint ColX = X.cols;
+  uint RowX = X.rows;
+  Point2i pc = pressure_center_computation(X);
+  Mat Res(RowX, ColX, CV_32FC1);
+  Mat BigX = Mat::ones(RowX+size_h-1, ColX+size_h-1, CV_32FC1);
+  Rect roi = Rect((size_h-1)/2,(size_h-1)/2,ColX,RowX);
+  X.copyTo(BigX(roi));
+  Point2i semi_axes = parameters_computation(X, pc);
+  semi_axes.x *= 5;
+  semi_axes.y *= 7/2;
+  float dist;
+  for (int i1 = 0; i1 < ColX; i1++){
+    for (int j1 = 0; j1 < RowX; j1++){
+      float sigma = (P)*((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y))+0.0000001;
+      float sigma2 = (P)*((j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x))+0.0000001;
+      float sigma3 = (P/2.)*((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y)+(j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x));
+      // if (((i1-pc.y)*(i1-pc.y)/((float) semi_axes.y*semi_axes.y)+(j1-pc.x)*(j1-pc.x)/((float) semi_axes.x*semi_axes.x)) >= 1){
+      //   sigma = 0.01;
+      // }
+      Mat H = Gaussian_kernel(size_h, sigma, sigma2, 1+sigma3);
+      Rect tmp = Rect(i1,j1,size_h,size_h);
+      Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
+    }
+  }
+  return Res;
 }
