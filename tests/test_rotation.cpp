@@ -3,7 +3,6 @@
 #include "starter_1.h"
 #include "main_1.h"
 #include "starter3.h"
-#include "starter2.h"
 #include "Rotation.h"
 using namespace cv;
 using std::cout;
@@ -40,12 +39,7 @@ int main(int argc, char** argv )
     cout << "Rotation of image...";
     convert_to_float(image, image);
     float angle = 20;
-    /*
-    Si jamais qqn sait pk Rotation n'est pas defini dans ce scope
-    qu'il s'exprimme mtn ou se taise à jamais
-    */
-    Rotation rot;
-    rot = Rotation::Rotation(WEIGHTED, angle);
+    Rotation rot(WEIGHTED, angle);
     Mat rotation_to_dest = rotate_img_to_dest(image, angle);
     rotation_to_dest = interpolation_nearest_neighboor(rotation_to_dest);
     Mat rotation_weighted = rot.apply(image);
