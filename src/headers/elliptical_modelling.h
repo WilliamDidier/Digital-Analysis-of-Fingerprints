@@ -60,55 +60,55 @@ Mat ellipse(Point2i const parameters, Point2i const pressure_center,
 void per_layer_filtering(Mat &image, Mat &protected_zone);
 
 /**
-    @fn: int number_of_iterations(Mat &image, Point2i pressure_center)
-    @brief: computes the approximate number of iterations that will be recquired
+    @fn int number_of_iterations(Mat &image, Point2i pressure_center)
+    @brief Computes the approximate number of iterations that will be recquired
         to apply correctly the anisotropic filtering process
-    @param: &image: the image on which the filter will be applied
-    @param: pressure_center: the coordinates of the pressure pressure_center
-    @return: an int containing the number of iterations
-    @author: Théo L.
+    @param &image The image on which the filter will be applied
+    @param pressure_center The coordinates of the pressure pressure_center
+    @return An int containing the number of iterations
+    @author Théo L.
  */
 int number_of_iterations(Mat &image, Point2i pressure_center);
 
 /**
-    @fn: void anisotropic_filtering(Mat &image, Point2i const pressure_center)
-    @brief: compute at each step the new ellipse and apply the filter outside
-    @param: &image: the image on which the filter will be applied
-    @param: pressure_center: the coordinates of the pressure pressure_center
-    @return: nothing: the image is directly modified
-    @author: Théo L.
+    @fn void anisotropic_filtering(Mat &image, Point2i const pressure_center)
+    @brief Computes at each step the new ellipse and applies the filter outside
+    @param &image The image on which the filter will be applied
+    @param pressure_center The coordinates of the pressure pressure_center
+    @return Nothing : the image is directly modified
+    @author Théo L.
  */
 void anisotropic_filtering(Mat &image, Point2i const pressure_center);
 
 /**
-    @fn: Point2i ellipse_erosion_parameters(Mat &image, Point2i pressure_center)
-    @brief: compute the parameters of the ellipse that will select the eroded
+    @fn Point2i ellipse_erosion_parameters(Mat &image, Point2i pressure_center)
+    @brief Computes the parameters of the ellipse that will select the eroded
         zone
-    @param: &image: the image on which the filter will be applied
-    @param: pressure_center: the coordinates of the pressure pressure_center
-    @return: a point containing the axes of the ellipse
-    @author: Théo L.
+    @param &image The image on which the filter will be applied
+    @param pressure_center The coordinates of the pressure pressure_center
+    @return A point containing the axes of the ellipse
+    @author Théo L.
  */
 Point2i ellipse_erosion_parameters(Mat &image, Point2i pressure_center);
 
 /**
-    @fn: void dilation(int, void*, Mat &src, Mat &dst)
-    @brief: apply a morphological dilation to an image
-    @param: &src: the image on which the filter will be applied
-    @param: &dst: the location where the image will be stored
-    @return: nothing: the image is stored at "&src"
-    @author: Théo L.
+    @fn void dilation(int, void*, Mat &src, Mat &dst)
+    @brief Applies a morphological dilation to an image
+    @param &src The image on which the filter will be applied
+    @param &dst The location where the image will be stored
+    @return Nothing: the image is stored at "&src"
+    @author Théo L.
 */
 void dilation(int, void*, Mat &src, Mat &dst);
 
 /**
-    @fn: void selected_dilation_Protection(Mat &src, Mat &original, Point2i
+    @fn void selected_dilation_Protection(Mat &src, Mat &original, Point2i
         pressure_center)
-    @brief: select a zone that will be protected from dilation operation, and
+    @brief Selects a zone that will be protected from dilation operation, and
         paste it on the dilated image
-    @param: &image: &src: the image on which the protection will be applied
-    @param: &original: the original image
-    @return: nothing: the image is directly modified
+    @param &src The image on which the protection will be applied
+    @param &original The original image
+    @return Nothing : the image is directly modified
     @author: Théo L.
  */
 void selected_dilation_Protection(Mat &src, Mat &original, Point2i pressure_center);
