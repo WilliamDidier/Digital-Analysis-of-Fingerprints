@@ -24,7 +24,7 @@ int main(int argc, char** argv)
   clock_t temps2;
   clock_t temps3;
   clock_t temps4;
-  string const nomFichier1("compare_source_bicubic.txt");
+  string const nomFichier1("compare_source_weighted.txt");
 
   std::ofstream monFlux1(nomFichier1.c_str());
 
@@ -32,15 +32,16 @@ int main(int argc, char** argv)
   for (int n = 2; n<3000; n+=100){
       float angle = 25;
       temps1 = clock();
-       Mat image = Mat::ones(256+n,256+n, CV_32F);
+       Mat image = Mat::ones(n,n, CV_32F);
       // Mat image;
       // image = imread(argv[1], 0);
       convert_to_float(image, image);
       Mat img_to_dest = rotate_img_from_source(image, angle);
 
+
       temps2=clock();
       temps3= clock();
-      Mat img_from_source = rotate_img_from_source_bicubic(image, angle);
+      Mat img_from_source = rotate_img_from_source_weighted(image, angle);
 
       temps4=clock();
       create_file(monFlux1, temps1, temps2, temps3, temps4, n, n);

@@ -2,7 +2,7 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <math.h>
-#include"Rotation.h"
+#include "Rotation.h"
 #define PI 3.14159265
 using namespace cv;
 using std::cout;
@@ -202,7 +202,7 @@ void floor_ceil_dx_dy(const Point2f &pt, Point2f &inf, Point2f &sup, float &dx, 
   dy = (pt.y-inf.y)/(sup.y-inf.y);
 }
 
-float dist_to_O(Point2f pt){
+float dist_to_O(const Point2f pt){
   float dist = sqrt(pt.x*pt.x + pt.y*pt.y);
   return dist;
 }
