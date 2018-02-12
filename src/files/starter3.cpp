@@ -13,13 +13,6 @@
 using namespace cv;
 
 float produit_coefbycoef(Mat A, Mat B){
-  /**
-    @fn float produit_coefbycoef(Mat A, Mat B)
-    @brief Computes the sum of product term by term of two matrix
-    @param Input : 2 matrix with the same size
-    @return a float
-    @author Théo M. & Romain
-  */
   float res = 0;
   for (int i = 0; i < A.rows; i++){
     for (int j = 0; j < A.cols; j++){
@@ -38,27 +31,13 @@ Mat Convol(Mat X, Mat H){
   uint RowX = X.rows;
   uint ColH = H.cols;
   uint RowH = H.rows;
-  //  one create a float matrix which has the same dimension than X
   Mat Res(RowX, ColX, CV_32FC1);
-  // One complete the matrix X with colH-1 zeros on the left and at the bottom ( to remove the bordure issues)
-  // To do that, one create a matrix of dimension greater than X
   Mat BigX = Mat::zeros(RowX+RowH-1, ColX+ColH-1, CV_32FC1);
-  // one select the region of dimension X
   Rect roi = Rect(ColH-1,0,ColX,RowX);
-  // One copy X on the region
   X.copyTo(BigX(roi));
-  // For each pixel of X ...
   for (int i1 = 0; i1 < ColX; i1++){
-    for (int j1 = 0; j1 < RowX; j1++){  /**
-    @fn Mat convolution_fft(Mat x, Mat h)
-    @brief give the convolution of the two matrix thanks to FFT
-    @param Input : two matrix
-    @return a real matrix
-    @author Théo M. & Romain
-  */
-      //... one sélect a small image of dimension H having for beginning the current pixel...
+    for (int j1 = 0; j1 < RowX; j1++){
       Rect tmp = Rect(i1,j1,ColH,RowH);
-      // ... and finally one complet the result matrix by the sum of product term by term of two matrix
       Res.at<float>(j1, i1) = produit_coefbycoef(BigX(tmp),H);
     }
   }
