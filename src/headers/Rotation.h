@@ -1,5 +1,5 @@
-#ifndef STARTER_1
-#define STARTER_1
+#ifndef ROTATION_T
+#define ROTATION_T
 
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
@@ -7,8 +7,6 @@
 #include <math.h>
 #define PI 3.14159265
 using namespace cv;
-using std::cout;
-using std::endl;
 /**
   @file Rotation.h
   @brief Definition of the Rotation class and associated functions
@@ -176,6 +174,7 @@ void floor_ceil_dx_dy(const Point2f &pt, Point2f &inf, Point2f &sup, float &dx, 
   @fn float dist_to_O(Point2f pt)
   @brief Computes the distance of a point to the origin
 */
+<<<<<<< HEAD
 float dist_to_O(Point2f pt);
 
 
@@ -186,6 +185,9 @@ float dist_to_O(Point2f pt);
   @pram &img Image on which we apply the rotation.
   @return Derived intensity at the point (x,y).
 */
+=======
+float dist_to_O(const Point2f pt);
+>>>>>>> 6580aac39aa796eb30421186be6fc5add77368f9
 float derive_x(const Point2f pt, Mat image);
 
 /**
@@ -206,4 +208,4 @@ float derive_y(const Point2f pt, Mat image);
 */
 float derive_xy(const Point2f pt, Mat image);
 
-#endif
+#endif // ROTATION_T
