@@ -49,12 +49,14 @@ Mat interpolation_moy_16(Mat image){
 
   for(int i = 0; i < rows; i++ ){
     for(int j = 0; j < cols; j++){
-      Scalar intensity = image.at<float>(i, j);
+      float intensity = image.at<float>(i, j);
         float moy = (big_image.at<float>(i+2, j+1)+big_image.at<float>(i, j+1)+
         big_image.at<float>(i+1, j+2)+big_image.at<float>(i+1, j)
         +big_image.at<float>(i+2, j+2)+big_image.at<float>(i, j)
         +big_image.at<float>(i+2, j)+ big_image.at<float>(i, j+2))/8.;
+        if (intensity == 1){
         image.at<float>(i,j) = moy;
+      }
        }
     }
     return image;

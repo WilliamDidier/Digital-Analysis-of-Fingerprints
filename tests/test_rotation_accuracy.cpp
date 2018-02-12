@@ -46,8 +46,7 @@ int main(int argc, char** argv )
     }
 
     //TESTING THE ACCURACY OF THE ROTATION OF THE IMAGE
-    Mat rotation_to_dest_corr ;
-    Mat rotation_from_source_corr;
+
     cout << "Rotation accuracy of image..." <<endl;
     convert_to_float(image, image);
     float angle = 75;

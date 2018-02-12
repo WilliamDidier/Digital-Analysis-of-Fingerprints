@@ -15,6 +15,7 @@ set(
 	files/starter2.cpp
 	files/main2.cpp
 	files/elliptical_modelling.cpp
+	files/Rotation.cpp
 
 )
 
@@ -28,6 +29,7 @@ set(
 	headers/starter2.h
 	headers/main2.h
 	headers/elliptical_modelling.h
+	headers/Rotation.h
 
 )
 

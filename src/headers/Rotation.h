@@ -1,0 +1,140 @@
+#ifndef STARTER_1
+#define STARTER_1
+
+#include <stdio.h>
+#include <opencv2/opencv.hpp>
+#include <iostream>
+#include <math.h>
+#define PI 3.14159265
+using namespace cv;
+using std::cout;
+using std::endl;
+/**
+  @file Rotation.h
+  @brief Definition of the Rotation class and associated functions
+  @author Romain C. & William D.
+*/
+
+
+/**
+  @enum rotation_type
+  @brief Enum type that represents the different methods
+  we can use to apply a rotation to an image
+*/
+enum rotation_type{ CLASSIC, /*!< DESCRIPTION METHODE.$ */
+                    BILINEAR, /*!< DESCRIPTION METHODE.$ */
+                    BICUBIC, /*!< DESCRIPTION METHODE.$ */
+                    WEIGHTED/*!< DESCRIPTION METHODE.$ */
+                  };
+
+/**
+* @class Rotation
+* @brief Class representing parametrized rotations of an image.
+* @param method The method that will be applied to perform the rotation
+* @param angle The angle of the rotation
+*
+* The Rotation class has two private attributes that define a rotation : angle and type.
+* The only public method, apply, allows the user to apply a rotation to a given image.
+*/
+
+class Rotation{
+private:
+  rotation_type method; /*!< Method to apply the rotation */
+  float angle;          /*!< Angle of the rotation */
+
+  /**
+    @fn void point_rotation(Point2f pt, Mat &img)
+    @brief Sets the passed by reference point to its coordinates in the rotated image.
+    @param pt Point of the original image that will have its coordinates changed
+    @param &img Reference to the original image
+  */
+  void point_rotation(Point2f pt, Mat &img);
+
+  /**
+    @fn int horizontal_rotated_size(const Mat &img)
+    @brief Computes the horizontal size of the rotated image.
+    @param &img Original image
+    @return An integer representing the horizontal size of the rotated image
+  */
+  int horizontal_rotated_size(const Mat &img);
+
+  /**
+    @fn int vertical_rotated_size(const Mat &img)
+    @brief Computes the vertical size of the rotated image.
+    @param &img Original image
+    @return An integer representing the vertical size of the rotated image
+  */
+  int vertical_rotated_size(const Mat &img);
+
+public:
+  /**
+    @fn Rotation(rotation_type p1, float p2)
+    @brief Constructor of the Rotation class
+    @param p1 Enum rotation_type
+    @param p2 Floating point number representing the angle of the rotation
+  */
+  Rotation(rotation_type p1, float p2);
+
+  /**
+    @fn void set_angle(float new_angle)
+    @brief Sets the angle of the Rotation object to a new value
+    @param new_angle angle the Rotation will be set to.
+  */
+  void set_angle(float new_angle);
+
+  /**
+    @fn   void set_method(rotation_type new_method)
+    @brief Sets the method of the Rotation object to a new value
+    @param new_method Method the Rotation will be set to
+  */
+  void set_method(rotation_type new_method);
+
+  /**
+    @fn   Mat apply(Mat &img)
+    @brief Applied the parametrized Rotation to an image.
+    @param p1 &img Image the rotation will be applied to.
+    @return Rotated image.
+  */
+  Mat apply(Mat &img);
+};
+/**
+  @fn   float intensity_computation_classic(const Point2f &pt, const Mat &img)
+  @brief Compute the rotation from source without interpoaltion.
+  @param The center of rotation and the image where apply the rotation.
+  @return intensity at the point (x,y).
+*/
+float intensity_computation_classic(const Point2f &pt, const Mat &img);
+
+/**
+  @fn   float intensity_computation_bilinear(const Point2f &pt, const Mat &img)
+  @brief Compute the rotation from source with bilinear interpolation.
+  @param The center of rotation and the image where apply the rotation.
+  @return intensity at the point (x,y).
+*/
+float intensity_computation_bilinear(const Point2f &pt, const Mat &img);
+
+/**
+  @fn   float intensity_computation_bilinear(const Point2f &pt, const Mat &img)
+  @brief Compute the rotation from source with bicubic interpolation.
+  @param The center of rotation and the image where apply the rotation.
+  @return intensity at the point (x,y).
+*/
+float intensity_computation_bicubic(Point2f &pt, Mat &img);
+
+/**
+  @fn   float intensity_computation_bilinear(const Point2f &pt, const Mat &img)
+  @brief Compute the rotation from source with weighted interpolation.
+  @param The center of rotation and the image where apply the rotation.
+  @return intensity at the point (x,y).
+*/
+float intensity_computation_weighted(const Point2f &pt, const Mat &img);
+
+Mat coeff_bicubic(const Point2f &pt, const Mat &img);
+void get_intensities(const Mat &img, const Point2i &inf, const Point2i &sup, float &i1, float &i2, float &i3, float &i4);
+void floor_ceil_dx_dy(const Point2f &pt, Point2f &inf, Point2f &sup, float &dx, float &dy);
+float dist_to_O(Point2f pt);
+float derive_x(const Point2f pt, Mat image);
+float derive_y(const Point2f pt, Mat image);
+float derive_xy(const Point2f pt, Mat image);
+
+#endif

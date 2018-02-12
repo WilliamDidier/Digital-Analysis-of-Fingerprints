@@ -33,18 +33,18 @@ def fic_to_tab_square(fichier):
 
 
 
-n,t1,t2 = fic_to_tab_square("compare_source_bicubic.txt")
+n,t1,t2 = fic_to_tab_square("compare_source_weighted.txt")
 #y1 = 15*15*n*n/100000000
 #y2 = (6*n*np.log(2*n)+n*n)/10000000
-p1, = plt.plot((n+256),(t1))
-p2, = plt.plot((n+256),(t2))
+p1, = plt.plot((n),(t1))
+p2, = plt.plot((n),(t2))
 n2 = [i for i in range(3,3200)]
-n3 = [8*i*i for i in n2]
-n4 = [32*i*i for i in range(3,3200)]
+n3 = [12*i*i for i in n2]
+#n4 = [i*i for i in range(3,3200)]
 p3, = plt.plot(n2,n3)
-p4, = plt.plot(n2,n4)
+#p4, = plt.plot(n2,n4)
 plt.title(" complexity comparaison from source and bicubic ")
-plt.legend([p1, p2, p3, p4], ["from source", "bicubic", "from source theoretical", "bicubic theoretical"], loc = "best")
+plt.legend([p1, p2, p3], ["source", "weighted", "from source theoretical"], loc = "best")
 plt.ylabel("Number of computations ")
 plt.xlabel("Matrix dimension")
 plt.show()
