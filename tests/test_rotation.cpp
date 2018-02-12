@@ -40,6 +40,10 @@ int main(int argc, char** argv )
     cout << "Rotation of image...";
     convert_to_float(image, image);
     float angle = 20;
+    /*
+    Si jamais qqn sait pk Rotation n'est pas defini dans ce scope
+    qu'il s'exprimme mtn ou se taise à jamais
+    */
     Rotation rot;
     rot = Rotation::Rotation(WEIGHTED, angle);
     Mat rotation_to_dest = rotate_img_to_dest(image, angle);
