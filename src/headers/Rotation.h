@@ -92,7 +92,7 @@ public:
   /**
     @fn   Mat apply(Mat &img)
     @brief Applied the parametrized Rotation to an image.
-    @param p1 &img Image the rotation will be applied to.
+    @param &img Image the rotation will be applied to.
     @return Rotated image.
   */
   Mat apply(Mat &img);
@@ -108,8 +108,40 @@ float intensity_computation_bicubic(Point2f &pt, Mat &img);
 float intensity_computation_weighted(const Point2f &pt, const Mat &img);
 
 Mat coeff_bicubic(const Point2f &pt, const Mat &img);
+
+/**
+  @fn void get_intensities(const Mat &img, const Point2i &inf, const Point2i &sup, float &i1, float &i2, float &i3, float &i4)
+  @image html image_distance.svg
+  @brief Puts the intensities of the 4 points surrounding pt in the passed by reference floats
+  @param &img Image from whih we'll get the intensities
+  @param &inf Q11
+  @param &sup Q22
+  @param &i1 Horizontal distance between pt and inf
+  @param &i2 Vertical distance between pt and inf
+  @param &i3 Vertical distance between pt and inf
+  @param &i4 Vertical distance between pt and inf
+  @return Rotated image.
+*/
 void get_intensities(const Mat &img, const Point2i &inf, const Point2i &sup, float &i1, float &i2, float &i3, float &i4);
+
+/**
+  @fn void floor_ceil_dx_dy(const Point2f &pt, Point2f &inf, Point2f &sup, float &dx, float &dy)
+  @brief Computes various important values to apply a Rotation. Pt is the only
+  actual parameter, the other parameters are passsed by reference parameters that
+  are to be modified by this function
+  @param &pt Point that is concerned by the computations
+  @param &inf Point that has the same coordinates as pt, but floored
+  @param &sup Point that has the same coordinates as pt, but ceiled
+  @param &dx Horizontal distance between pt and inf
+  @param &dy Vertical distance between pt and inf
+  @return Rotated image.
+*/
 void floor_ceil_dx_dy(const Point2f &pt, Point2f &inf, Point2f &sup, float &dx, float &dy);
+
+/**
+  @fn float dist_to_O(Point2f pt)
+  @brief Computes the distance of a point to the origin
+*/
 float dist_to_O(Point2f pt);
 float derive_x(const Point2f pt, Mat image);
 float derive_y(const Point2f pt, Mat image);

@@ -13,7 +13,7 @@ Mat get_zone(int x, int y, int width, int height, Mat image){
   int rows = image.rows;
   int cols = image.cols;
   Rect zone = Rect(Point2f(x,y), Size2f(width, height));
-  Mat big_image ;
+  Mat big_image;
   copyMakeBorder(image, big_image, width, width, height, height, BORDER_CONSTANT, Scalar::all(0));
   return big_image(zone);
 }
@@ -22,8 +22,8 @@ vector<float> decrease_rotation(int x, int y, int i, int j, float angle){
   vector<float> tab(2);
   float dist = distance(x-i,j-y);
   angle = angle*PI/180 * exp(-dist*dist/1000);
-  tab[0] = cos(angle)*(i-x) - sin(angle)*(j-y)+x ;
-  tab[1] = sin(angle)*(i-x) + cos(angle)*(j-y)+y ;
+  tab[0] = cos(angle)*(i-x) - sin(angle)*(j-y)+x;
+  tab[1] = sin(angle)*(i-x) + cos(angle)*(j-y)+y;
   return tab;
 }
 

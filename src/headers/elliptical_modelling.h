@@ -7,14 +7,19 @@
 #include <stdio.h>
 
 using namespace cv;
+/**
+  @file elliptical_modelling.h
+  @brief Functions dealing with anisotropy
+  @author Théo L.
+*/
 
 /**
-    @fn: Point2i parameters_computation(Mat &image, Point2i pressure_center)
-    @brief: computes the semi-major and semi-minor axes of the future ellipse
-    @param: &image: the image on which will be applied the ellipse after
-    @param: pressure_center: the coordinates of the pressure pressure_center
-    @return: a point that contains semi-major and semi-minor axes length
-    @author: Théo L.
+    @fn Point2i parameters_computation(Mat &image, Point2i pressure_center)
+    @brief Computes the semi-major and semi-minor axes of the future ellipse
+    @param &image The image on which will be applied the ellipse after
+    @param pressure_center The coordinates of the pressure pressure_center
+    @return A point that contains semi-major and semi-minor axes length
+    @author Théo L.
  */
 Point2i parameters_computation(Mat &image, Point2i pressure_center);
 
@@ -35,9 +40,9 @@ bool test_ellipse(Point2f const parameters, Point2i const pressure_center,
     @fn Mat ellipse(Point2i const parameters, Point2i const pressure_center,
         Point2i dimensions)
     @brief Creats a binary matrix representing the parametrized ellipse
-    @param parameters semi-major and semi-minor axes
-    @param pressure_center coordinates of the pressure center
-    @param dimensions dimensions of the image
+    @param parameters Semi-major and semi-minor axes
+    @param pressure_center Coordinates of the pressure center
+    @param dimensions Dimensions of the image
     @return A binary Mat object representing an ellipse
     @author Théo L.
 */
@@ -45,12 +50,12 @@ Mat ellipse(Point2i const parameters, Point2i const pressure_center,
     Point2i dimensions);
 
 /**
-    @fn: void per_layer_filtering(Mat &image, Mat &protected_zone)
-    @brief: apply the coefficient transform outside the ellipse
-    @param: &image: the image on which the filter will be applied
-    @param: pressure_center: the coordinates of the pressure pressure_center
-    @return: nothing: the image is directly modified
-    @author: Théo L.
+    @fn void per_layer_filtering(Mat &image, Mat &protected_zone)
+    @brief Applies the coefficient transform outside the ellipse
+    @param &image The image on which the filter will be applied
+    @param pressure_center The coordinates of the pressure pressure_center
+    @return Nothing the image is directly modified
+    @author Théo L.
  */
 void per_layer_filtering(Mat &image, Mat &protected_zone);
 

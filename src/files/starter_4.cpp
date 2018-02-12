@@ -73,7 +73,7 @@ int optimal_threshold(Mat &image) {
     for (uint k = 0; k < sigmas.size(); k++) {
         float mu = mean_level(levels, k);
         float omega = cumulative_moment_0(levels, k);
-        sigmas[k] = pow(mu_T*omega - mu, 2)/(omega*(1-omega));
+        sigmas[k] = (mu_T*omega - mu)*(mu_T*omega - mu)/(omega*(1-omega));
     }
     return index_max(sigmas);
 }
