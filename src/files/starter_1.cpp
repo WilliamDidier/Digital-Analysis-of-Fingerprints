@@ -1,12 +1,3 @@
-/**
-  This is a Doxygen documentation.
-  @file starter_1.cpp
-  @brief Functions of the Starter 1
-  @author Romain C. & Théo M. & Théo L. & William D.
-
-
-*/
-
 #include <opencv2/opencv.hpp>
 #include <stdio.h>
 using namespace cv;
@@ -31,13 +22,7 @@ void draw_uniform_rectangle (Mat image, Rect r, float color){
 }
 
 
-/**
-  \fn symetry_y(Mat &image)
-  \brief
-  \param &image
-  \return
-  \author Romain C. & Théo M.
-*/
+
 Mat symetry_y(Mat &image) {
     /* returns the symetry along the y axis */
     int nRows = image.rows;
@@ -71,18 +56,6 @@ Mat symetry_x(Mat &image) {
   }
   return(image_sym);
 }
-
-
-
-/**
-  \fn symetry_y(Mat &image)
-  \brief
-  \param &image      if(neg == 1){
-        Res = symetry_y(Res);
-      }
-  \return
-  \author Romain C. & Théo M.
-*/
 
 Mat symetry_diag(Mat &image) {
     int nRows = image.rows;

@@ -4,9 +4,12 @@
 #include "main_1.h"
 #include "starter3.h"
 #include "starter2.h"
+#include "Rotation.h"
 using namespace cv;
 using std::cout;
 using std::endl;
+
+
 
 Mat rotate(Mat src, double angle)
 {
@@ -36,14 +39,22 @@ int main(int argc, char** argv )
     Mat rotation_from_source_corr;
     cout << "Rotation of image...";
     convert_to_float(image, image);
-
     float angle = 20;
+    /*
+    Si jamais qqn sait pk Rotation n'est pas defini dans ce scope
+    qu'il s'exprimme mtn ou se taise à jamais
+    */
+    Rotation rot;
+    rot = Rotation::Rotation(WEIGHTED, angle);
     Mat rotation_to_dest = rotate_img_to_dest(image, angle);
     rotation_to_dest = interpolation_nearest_neighboor(rotation_to_dest);
-    Mat rotation_weighted = rotate_img_from_source_weighted(image, angle);
-    Mat rotation_from_source_bicubic = rotate_img_from_source_bicubic(image, angle);
-    Mat rotation_from_source = rotate_img_from_source(image, angle);
-    Mat rotation_from_source_bilinear = rotate_img_from_source_bilinear(image, angle);
+    Mat rotation_weighted = rot.apply(image);
+    rot.set_method(BICUBIC);
+    Mat rotation_from_source_bicubic = rot.apply(image);
+    rot.set_method(CLASSIC);
+    Mat rotation_from_source = rot.apply(image);
+    rot.set_method(BILINEAR);
+    Mat rotation_from_source_bilinear = rot.apply(image);
     Mat true_rotation = rotate(image, angle);
     convert_to_int(rotation_to_dest, rotation_to_dest);
     convert_to_int(rotation_from_source, rotation_from_source);
@@ -53,11 +64,11 @@ int main(int argc, char** argv )
     convert_to_int(rotation_weighted, rotation_weighted);
     convert_to_int(image, image);
     imwrite("tests/rotation_to_dest.png", rotation_to_dest);
-     imwrite("tests/rotation_from_source_bilinear.png", rotation_from_source_bilinear );
-     imwrite("tests/rotation_from_source.png", rotation_from_source);
-     imwrite("tests/rotation_from_source_bicubic.png", rotation_from_source_bicubic);
-     imwrite("tests/true_rotation.png", true_rotation);
-     imwrite("tests/rotation_weighted.png", rotation_weighted);
+    imwrite("tests/rotation_from_source_bilinear.png", rotation_from_source_bilinear );
+    imwrite("tests/rotation_from_source.png", rotation_from_source);
+    imwrite("tests/rotation_from_source_bicubic.png", rotation_from_source_bicubic);
+    imwrite("tests/true_rotation.png", true_rotation);
+    imwrite("tests/rotation_weighted.png", rotation_weighted);
 
     cout << " Done." << endl;
 }
