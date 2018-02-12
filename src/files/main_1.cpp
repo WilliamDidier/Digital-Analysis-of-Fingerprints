@@ -3,6 +3,7 @@
 #include <opencv2/opencv.hpp>
 #include "starter_1.h"
 #include "main_1.h"
+#include "starter_4.h"
 #include "elliptical_modelling.h"
 
 using namespace cv;
@@ -29,7 +30,7 @@ void change_intensity (Mat &image, Point2i point, float coef){
 
 
 bool white_thresholding(Mat &image, Point2i point, const float threshold){
-  if (image.at<float>(point) > 0.4){
+  if (image.at<float>(point) > threshold){
     image.at<float>(point) = 1.0;
     return true;
   }
@@ -52,7 +53,8 @@ void weak_to_clean_iso(Mat &image, const Point2i pressure_center){
   for (unsigned int x = 0; x < image.rows; x++){
     for (unsigned int y = 0; y < image.cols; y++){
       Point2i pt = Point(y,x);
-      if  (!white_thresholding(image, pt, 0.4)){
+      float threshold = optimal_threshold(image);
+      if  (!white_thresholding(image, pt, threshold)){
         float coef = coefficient_computation(false, pressure_center, pt);
         change_intensity(image, pt, coef);
       }
