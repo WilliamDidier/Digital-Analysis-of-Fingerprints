@@ -7,6 +7,12 @@
 #include "starter2.h"
 #include <vector>
 #define PI 3.14159265
+/**
+  This is a Doxygen documentation.
+  @file starter2.cpp
+  @brief Body for the functions of the Starter 2
+  @author Romain C. & Théo M. & Théo L. & William D.
+*/
 
 
 vector<int> rotation(int x, int y, int i, int j, float angle ){

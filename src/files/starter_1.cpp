@@ -4,6 +4,12 @@ using namespace cv;
 using std::cout;
 using std::endl;
 
+/**
+  This is a Doxygen documentation.
+  @file starter_1.cpp
+  @brief Body for the functions of the Starter 1
+  @author Romain C. & Théo M. & Théo L. & William D.
+*/
 
 void convert_to_float(Mat &src, Mat & dst){
   src.convertTo(dst, CV_32F, 1.0/255.0);

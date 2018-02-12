@@ -8,6 +8,11 @@ using namespace cv;
 using std::cout;
 using std::endl;
 
+/**
+  @file Rotation.cpp
+  @brief Body for the Rotation class and associated functions
+  @author Romain C. & William D.
+*/
 
 void Rotation::point_rotation(Point2f pt, Mat &img){
   Point2f res(0,0);

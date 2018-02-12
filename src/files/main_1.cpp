@@ -7,7 +7,11 @@
 #include "elliptical_modelling.h"
 
 using namespace cv;
-
+/**
+  @file main_1.cpp
+  @brief Body for the functions of the Main course 1
+  @author Théo L. & William D.
+*/
 
 float distance_computation(const Point2i pressure_center, Point2i point) {
     return(sqrt(pow(pressure_center.x - point.x, 2) + pow(pressure_center.y - point.y, 2)));

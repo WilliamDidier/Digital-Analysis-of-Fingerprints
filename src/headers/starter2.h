@@ -1,15 +1,8 @@
-/*
-header file associated to 'starter2.cpp'
-contains the functions related to the starter 2
-*/
 /**
   This is a Doxygen documentation.
-  \file starter2.h
-  \brief Header for the functions of the Starter 2
-  \author Romain C. & Théo M. & Théo L. & William D.
-  \ date 2018, January the 16th
-
-
+  @file starter2.h
+  @brief Header for the functions of the Starter 2
+  @author Romain C. & Théo M. & Théo L. & William D.
 */
 
 #include <stdio.h>

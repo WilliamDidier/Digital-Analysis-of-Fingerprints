@@ -11,7 +11,7 @@ using std::cout;
 using std::endl;
 /**
   @file Rotation.h
-  @brief Definition of the Rotation class and associated functions
+  @brief Header for the Rotation class and associated functions
   @author Romain C. & William D.
 */
 
@@ -30,11 +30,11 @@ enum rotation_type{ CLASSIC, /*!< DESCRIPTION METHODE.$ */
 /**
 * @class Rotation
 * @brief Class representing parametrized rotations of an image.
-* @param method The method that will be applied to perform the rotation
-* @param angle The angle of the rotation
+* @param method The method that will be applied to perform the rotation (rotation_type)
+* @param angle The angle of the rotation (float)
 *
 * The Rotation class has two private attributes that define a rotation : angle and type.
-* The only public method, apply, allows the user to apply a rotation to a given image.
+*
 */
 
 class Rotation{

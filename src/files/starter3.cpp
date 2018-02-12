@@ -8,7 +8,12 @@
 #include "starter_1.h"
 #include "main_1.h"
 #include "elliptical_modelling.h"
-
+/**
+  This is a Doxygenb documentation.
+  @file starter3.cpp
+  @brief Body for the functions of the Starter 3
+  @author Romain C. & Théo M. & Théo L. & William D.
+*/
 
 using namespace cv;
 
