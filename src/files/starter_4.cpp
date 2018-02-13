@@ -8,6 +8,12 @@ using namespace cv;
 using std::cout;
 using std::endl;
 
+/**
+  This is a Doxygen documentation.
+  @file starter_4.cpp
+  @brief Body for the functions of the Starter 4
+  @author Théo L.
+*/
 
 void print_vector(vector<float> vect) {
     for (uint i = 0; i < vect.size(); i++) {

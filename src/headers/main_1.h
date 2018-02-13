@@ -18,7 +18,7 @@ using namespace cv;
 
 /**
   @file main_1.h
-  @brief Functions of the Main course 1
+  @brief Header for the functions of the Main course 1
   @author Théo L. & William D.
 */
 

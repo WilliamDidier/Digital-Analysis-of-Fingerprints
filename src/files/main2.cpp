@@ -8,6 +8,11 @@
 #include "main2.h"
 #define PI 3.14159265
 
+/**
+@file main2.cpp
+@brief Body for the functions of the Main course 2
+@author Romain C.
+*/
 
 Mat get_zone(int x, int y, int width, int height, Mat image){
   int rows = image.rows;

@@ -8,7 +8,6 @@ contains the functions related to the starter 1
   @file starter_1.h
   @brief Header for the functions of the Starter 1
   @author Romain C. & Théo M. & Théo L. & William D.
-  @date 2018, January the 16th
 */
 #ifndef STARTER_1
 #define STARTER_1

@@ -9,7 +9,7 @@
 using namespace cv;
 /**
   @file elliptical_modelling.h
-  @brief Functions dealing with anisotropy
+  @brief Header for the functions dealing with anisotropy (Main course 1)
   @author Théo L.
 */
 
@@ -50,14 +50,15 @@ Mat ellipse(Point2i const parameters, Point2i const pressure_center,
     Point2i dimensions);
 
 /**
-    @fn void per_layer_filtering(Mat &image, Mat &protected_zone)
+    @fn void per_layer_filtering(Mat &image, Mat &protected_zone, float coef)
     @brief Applies the coefficient transform outside the ellipse
     @param &image The image on which the filter will be applied
     @param pressure_center The coordinates of the pressure pressure_center
+    @param coef The coefficient that has to be applied on the image intensity
     @return Nothing the image is directly modified
     @author Théo L.
  */
-void per_layer_filtering(Mat &image, Mat &protected_zone);
+void per_layer_filtering(Mat &image, Mat &protected_zone, float coef);
 
 /**
     @fn int number_of_iterations(Mat &image, Point2i pressure_center)
@@ -96,7 +97,6 @@ Point2i ellipse_erosion_parameters(Mat &image, Point2i pressure_center);
     @brief Applies a morphological dilation to an image
     @param &src The image on which the filter will be applied
     @param &dst The location where the image will be stored
-    @return Nothing: the image is stored at "&src"
     @author Théo L.
 */
 void dilation(int, void*, Mat &src, Mat &dst);
@@ -108,8 +108,8 @@ void dilation(int, void*, Mat &src, Mat &dst);
         paste it on the dilated image
     @param &src The image on which the protection will be applied
     @param &original The original image
-    @return Nothing : the image is directly modified
-    @author: Théo L.
+    @return Nothing the image is directly modified
+    @author Théo L.
  */
 void selected_dilation_Protection(Mat &src, Mat &original, Point2i pressure_center);
 
