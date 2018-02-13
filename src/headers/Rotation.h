@@ -19,10 +19,10 @@ using namespace cv;
   @brief Enum type that represents the different methods
   we can use to apply a rotation to an image
 */
-enum rotation_type{ CLASSIC, /*!< DESCRIPTION METHODE.$ */
-                    BILINEAR, /*!< DESCRIPTION METHODE.$ */
-                    BICUBIC, /*!< DESCRIPTION METHODE.$ */
-                    WEIGHTED/*!< DESCRIPTION METHODE.$ */
+enum rotation_type{ CLASSIC, /*!< Rotation from source image.$ */
+                    BILINEAR, /*!< Rotation from source with bilinear interpolation.$ */
+                    BICUBIC, /*!< Rotation from source with bicubic interpolation.$ */
+                    WEIGHTED/*!< Rotation from source with weighted interpolation.$ */
                   };
 
 /**
@@ -100,7 +100,7 @@ public:
   @fn   float intensity_computation_classic(const Point2f &pt, const Mat &img)
   @brief Compute the rotation from source without interpoaltion.
   @param &pt Point on which we apply rotation.
-  @pram &img Image on which we apply the rotation.
+  @param &img Image on which we apply the rotation.
   @return intensity at the point (x,y).
 */
 float intensity_computation_classic(const Point2f &pt, const Mat &img);
@@ -109,7 +109,7 @@ float intensity_computation_classic(const Point2f &pt, const Mat &img);
   @fn   float intensity_computation_bilinear(const Point2f &pt, const Mat &img)
   @brief Compute the rotation from source with bilinear interpolation.
   @param &pt Point on which we apply rotation.
-  @pram &img Image on which we apply the rotation.
+  @param &img Image on which we apply the rotation.
   @return intensity at the point (x,y).
 */
 float intensity_computation_bilinear(const Point2f &pt, const Mat &img);
@@ -118,7 +118,7 @@ float intensity_computation_bilinear(const Point2f &pt, const Mat &img);
   @fn   float intensity_computation_bilinear(const Point2f &pt, const Mat &img)
   @brief Compute the rotation from source with bicubic interpolation.
   @param &pt Point on which we apply rotation.
-  @pram &img Image on which we apply the rotation.
+  @param &img Image on which we apply the rotation.
   @return intensity at the point (x,y).
 */
 float intensity_computation_bicubic(Point2f &pt, Mat &img);
@@ -127,7 +127,7 @@ float intensity_computation_bicubic(Point2f &pt, Mat &img);
   @fn   float intensity_computation_bilinear(const Point2f &pt, const Mat &img)
   @brief Compute the rotation from source with weighted interpolation.
   @param &pt Point on which we apply rotation
-  @pram &img Image on which we apply the rotation.
+  @param &img Image on which we apply the rotation.
   @return intensity at the point (x,y).
 */
 float intensity_computation_weighted(const Point2f &pt, const Mat &img);
@@ -136,7 +136,7 @@ float intensity_computation_weighted(const Point2f &pt, const Mat &img);
   @fn   Mat coeff_bicubic(const Point2f &pt, const Mat &img)
   @brief Find the coefficient for the bicubic interpolation
   @param &pt Point on which we apply rotation
-  @pram &img Image on which we apply the rotation.
+  @param &img Image on which we apply the rotation.
   @return The matrix with the bicubic coefficient.
 */
 Mat coeff_bicubic(const Point2f &pt, const Mat &img);
@@ -182,7 +182,7 @@ float dist_to_O(const Point2f pt);
   @fn   float derive_x(const Point2f pt, Mat image)
   @brief Compute the numerical derivation wrt x.
   @param &pt Point where we apply the derivation.
-  @pram &img Image on which we apply the rotation.
+  @param &img Image on which we apply the rotation.
   @return Derived intensity at the point (x,y).
 */
 
@@ -192,16 +192,16 @@ float derive_x(const Point2f pt, Mat image);
   @fn   float derive_y(const Point2f pt, Mat image)
   @brief Compute the numerical derivation wrt y.
   @param &pt Point where we apply the derivation.
-  @pram &img Image on which we apply the rotation.
+  @param &img Image on which we apply the rotation.
   @return Derived intensity at the point (x,y).
 */
 float derive_y(const Point2f pt, Mat image);
 
 /**
-  @fn   float derive_x(const Point2f pt, Mat image)
+  @fn   float derive_xy(const Point2f pt, Mat image)
   @brief Compute the numerical derivation wrt x and y.
   @param &pt Point where we apply the derivation.
-  @pram &img Image on which we apply the rotation.
+  @param &img Image on which we apply the rotation.
   @return Derived intensity at the point (x,y).
 */
 float derive_xy(const Point2f pt, Mat image);
