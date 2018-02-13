@@ -21,7 +21,6 @@ set(
 
 set(
 	HEADERS
-	headers/blur.h
 	headers/starter_1.h
 	headers/main_1.h
 	headers/starter3.h
