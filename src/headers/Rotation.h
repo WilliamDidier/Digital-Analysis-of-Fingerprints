@@ -22,7 +22,8 @@ using namespace cv;
 enum rotation_type{ CLASSIC, /*!< Rotation from source image.$ */
                     BILINEAR, /*!< Rotation from source with bilinear interpolation.$ */
                     BICUBIC, /*!< Rotation from source with bicubic interpolation.$ */
-                    WEIGHTED/*!< Rotation from source with weighted interpolation.$ */
+                    WEIGHTED, /*!< Rotation from source with weighted interpolation.$ */
+                    TODEST, /*!< Rotation from source with weighted interpolation.$ */
                   };
 
 /**

@@ -2,7 +2,6 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include "starter_1.h"
-#include "blur.h"
 
 using namespace cv;
 using std::cout;
