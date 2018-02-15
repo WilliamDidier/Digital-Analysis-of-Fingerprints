@@ -14,13 +14,25 @@ using std::endl;
   @author Romain C. & William D.
 */
 
-void Rotation::point_rotation(Point2f pt, Mat &img){
-  Point2f res(0,0);
-  int x = img.rows/2;
-  int y = img.cols/2;
-  float tmp = res.x;
-  pt.x = sin(PI*angle/180)*(pt.y-x) + cos(PI*angle/180)*(pt.x-y)+y;
-  pt.y = cos(PI*angle/180)*(pt.y-x) - sin(PI*angle/180)*(tmp-y)+x;
+
+
+void Rotation::point_rotation(Point2f &pt, Mat &img){
+
+  Point2f rot_center(img.rows/2, img.cols/2);
+  float tmp = pt.x;
+  switch(method){
+    case TODEST:
+    case TODESTMOY:
+    case TODESTNEIGHBOUR:
+      pt.x = cos(-PI*angle/180)*(pt.x-rot_center.y) - sin(-PI*angle/180)*(pt.y-rot_center.x)+rot_center.y;
+      pt.y = sin(-PI*angle/180)*(tmp-rot_center.y) + cos(-PI*angle/180)*(pt.y-rot_center.x)+rot_center.x;
+      pt.x = floor(pt.x+0.5);
+      pt.y = floor(pt.y+0.5);
+      break;
+    default:
+    pt.x = cos(PI*angle/180)*(pt.x-rot_center.y) - sin(PI*angle/180)*(pt.y-rot_center.x)+rot_center.y;
+    pt.y = sin(PI*angle/180)*(tmp-rot_center.y) + cos(PI*angle/180)*(pt.y-rot_center.x)+rot_center.x;
+  }
   if (method == CLASSIC){
     pt.x = floor(pt.x+0.5);
     pt.y = floor(pt.y+0.5);
@@ -44,19 +56,16 @@ Rotation::Rotation(rotation_type p1, float p2){
 }
 
 
-Mat Rotation::apply(Mat &img){
+Mat Rotation::apply_source(Mat &img){
   int dim_output_x = this -> horizontal_rotated_size(img);
   int dim_output_y = this -> vertical_rotated_size(img);
-
-  Mat Res = Mat::zeros(dim_output_x,dim_output_y, CV_32FC1);
-
+  Mat Res = Mat::ones(dim_output_x,dim_output_y, CV_32FC1);
   for(int i = 0; i < dim_output_x; i++ ){
     for(int j = 0 ; j < dim_output_y ; j++){
-      Point2f pt(j, i);
+      Point2f pt(j,i);
       this -> point_rotation(pt, img);
-      if( pt.x >= 0 && pt.y >= 0 && pt.x <= img.cols && pt.y <= img.rows){
+      if( pt.x >= 0 && pt.y >= 0 && int(pt.x) <= img.cols && int(pt.y) <= img.rows){
         float intensity = 0;
-
         switch(method){
           case CLASSIC:
             intensity = intensity_computation_classic(pt, img);
@@ -71,12 +80,63 @@ Mat Rotation::apply(Mat &img){
             intensity = intensity_computation_weighted(pt, img);
             break;
           default:
-            std::cerr << "ERROR : The type of the rotation wasn't understood. Aborting" << endl;
+            std::cerr << "ERROR : The type of the rotation wasn't understood or try apply_dest function. Aborting" << endl;
             break;
         }
+        Res.at<float>(i,j) = intensity;
       }
     }
   }
+  Rect roi = Rect(0, 0, img.cols, img.rows);
+  return Res(roi);
+}
+
+Mat Rotation::apply_dest(Mat &img){
+  int dim_output_x = this -> horizontal_rotated_size(img);
+  int dim_output_y = this -> vertical_rotated_size(img);
+  Mat Res = Mat::ones(dim_output_x,dim_output_y, CV_32FC1);
+  for(int i = 0; i < img.cols; i++ ){
+    for(int j = 0 ; j < img.rows ; j++){
+      Point2f pt(i,j);
+      float intensity = img.at<float>(pt);
+      this -> point_rotation(pt, img);
+      if( pt.x >= 0 && pt.y >= 0 && pt.y < dim_output_x&& pt.x < dim_output_y){
+        Res.at<float>(pt) = intensity;
+      }
+    }
+  }
+  for(int i = 0; i < img.cols; i++ ){
+    for(int j = 0 ; j < img.rows ; j++){
+      Point2f pt(i,j);
+      Mat big_image;
+      float intensity = Res.at<float>(pt);
+      switch(method){
+        case TODEST:
+          break;
+        case TODESTNEIGHBOUR:
+          copyMakeBorder(Res, big_image, 1, 1, 1, 1, BORDER_CONSTANT, Scalar::all(1));
+          if (intensity == 1){
+            intensity = big_image.at<float>(j+2,i+1);
+           }
+           break;
+        case TODESTMOY:
+          copyMakeBorder(Res, big_image, 1, 1, 1, 1, BORDER_CONSTANT, Scalar::all(1));
+          if (intensity == 1){
+          float moy = (big_image.at<float>(j+1, i+2)+big_image.at<float>(j+1,i)+
+            big_image.at<float>(j+2, i+1)+big_image.at<float>(j,i+1)
+            +big_image.at<float>(j+2, i+2)+big_image.at<float>(j, i)
+            +big_image.at<float>(j,i+2)+ big_image.at<float>(j+2,i))/8.;
+            intensity = moy;
+           }
+           break;
+           default:
+           std::cerr << "ERROR : The type of the rotation wasn't understood or try apply_source function. Aborting" << endl;
+           break;
+          }
+          Res.at<float>(pt) = intensity;
+
+        }
+      }
   Rect roi = Rect(0, 0, img.cols, img.rows);
   return Res(roi);
 }
@@ -88,6 +148,7 @@ void Rotation::set_angle(float new_angle){
 void Rotation::set_method(rotation_type new_method){
   method = new_method;
 }
+
 
 float intensity_computation_classic(const Point2f &pt, const Mat &img){
   return img.at<float>(pt);
@@ -101,6 +162,7 @@ float intensity_computation_bilinear(const Point2f &pt, const Mat &img){
   if (inf.x == pt.x && inf.y == pt.y){
     return img.at<float>(inf);
   }
+  floor_ceil_dx_dy(pt, inf, sup, dx, dy);
 
   float intensity1, intensity2, intensity3, intensity4;
   get_intensities(img, inf, sup, intensity1, intensity2, intensity3, intensity4);
@@ -188,11 +250,14 @@ Mat coeff_bicubic(const Point2f &pt, const Mat &img){
 }
 
 void get_intensities(const Mat &img, const Point2i &inf, const Point2i &sup, float &i1, float &i2, float &i3, float &i4){
-  i1 = img.at<float>(inf);
-  i2 = img.at<float>(sup.x,  inf.y);
-  i3 = img.at<float>(sup);
-  i4 = img.at<float>(sup.x,  inf.y);
+  i1 = img.at<float>(inf.y, inf.x);
+  i2 = img.at<float>(sup.y, inf.x);
+  i3 = img.at<float>(sup.y, sup.x);
+  i4 = img.at<float>(inf.y, sup.x);
 }
+
+
+
 
 void floor_ceil_dx_dy(const Point2f &pt, Point2f &inf, Point2f &sup, float &dx, float &dy){
   inf.x = float(floor(pt.x));

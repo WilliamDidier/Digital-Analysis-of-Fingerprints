@@ -22,7 +22,10 @@ using namespace cv;
 enum rotation_type{ CLASSIC, /*!< Rotation from source image.$ */
                     BILINEAR, /*!< Rotation from source with bilinear interpolation.$ */
                     BICUBIC, /*!< Rotation from source with bicubic interpolation.$ */
-                    WEIGHTED/*!< Rotation from source with weighted interpolation.$ */
+                    WEIGHTED,/*!< Rotation from source with weighted interpolation.$ */
+                    TODEST, /*!< Rotation giving the rotated image.$ */
+                    TODESTMOY,/*!< Rotation giving the roatated image where white holes have the mean intensity of its neighbour.$ */
+                    TODESTNEIGHBOUR/*!< Rotation giving the roatated image where white holes have the  intensity of its right neighbour.$ */
                   };
 
 /**
@@ -46,7 +49,7 @@ private:
     @param pt Point of the original image that will have its coordinates changed
     @param &img Reference to the original image
   */
-  void point_rotation(Point2f pt, Mat &img);
+  void point_rotation(Point2f &pt, Mat &img);
 
   /**
     @fn int horizontal_rotated_size(const Mat &img)
@@ -88,22 +91,31 @@ public:
   void set_method(rotation_type new_method);
 
   /**
-    @fn   Mat apply(Mat &img)
-    @brief Applied the parametrized Rotation to an image.
+    @fn   Mat apply_source(Mat &img)
+    @brief Applied the parametrized Rotation to an image for from source method.
     @param p1 &img Image the rotation will be applied to.
     @return Rotated image.
   */
-  Mat apply(Mat &img);
+  Mat apply_source(Mat &img);
+
+  /**
+    @fn   Mat apply_dest(Mat &img)
+    @brief Applied the parametrized Rotation to an image for to destiantion method.
+    @param p1 &img Image the rotation will be applied to.
+    @return Rotated image.
+  */
+  Mat apply_dest(Mat &img);
 };
 
 /**
   @fn   float intensity_computation_classic(const Point2f &pt, const Mat &img)
-  @brief Compute the rotation from source without interpoaltion.
+  @brief Compute the rotation from source without interpolation.
   @param &pt Point on which we apply rotation.
   @param &img Image on which we apply the rotation.
   @return intensity at the point (x,y).
 */
 float intensity_computation_classic(const Point2f &pt, const Mat &img);
+
 
 /**
   @fn   float intensity_computation_bilinear(const Point2f &pt, const Mat &img)
@@ -203,5 +215,7 @@ float derive_y(const Point2f pt, Mat image);
   @return Derived intensity at the point (x,y).
 */
 float derive_xy(const Point2f pt, Mat image);
+
+
 
 #endif // ROTATION_T

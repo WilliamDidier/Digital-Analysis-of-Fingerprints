@@ -7,7 +7,6 @@ project (libFingerPrint)
 
 set(
 	SOURCES
-	files/blur.cpp
 	files/starter_1.cpp
 	files/main_1.cpp
 	files/starter3.cpp

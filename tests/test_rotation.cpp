@@ -34,22 +34,26 @@ int main(int argc, char** argv )
         return -1;
     }
     //TESTING THE ROTATION OF THE IMAGE
-    Mat rotation_to_dest_corr ;
-    Mat rotation_from_source_corr;
     cout << "Rotation of image...";
     convert_to_float(image, image);
-    float angle = 20;
+    float angle = 30;
     Rotation rot(WEIGHTED, angle);
-    Mat rotation_to_dest = rotate_img_to_dest(image, angle);
-    rotation_to_dest = interpolation_nearest_neighboor(rotation_to_dest);
-    Mat rotation_weighted = rot.apply(image);
+    Mat rotation_weighted = rot.apply_source(image);
+    rot.set_method(TODEST);
+    Mat rotation_to_dest = rot.apply_dest(image);
+    rot.set_method(TODESTMOY);
+    Mat rotation_to_dest_moy = rot.apply_dest(image);
+    rot.set_method(TODESTNEIGHBOUR);
+    Mat rotation_to_dest_neighbour = rot.apply_dest(image);
     rot.set_method(BICUBIC);
-    Mat rotation_from_source_bicubic = rot.apply(image);
+    Mat rotation_from_source_bicubic = rot.apply_source(image);
     rot.set_method(CLASSIC);
-    Mat rotation_from_source = rot.apply(image);
+    Mat rotation_from_source = rot.apply_source(image);
     rot.set_method(BILINEAR);
-    Mat rotation_from_source_bilinear = rot.apply(image);
+    Mat rotation_from_source_bilinear = rot.apply_source(image);
     Mat true_rotation = rotate(image, angle);
+    convert_to_int(rotation_to_dest_moy, rotation_to_dest_moy);
+    convert_to_int(rotation_to_dest_neighbour, rotation_to_dest_neighbour);
     convert_to_int(rotation_to_dest, rotation_to_dest);
     convert_to_int(rotation_from_source, rotation_from_source);
     convert_to_int(rotation_from_source_bicubic, rotation_from_source_bicubic);
@@ -57,12 +61,14 @@ int main(int argc, char** argv )
     convert_to_int(true_rotation, true_rotation);
     convert_to_int(rotation_weighted, rotation_weighted);
     convert_to_int(image, image);
-    imwrite("tests/rotation_to_dest.png", rotation_to_dest);
-    imwrite("tests/rotation_from_source_bilinear.png", rotation_from_source_bilinear );
-    imwrite("tests/rotation_from_source.png", rotation_from_source);
-    imwrite("tests/rotation_from_source_bicubic.png", rotation_from_source_bicubic);
-    imwrite("tests/true_rotation.png", true_rotation);
-    imwrite("tests/rotation_weighted.png", rotation_weighted);
-
+    cout << angle << endl;
+    imwrite("img/image_rotation/rotation_to_dest.png", rotation_to_dest);
+    imwrite("img/image_rotation/rotation_from_source_bilinear.png", rotation_from_source_bilinear );
+    imwrite("img/image_rotation/rotation_from_source.png", rotation_from_source);
+    imwrite("img/image_rotation/rotation_from_source_bicubic.png", rotation_from_source_bicubic);
+    imwrite("img/image_rotation/true_rotation.png", true_rotation);
+    imwrite("img/image_rotation/rotation_weighted.png", rotation_weighted);
+    imwrite("img/image_rotation/rotation_to_dest_moy.png", rotation_to_dest_moy);
+    imwrite("img/image_rotation/rotation_to_dest_neighbour.png", rotation_to_dest_neighbour);
     cout << " Done." << endl;
 }
