@@ -3,7 +3,6 @@
 #include <iostream>
 #include "starter_1.h"
 
-
 using namespace cv;
 using std::cout;
 using std::endl;

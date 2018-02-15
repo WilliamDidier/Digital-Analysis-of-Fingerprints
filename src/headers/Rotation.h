@@ -186,7 +186,8 @@ void floor_ceil_dx_dy(const Point2f &pt, Point2f &inf, Point2f &sup, float &dx, 
   @fn float dist_to_O(Point2f pt)
   @brief Computes the distance of a point to the origin
 */
-float dist_to_O(Point2f pt);
+
+float dist_to_O(const Point2f pt);
 
 
 /**
@@ -196,6 +197,7 @@ float dist_to_O(Point2f pt);
   @param &img Image on which we apply the rotation.
   @return Derived intensity at the point (x,y).
 */
+
 float derive_x(const Point2f pt, Mat image);
 
 /**
