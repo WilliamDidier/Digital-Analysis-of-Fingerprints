@@ -61,7 +61,6 @@ int main(int argc, char** argv )
     convert_to_int(true_rotation, true_rotation);
     convert_to_int(rotation_weighted, rotation_weighted);
     convert_to_int(image, image);
-    cout << angle << endl;
     imwrite("img/image_rotation/rotation_to_dest.png", rotation_to_dest);
     imwrite("img/image_rotation/rotation_from_source_bilinear.png", rotation_from_source_bilinear );
     imwrite("img/image_rotation/rotation_from_source.png", rotation_from_source);

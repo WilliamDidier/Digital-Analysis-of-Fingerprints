@@ -3,8 +3,7 @@
 #include "starter_1.h"
 #include "main_1.h"
 #include "starter3.h"
-#include "starter2.h"
-#include "main2.h"
+#include "Rotation.h"
 using namespace cv;
 using std::cout;
 using std::endl;
@@ -28,10 +27,12 @@ int main(int argc, char** argv )
     float angle = 30;
     cout << "Elasticity of image...";
     convert_to_float(image, image);
-    Mat elasticity = rotate_elasticity(image, angle);
+    Rotation rot(WEIGHTED, angle);
+    Mat elasticity = rot.rotate_elasticity(image);
     convert_to_int(image, image);
     convert_to_int(elasticity, elasticity);
-    imwrite("../img/image_rotation/elasticity.png", elasticity);
+    imwrite("img/image_rotation/elasticity.png", elasticity);
+    imwrite("img/image_rotation/image.png", image);
 
     cout << "done." << std::endl;
 }

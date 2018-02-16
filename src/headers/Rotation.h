@@ -105,6 +105,10 @@ public:
     @return Rotated image.
   */
   Mat apply_dest(Mat &img);
+
+  void decrease_rotation(Point2f &pt, Mat &img);
+
+  Mat rotate_elasticity(Mat image);
 };
 
 /**

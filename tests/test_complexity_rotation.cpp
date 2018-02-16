@@ -3,7 +3,7 @@
 #include "starter_1.h"
 #include "main_1.h"
 #include "starter3.h"
-#include "starter2.h"
+#include "Rotation.h"
 #include "main2.h"
 #include <fstream>
 #include <iostream>
@@ -33,15 +33,17 @@ int main(int argc, char** argv)
       float angle = 25;
       temps1 = clock();
        Mat image = Mat::ones(n,n, CV_32F);
-      // Mat image;
-      // image = imread(argv[1], 0);
+
       convert_to_float(image, image);
-      Mat img_to_dest = rotate_img_from_source(image, angle);
+      // choose the methods you want compare
+      Rotation rot(TODEST, angle);
+      Mat img_to_dest = rot.apply_dest(image);
 
 
       temps2=clock();
       temps3= clock();
-      Mat img_from_source = rotate_img_from_source_weighted(image, angle);
+      rot.set_method(CLASSIC);
+      Mat img_from_source = rot.apply_source(image);
 
       temps4=clock();
       create_file(monFlux1, temps1, temps2, temps3, temps4, n, n);

@@ -14,7 +14,32 @@ using std::endl;
   @author Romain C. & William D.
 */
 
+void Rotation::decrease_rotation(Point2f &pt, Mat &img){
+  Point2f rot_center(img.rows/2, img.cols/2);
+  float tmp = pt.x;
+  float dist = dist_to_O(Point2f(rot_center.x-pt.x,rot_center.y-pt.y));
+  angle = angle*PI/180 * exp(-dist*dist/1000);
+  pt.x = cos(-PI*angle/180)*(pt.x-rot_center.y) - sin(-PI*angle/180)*(pt.y-rot_center.x)+rot_center.y;
+  pt.y = sin(-PI*angle/180)*(tmp-rot_center.y) + cos(-PI*angle/180)*(pt.y-rot_center.x)+rot_center.x;
+}
 
+Mat Rotation::rotate_elasticity(Mat image){
+    int rows = image.rows;
+    int cols = image.cols;
+    Mat Res = Mat::zeros(rows,cols, CV_32FC1);
+    for(int i = 0; i < rows; i++ ){
+      for(int j = 0; j < cols ; j++){
+        Point2f pt(j,i);
+        this ->decrease_rotation(pt, image);
+        if( pt.x >= 0 && pt.y >= 0 && int(pt.x) <= image.cols && int(pt.y) <= image.rows){
+          float intensity = intensity_computation_weighted(pt, image);
+          Res.at<float>(i,j) = intensity;
+        }
+       }
+    }
+    // Rect roi = Rect(dim_output_y/2-cols/2+1, dim_output_x/2-rows/2, cols, rows);
+    return Res;
+}
 
 void Rotation::point_rotation(Point2f &pt, Mat &img){
 
@@ -263,8 +288,8 @@ void floor_ceil_dx_dy(const Point2f &pt, Point2f &inf, Point2f &sup, float &dx, 
   inf.x = float(floor(pt.x));
   inf.y = float(floor(pt.y));
   sup = inf + Point2f(1,1);
-  dx = (pt.x-inf.x)/(sup.x-inf.x);
-  dy = (pt.y-inf.y)/(sup.y-inf.y);
+  dx = (pt.y-inf.x)/(sup.x-inf.x);
+  dy = (pt.x-inf.y)/(sup.y-inf.y);
 }
 
 float dist_to_O(const Point2f pt){

@@ -18,24 +18,24 @@ int main(int argc, char** argv )
 
     Mat image;
     /*TESTING THE WEAKENING */
-    image = imread("../img/clean_finger.png", 0);
+    image = imread("img/clean_finger.png", 0);
     cout << "Weakening clean_finger...";
     Point2i pressure_center;
     pressure_center = pressure_center_computation(image);
     convert_to_float(image, image);
     clean_to_weak_iso(image, pressure_center);
     convert_to_int(image, image);
-    imwrite("../output/Weakened_finger.png", image);
+    imwrite("img/Weakened_finger.png", image);
     cout << " Done." << endl;
 
     /*TESTING THE REINFORCEMENT*/
-    image = imread("../img/weak_finger.png", 0);
+    image = imread("img/weak_finger.png", 0);
     cout << "Reinforcing weak_finger...";
     pressure_center = pressure_center_computation(image);
     convert_to_float(image, image);
     weak_to_clean_iso(image, pressure_center);
     convert_to_int(image, image);
-    imwrite("../output/Reinforced_finger.png", image);
+    imwrite("img/Reinforced_finger.png", image);
     cout << " Done." << endl;
 }
     //AJOUTER LA VERSION ELLIPSE PUIS LA VERSION ANISOTROPIQUE QUAND ON L'AURA

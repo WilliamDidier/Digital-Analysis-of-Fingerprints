@@ -3,7 +3,7 @@
 #include "starter_1.h"
 #include "main_1.h"
 #include "starter3.h"
-#include "starter2.h"
+#include "Rotation.h"
 #include <cmath>
 using namespace cv;
 using std::cout;
@@ -50,30 +50,44 @@ int main(int argc, char** argv )
     cout << "Rotation accuracy of image..." <<endl;
     convert_to_float(image, image);
     float angle = 75;
-    Mat rotation_weighted = rotate_img_from_source_weighted(image, angle);
-    Mat rotation_img_to_dest = rotate_img_to_dest(image, angle);
-    rotation_img_to_dest = interpolation_nearest_neighboor(rotation_img_to_dest);
-    Mat rotation_from_source_bicubic = rotate_img_from_source_bicubic(image, angle);
-    Mat rotation_from_source = rotate_img_from_source(image, angle);
-    Mat rotation_from_source_bilinear = rotate_img_from_source_bilinear(image, angle);
-     Mat true_rotation = rotate(image, angle);
-    convert_to_int(rotation_img_to_dest, rotation_img_to_dest);
+    Rotation rot(WEIGHTED, angle);
+    Mat rotation_weighted = rot.apply_source(image);
+    rot.set_method(TODEST);
+    Mat rotation_to_dest = rot.apply_dest(image);
+    rot.set_method(TODESTMOY);
+    Mat rotation_to_dest_moy = rot.apply_dest(image);
+    rot.set_method(TODESTNEIGHBOUR);
+    Mat rotation_to_dest_neighbour = rot.apply_dest(image);
+    rot.set_method(BICUBIC);
+    Mat rotation_from_source_bicubic = rot.apply_source(image);
+    rot.set_method(CLASSIC);
+    Mat rotation_from_source = rot.apply_source(image);
+    rot.set_method(BILINEAR);
+    Mat rotation_from_source_bilinear = rot.apply_source(image);
+    Mat true_rotation = rotate(image, angle);
+    convert_to_int(rotation_to_dest_moy, rotation_to_dest_moy);
+    convert_to_int(rotation_to_dest_neighbour, rotation_to_dest_neighbour);
+    convert_to_int(rotation_to_dest, rotation_to_dest);
     convert_to_int(rotation_from_source, rotation_from_source);
     convert_to_int(rotation_from_source_bicubic, rotation_from_source_bicubic);
     convert_to_int(rotation_from_source_bilinear, rotation_from_source_bilinear);
     convert_to_int(true_rotation, true_rotation);
     convert_to_int(rotation_weighted, rotation_weighted);
+    float accuracy_dest_moy = mean_accuracy(rotation_to_dest_moy, true_rotation);
+    float accuracy_dest_neighbour = mean_accuracy(rotation_to_dest_neighbour, true_rotation);
     float accuracy_source = mean_accuracy(rotation_from_source, true_rotation);
     float accuracy_bilinear = mean_accuracy(rotation_from_source_bilinear, true_rotation);
     float accuracy_bicubic = mean_accuracy(rotation_from_source_bicubic, true_rotation);
-    float accuracy_to_dest = mean_accuracy(rotation_img_to_dest, true_rotation);
+    float accuracy_to_dest = mean_accuracy(rotation_to_dest, true_rotation);
     float accuracy_weighted = mean_accuracy(rotation_weighted, true_rotation);
 
     cout << "accuracy_to_dest :" << accuracy_to_dest << endl;
+    cout << "accuracy_to_dest_moy :" << accuracy_dest_moy << endl;
+    cout << "accuracy_dest_neighbour:" << accuracy_dest_neighbour << endl;
     cout << "accuracy_source :" << accuracy_source << endl;
+    cout << "accuracy_weighted :" << accuracy_weighted << endl;
     cout << "accuracy_bilinear :" << accuracy_bilinear << endl;
     cout << "accuracy_bicubic :" << accuracy_bicubic << endl;
-    cout << "accuracy_weighted :" << accuracy_weighted << endl;
 
     cout << " Done." << endl;
 }
