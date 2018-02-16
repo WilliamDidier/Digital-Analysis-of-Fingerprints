@@ -20,7 +20,7 @@ int main(int argc, char** argv )
         printf("No image data \n");
         return -1;
     }
-    cout << "This test program will save all its work to the output directory" << endl;
+    cout << "This test program will save all its work to the img/Geom_tests directory" << endl;
     cout << "Image succesfully imported" << endl;
 
 
