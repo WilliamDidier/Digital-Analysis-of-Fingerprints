@@ -4,7 +4,6 @@
 #include "main_1.h"
 #include "starter3.h"
 #include "Rotation.h"
-#include "main2.h"
 #include <fstream>
 #include <iostream>
 #include <string>

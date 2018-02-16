@@ -20,7 +20,7 @@ int main(int argc, char** argv ){
       printf("No image data \n");
       return -1;
   }
-  cout << "This test program will save all its work to the output directory" << endl;
+  cout << "This test program will save all its work to the img/Geom_tests directory" << endl;
   cout << "Image succesfully imported" << endl;
 
   /* TESTING THE ELLIPTICAL FUNCTION */
@@ -31,27 +31,27 @@ int main(int argc, char** argv ){
   Point2i press(144, 128);
   ellipse_test = ellipse(param, press, Point2i(288, 256));
   convert_to_int(ellipse_test, ellipse_test);
-  imwrite("../img/test_limpt.png", ellipse_test);
+  imwrite("img/Geom_tests/test_limpt.png", ellipse_test);
   cout << " Done. (image saved at img/test_limpt.png)" << endl;
 
   /*TESTING THE XLIM YLIM COMPUTATION */
   cout << "Testing the extreme points computation...";
-  Mat image = imread("../img/test_limpt.png",0);
+  Mat image = imread("img/test_limpt.png",0);
   convert_to_float(image, image);
   //assert(fingerprint_boundaries(image) == Point2i(233,69));
   cout << " Done" << endl;
 
   /* TESTING POINTS AIGAIN */
   cout << "Creating image for highest intensity test...";
-  image = imread("../img/black.png", 0);
+  image = imread("img/black.png", 0);
   Point2i test_pt(image.cols/2, image.rows/2);
   image.at<uchar>(test_pt) = 255;
-  imwrite("../img/black_test.png",image);
+  imwrite("img/Geom_tests/black_test.png",image);
   cout << " Done" << endl;
 
   /*TESTING THE ROI FINDING*/
   cout << "Testing highest intensity zone research...";
-  image = imread("../img/black_test.png", 0);
+  image = imread("img/black_test.png", 0);
   Mat gblur;
   image.copyTo(gblur);
   GaussianBlur(image, gblur, Size(17, 17), 0, 0);
