@@ -24,7 +24,7 @@ int main(int argc, char** argv )
         printf("No image data \n");
         return -1;
     }
-    cout << "This test program will save all its work to the main directory" << endl;
+    cout << "This test program will save all its work to the img/Anisotropic_filtering directory" << endl;
     cout << "Image succesfully imported" << endl;
     convert_to_float(image, image);
 
@@ -47,7 +47,7 @@ int main(int argc, char** argv )
     imshow("Anisotropic filtering", image);
     waitKey(0);
     convert_to_int(image, image);
-    imwrite("tests/weak_v2.png", image);
+    imwrite("img/Anisotropic_filtering/weakened_finger_v2.png", image);
 
     cout << endl << "Anisotropic filtering done." << endl;
 }

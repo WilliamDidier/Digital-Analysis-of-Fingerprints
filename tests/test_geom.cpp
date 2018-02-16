@@ -14,13 +14,15 @@ int main(int argc, char** argv )
         return -1;
     }
     Mat image;
+
     image = imread(argv[1], 1);
+
     if (!image.data)
     {
         printf("No image data \n");
         return -1;
     }
-    cout << "This test program will save all its work to the output directory" << endl;
+    cout << "This test program will save all its work to the img/Geom_tests directory" << endl;
     cout << "Image succesfully imported" << endl;
 
 
@@ -38,13 +40,13 @@ int main(int argc, char** argv )
     cout << "Testing diagonal symetry...";
     image_sym = symetry_diag(image);
     convert_to_int(image_sym, image_sym);
-    imwrite("../output/Diagonal_symetry.png", image_sym);
+    imwrite("img/Geom_tests/Diagonal_symetry.png", image_sym);
     cout << " Done." << endl;
 
     std::cerr << "Testing y-axis symetry...";
     image_sym = symetry_y(image);
     convert_to_int(image_sym, image_sym);
-    imwrite("../output/Y-axis_symetry.png", image_sym);
+    imwrite("img/Geom_tests/Y-axis_symetry.png", image_sym);
     cout << " Done." << endl;
 
 
@@ -55,6 +57,6 @@ int main(int argc, char** argv )
     draw_uniform_rectangle(image, r1, 0.0);
     draw_uniform_rectangle(image, r2, 255.0);
     convert_to_int(image, image);
-    imwrite("../output/Rectangles.png", image);
+    imwrite("img/Geom_tests/Rectangles.png", image);
     cout << " Done." << endl;
 }
