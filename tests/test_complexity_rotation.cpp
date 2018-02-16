@@ -37,13 +37,13 @@ int main(int argc, char** argv)
       convert_to_float(image, image);
       // choose the methods you want compare
       Rotation rot(TODEST, angle);
-      Mat img_to_dest = rot.apply_dest(image);
+      Mat img_to_dest = rot.apply(image);
 
 
       temps2=clock();
       temps3= clock();
       rot.set_method(CLASSIC);
-      Mat img_from_source = rot.apply_source(image);
+      Mat img_from_source = rot.apply(image);
 
       temps4=clock();
       create_file(monFlux1, temps1, temps2, temps3, temps4, n, n);

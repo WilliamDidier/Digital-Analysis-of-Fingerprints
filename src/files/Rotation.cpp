@@ -3,6 +3,7 @@
 #include <iostream>
 #include <math.h>
 #include "Rotation.h"
+#include "main_1.h"
 #define PI 3.14159265
 using namespace cv;
 using std::cout;
@@ -13,33 +14,6 @@ using std::endl;
   @brief Body for the Rotation class and associated functions
   @author Romain C. & William D.
 */
-
-void Rotation::decrease_rotation(Point2f &pt, Mat &img){
-  Point2f rot_center(img.rows/2, img.cols/2);
-  float tmp = pt.x;
-  float dist = dist_to_O(Point2f(rot_center.x-pt.x,rot_center.y-pt.y));
-  angle = angle*PI/180 * exp(-dist*dist/1000);
-  pt.x = cos(-PI*angle/180)*(pt.x-rot_center.y) - sin(-PI*angle/180)*(pt.y-rot_center.x)+rot_center.y;
-  pt.y = sin(-PI*angle/180)*(tmp-rot_center.y) + cos(-PI*angle/180)*(pt.y-rot_center.x)+rot_center.x;
-}
-
-Mat Rotation::rotate_elasticity(Mat image){
-    int rows = image.rows;
-    int cols = image.cols;
-    Mat Res = Mat::zeros(rows,cols, CV_32FC1);
-    for(int i = 0; i < rows; i++ ){
-      for(int j = 0; j < cols ; j++){
-        Point2f pt(j,i);
-        this ->decrease_rotation(pt, image);
-        if( pt.x >= 0 && pt.y >= 0 && int(pt.x) <= image.cols && int(pt.y) <= image.rows){
-          float intensity = intensity_computation_weighted(pt, image);
-          Res.at<float>(i,j) = intensity;
-        }
-       }
-    }
-    // Rect roi = Rect(dim_output_y/2-cols/2+1, dim_output_x/2-rows/2, cols, rows);
-    return Res;
-}
 
 void Rotation::point_rotation(Point2f &pt, Mat &img){
 
@@ -80,6 +54,22 @@ Rotation::Rotation(rotation_type p1, float p2){
   angle = p2;
 }
 
+Mat Rotation::apply(Mat &img){
+  Mat Res;
+  switch(method){
+    case TODEST:
+    case TODESTMOY:
+    case TODESTNEIGHBOUR:
+      Res = this -> apply_dest(img);
+      break;
+    case ELASTICITY:
+      Res = this -> apply_elasticity(img);
+      break;
+    default:
+      Res = this -> apply_source(img);
+  }
+  return Res;
+}
 
 Mat Rotation::apply_source(Mat &img){
   int dim_output_x = this -> horizontal_rotated_size(img);
@@ -89,8 +79,8 @@ Mat Rotation::apply_source(Mat &img){
     for(int j = 0 ; j < dim_output_y ; j++){
       Point2f pt(j,i);
       this -> point_rotation(pt, img);
-      if( pt.x >= 0 && pt.y >= 0 && int(pt.x) <= img.cols && int(pt.y) <= img.rows){
-        float intensity = 0;
+      if( pt.x >= 0 && pt.y >= 0 && int(pt.x) < img.cols-1 && int(pt.y) < img.rows-1){
+        float intensity;
         switch(method){
           case CLASSIC:
             intensity = intensity_computation_classic(pt, img);
@@ -165,6 +155,38 @@ Mat Rotation::apply_dest(Mat &img){
   Rect roi = Rect(0, 0, img.cols, img.rows);
   return Res(roi);
 }
+
+Mat Rotation::apply_elasticity(Mat &image){
+    int rows = image.rows;
+    int cols = image.cols;
+    Mat Res = Mat::ones(rows,cols, CV_32FC1);
+    Point2f rot_center = pressure_center_computation(image);
+    float tmp = rot_center.x;
+    rot_center.x = rot_center.y;
+    rot_center.y = tmp;
+    for(int i = 0; i < rows; i++ ){
+      for(int j = 0; j < cols ; j++){
+        Point2f pt(j,i);
+        this -> decrease_rotation(pt, rot_center, image);
+        if( pt.x >= 0 && pt.y >= 0 && int(pt.x) < image.cols-1 && int(pt.y) < image.rows-1){
+          float intensity = intensity_computation_bicubic(pt, image);
+          Res.at<float>(i,j) = intensity;
+       }
+    }
+    // Rect roi = Rect(dim_output_y/2-cols/2+1, dim_output_x/2-rows/2, cols, rows);
+  }
+  return Res;
+}
+
+void Rotation::decrease_rotation(Point2f &pt, Point2f &rot_center, Mat &img){
+  float tmp = pt.x;
+  float dist = dist_to_O(rot_center-pt);
+  float angle_tmp = angle * exp(-dist*dist/1000);
+
+  pt.x = cos(-PI*angle_tmp/180)*(pt.x-rot_center.y) - sin(-PI*angle_tmp/180)*(pt.y-rot_center.x)+rot_center.y;
+  pt.y = sin(-PI*angle_tmp/180)*(tmp-rot_center.y) + cos(-PI*angle_tmp/180)*(pt.y-rot_center.x)+rot_center.x;
+}
+
 
 void Rotation::set_angle(float new_angle){
   angle = new_angle;
@@ -275,9 +297,10 @@ Mat coeff_bicubic(const Point2f &pt, const Mat &img){
 }
 
 void get_intensities(const Mat &img, const Point2i &inf, const Point2i &sup, float &i1, float &i2, float &i3, float &i4){
-  i1 = img.at<float>(inf.y, inf.x);
+  i1 = img.at<float>(inf);
   i2 = img.at<float>(sup.y, inf.x);
-  i3 = img.at<float>(sup.y, sup.x);
+  //i2 =  img.at<float>(Point2f(inf.x, sup.y))
+  i3 = img.at<float>(sup);
   i4 = img.at<float>(inf.y, sup.x);
 }
 
@@ -288,8 +311,8 @@ void floor_ceil_dx_dy(const Point2f &pt, Point2f &inf, Point2f &sup, float &dx, 
   inf.x = float(floor(pt.x));
   inf.y = float(floor(pt.y));
   sup = inf + Point2f(1,1);
-  dx = (pt.y-inf.x)/(sup.x-inf.x);
-  dy = (pt.x-inf.y)/(sup.y-inf.y);
+  dx = (pt.y-inf.y)/(sup.x-inf.x);
+  dy = (pt.x-inf.x)/(sup.y-inf.y);
 }
 
 float dist_to_O(const Point2f pt){
@@ -304,8 +327,8 @@ float derive_x(const Point2f pt, Mat image){
     float floorx_1 = float(floor(pt.x))-1;
     float ceilx = float(ceil(pt.x));
 
-    float intensity1 = image.at<float>(floorx-1,  floory);
-    float intensity2 = image.at<float>(ceilx,  floory);
+    float intensity1 = image.at<float>(Point2f(floorx-1,  floory));
+    float intensity2 = image.at<float>(Point2f(ceilx,  floory));
 
     res = (intensity2 -intensity1)/(ceilx-floorx_1);
 
@@ -319,8 +342,8 @@ float derive_y(const Point2f pt, Mat image){
     float floory_1 = float(floor(pt.y))-1;
     float ceily = float(ceil(pt.y));
 
-    float intensity1 = image.at<float>(floorx,  floory_1);
-    float intensity2 = image.at<float>(floorx,  ceily);
+    float intensity1 = image.at<float>(Point2f(floorx,  floory_1));
+    float intensity2 = image.at<float>(Point2f(floorx,  ceily));
 
     res = (intensity2 -intensity1)/(ceily-floory_1);
 
@@ -336,10 +359,10 @@ float derive_xy(const Point2f pt, Mat image){
     float floorx_1 = float(floor(pt.x))-1;
     float ceilx = float(ceil(pt.x));
 
-    float intensity1 = image.at<float>(floorx_1,  floory_1);
-    float intensity2 = image.at<float>(floorx_1,  ceily);
-    float intensity3 = image.at<float>(ceilx,  floory_1);
-    float intensity4 = image.at<float>(ceilx,  ceily);
+    float intensity1 = image.at<float>(Point2f(floorx_1,  floory_1));
+    float intensity2 = image.at<float>(Point2f(floorx_1,  ceily));
+    float intensity3 = image.at<float>(Point2f(ceilx,  floory_1));
+    float intensity4 = image.at<float>(Point2f(ceilx,  ceily));
 
     res = (intensity4-intensity3-intensity2+intensity1)/((ceilx-floorx_1)*(ceily-floory_1));
     return res;

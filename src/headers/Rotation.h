@@ -25,7 +25,8 @@ enum rotation_type{ CLASSIC, /*!< Rotation from source image.$ */
                     WEIGHTED,/*!< Rotation from source with weighted interpolation.$ */
                     TODEST, /*!< Rotation giving the rotated image.$ */
                     TODESTMOY,/*!< Rotation giving the roatated image where white holes have the mean intensity of its neighbour.$ */
-                    TODESTNEIGHBOUR/*!< Rotation giving the roatated image where white holes have the  intensity of its right neighbour.$ */
+                    TODESTNEIGHBOUR,/*!< Rotation giving the roatated image where white holes have the  intensity of its right neighbour.$ */
+                    ELASTICITY /*!< Rotation only applied to the center of the image : simulating skin elasticity.$ */
                   };
 
 /**
@@ -67,6 +68,16 @@ private:
   */
   int vertical_rotated_size(const Mat &img);
 
+  Mat apply_source(Mat &img);
+
+
+  Mat apply_dest(Mat &img);
+
+  Mat apply_elasticity(Mat &image);
+
+  void decrease_rotation(Point2f &pt, Point2f &rot_center, Mat &img);
+
+
 public:
   /**
     @fn Rotation(rotation_type p1, float p2)
@@ -91,24 +102,12 @@ public:
   void set_method(rotation_type new_method);
 
   /**
-    @fn   Mat apply_source(Mat &img)
-    @brief Applied the parametrized Rotation to an image for from source method.
-    @param p1 &img Image the rotation will be applied to.
-    @return Rotated image.
+  @fn   Mat apply_source(Mat &img)
+  @brief Applied the parametrized Rotation to an image.
+  @param p1 &img Image the rotation will be applied to.
+  @return Rotated image.
   */
-  Mat apply_source(Mat &img);
-
-  /**
-    @fn   Mat apply_dest(Mat &img)
-    @brief Applied the parametrized Rotation to an image for to destiantion method.
-    @param p1 &img Image the rotation will be applied to.
-    @return Rotated image.
-  */
-  Mat apply_dest(Mat &img);
-
-  void decrease_rotation(Point2f &pt, Mat &img);
-
-  Mat rotate_elasticity(Mat image);
+  Mat apply(Mat &img);
 };
 
 /**

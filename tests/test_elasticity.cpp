@@ -27,8 +27,8 @@ int main(int argc, char** argv )
     float angle = 30;
     cout << "Elasticity of image...";
     convert_to_float(image, image);
-    Rotation rot(WEIGHTED, angle);
-    Mat elasticity = rot.rotate_elasticity(image);
+    Rotation rot(ELASTICITY, angle);
+    Mat elasticity = rot.apply(image);
     convert_to_int(image, image);
     convert_to_int(elasticity, elasticity);
     imwrite("img/image_rotation/elasticity.png", elasticity);
